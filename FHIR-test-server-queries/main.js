@@ -18,7 +18,7 @@ const getSnomedCodeLookup = async (url, snomedCode) => {
 	console.log();
 	console.log(
 		`~~~~~ Snomed code ${snomedCode} name: ${util.inspect(
-			response.data.parameter[0].valueString,
+			response.data.parameter[1].valueString,
 			false,
 			null,
 			true
