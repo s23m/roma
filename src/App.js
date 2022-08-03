@@ -1,12 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
-import Patient from './components/patient.js';
+import Patient from './components/Patient';
+import SearchBar from './components/SearchBar';
+
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Patient/>
+        <SearchBar placeholder="Enter your search input here..." />
+        <Patient />
+
 
 
         {/* <img src={logo} className="App-logo" alt="logo" />
