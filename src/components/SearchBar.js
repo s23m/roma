@@ -1,5 +1,5 @@
 import React from 'react';
-import './SearchBar.css';
+import '../stylesheets/SearchBar.css';
 import SearchIcon from '@material-ui/icons/Search';
 
 export default function SearchBar({ placeholder }) {

@@ -1,4 +1,4 @@
-import logo from './assets/logo.svg';
+import logo from '../assets/logo.svg';
 import './stylesheets/App.css';
 import Patient from '../components/Patient';
 import SearchBar from '../components/SearchBar';
