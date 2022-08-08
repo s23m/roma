@@ -1,8 +1,7 @@
-import logo from './logo.svg';
-import './App.css';
-import Patient from './components/Patient';
-import SearchBar from './components/SearchBar';
-
+import logo from '../assets/logo.svg';
+import '../stylesheets/App.css';
+import Patient from '../components/Patient';
+import SearchBar from '../components/SearchBar';
 
 function App() {
   return (
@@ -10,8 +9,6 @@ function App() {
       <header className="App-header">
         <SearchBar placeholder="Enter your search input here..." />
         <Patient />
-
-
 
         {/* <img src={logo} className="App-logo" alt="logo" />
         <p>
