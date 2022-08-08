@@ -1,29 +1,26 @@
-import logo from '../assets/logo.svg';
 import '../stylesheets/App.css';
-import Patient from '../components/Patient';
-import SearchBar from '../components/SearchBar';
+import Patient from '../pages/Patient';
+import { Container } from 'reactstrap';
+import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
-  return (
+  const AppConstantElements = (
     <div className="App">
-      <header className="App-header">
-        <SearchBar placeholder="Enter your search input here..." />
-        <Patient />
-
-        {/* <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
-      </header>
+      <Container>
+        <h1>ROMA FHIR</h1>
+        <Outlet></Outlet>
+      </Container>
     </div>
+  );
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={AppConstantElements}>
+          <Route path="patients" element={Patient()} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
