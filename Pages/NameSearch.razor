@@ -1,0 +1,129 @@
+﻿@page "/searchbyname"
+@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Rest;
+@using Hl7.Fhir.Serialization;
+
+<PageTitle>Search for a Patient</PageTitle>
+
+<h1>Patient Search by name</h1>
+
+
+<form onsubmit=@PatientNameSearch>
+	<p>
+		Patient Name: <input type="text" @bind-value=inputPatientName />
+	</p>
+	<p>
+		Max Number of Entries: <input type="number" max=50 min=5 @bind-value=maxNumOfEntries />
+		<input type="submit" value="Search" class="btn btn-primary" />
+	</p>
+</form>
+
+
+@if (searchResults == null)
+{
+	<p><em>Results will appear here</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Gender</th>
+				<th>Birthdate</th>
+				<th>ID</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@foreach (Patient patient in searchResults)
+			{
+				@*Assuming that if the patient has a name, they will also have other info
+					This will error if a patient has a name, but is missing another piece of info.
+				*@
+				<tr>
+					@if (patient.Name.Count > 0)
+					{
+						<td>@patient.Name[0]</td>
+						<td>@patient.Gender</td>
+						<td>@patient.BirthDate</td>
+						<td><a href="@(serverURL+ "/Patient/" + patient.Id)"> @(patient.Id)</a></td>
+					}
+
+				</tr>
+			}
+		</tbody>
+
+	</table>
+}
+
+
+@code {
+	//input variables
+	private string inputPatientName = "";
+	private int maxNumOfEntries = 10;
+
+	//stores all the results
+	private Hl7.Fhir.Model.Patient[]? searchResults;
+
+
+	private string serverURL = "http://hapi.fhir.org/baseR4";
+
+	void PatientNameSearch()
+	{
+		//
+		searchResults = new Patient[maxNumOfEntries];
+		Console.WriteLine("Searching");
+
+
+		//Create a new instance (connection to the server) by first (optional) specifying some settings
+		//then connecting to the server
+		var settings = new FhirClientSettings
+			{
+				Timeout = 0,
+				PreferredFormat = ResourceFormat.Json,
+				VerifyFhirVersion = true,
+				PreferredReturn = Prefer.ReturnMinimal
+			};
+
+		var client = new FhirClient("http://hapi.fhir.org/baseR4");
+
+
+		//Defining search paramaters, not sure where to find documentation on these params.
+		var q = new SearchParams()
+				.Where("name:given=" + inputPatientName)
+				//.OrderBy("birthdate", SortOrder.Descending)
+				//.SummaryOnly().Include("Patient:organization")
+				.LimitTo(maxNumOfEntries);
+
+
+		//HAPI returns a Bundle when searching (i assume other servers do the same)
+		Bundle results = client.Search<Patient>(q);
+
+
+		//for every search result
+		for (int i = 0; i < results.Entry.Count; i++)
+		{
+			//add patient to our list
+			searchResults[i] = (Patient)results.Entry[i].Resource;
+
+			//debugging
+			//Console.WriteLine("Result " + i);
+			//Console.WriteLine(searchResults[i].Name[0]);
+			//Console.WriteLine(results.Entry[i].FullUrl);
+		}
+
+		//To ensure the program doesn't crash when only a small amount of results return from the search
+		for (int j = 0; j < maxNumOfEntries; j++)
+		{
+			if (searchResults[j] == null)
+			{
+				searchResults[j] = new Patient();
+			}
+
+		}
+
+		Console.WriteLine("Results Found");
+	}
+
+}
