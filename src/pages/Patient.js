@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Table } from 'reactstrap';
 import { searchPatientByPhonetic } from '../apis/patient';
 import SearchBar from '../components/SearchBar';
+import '../stylesheets/Patient.css';
 
 const convertSearchResultToTableData = (searchResults) => {
   const tableData = searchResults.map((patient) => {
