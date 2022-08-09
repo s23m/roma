@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Table } from 'reactstrap';
-import { searchPatientByPhonetic } from '../apis/patient';
+import { getPatient } from '../apis/patient';
 import SearchBar from '../components/SearchBar';
 import '../stylesheets/Patient.css';
 
 const convertSearchResultToTableData = (searchResults) => {
+  
   const tableData = searchResults.map((patient) => {
     const givenNames = patient.resource.name[0].given;
     const givenNamesString = givenNames.join(' ');
@@ -15,9 +16,12 @@ const convertSearchResultToTableData = (searchResults) => {
       familyName: familyName,
     };
   });
-
+  
   return tableData;
 };
+
+// More to be added from available params
+const searchTypes = ['name', 'family', 'birthdate', 'phone', 'gender'] 
 
 const Patient = () => {
   const [patientData, setPatientData] = useState([
@@ -31,8 +35,8 @@ const Patient = () => {
     { field: 'Family name' },
   ]);
 
-  const onSearchSubmit = async (queryValue) => {
-    const searchResults = await searchPatientByPhonetic(queryValue);
+  const onSearchSubmit = async (queryType, queryValue) => {
+    const searchResults = await getPatient(queryType, queryValue);
     const tableData = convertSearchResultToTableData(searchResults.entry);
 
     setPatientData(tableData);
@@ -54,16 +58,17 @@ const Patient = () => {
     [columnDefs]
   );
 
+
   return (
-    <>
-      <SearchBar placeholder={'Search a patient name'} onSubmit={onSearchSubmit} />
+    <div>
+      <SearchBar placeholder={'Search a patient name'} onSubmit={onSearchSubmit} options={searchTypes}/>
       <Table dark>
         <thead>
           <tr>{tableHeadings}</tr>
         </thead>
         <tbody>{tableRows}</tbody>
       </Table>
-    </>
+    </div>
   );
 };
 
