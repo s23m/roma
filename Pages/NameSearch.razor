@@ -5,18 +5,42 @@
 
 <PageTitle>Search for a Patient</PageTitle>
 
-<h1>Patient Search by name</h1>
+<div class="my-3">
+	<h1 class="text-center font-bold text-4xl">Patient Search by name</h1>
+</div>
 
 
-<form onsubmit=@PatientNameSearch>
-	<p>
-		Patient Name: <input type="text" @bind-value=inputPatientName />
-	</p>
-	<p>
-		Max Number of Entries: <input type="number" max=50 min=5 @bind-value=maxNumOfEntries />
-		<input type="submit" value="Search" class="btn btn-primary" />
-	</p>
+
+
+<form class="flex items-center my-3" onsubmit=@PatientNameSearch>
+	<label for="simple-search" class="sr-only">Search</label>
+	<div class="relative w-full">
+		<div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+			<svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+		</div>
+		<input type="text" @bind-value=inputPatientName id="simple-search" class=" borderless bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required>
+	</div>
+	<button type="submit" class="borderless p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+		<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+		<span class="sr-only">Search</span>
+	</button>
+
+
 </form>
+
+
+
+
+@*<form onsubmit=@PatientNameSearch class="flex flexwrap w-full"
+	<p class="text-3xl w-1/2 flex flexwrap">
+	Patient Name: <input type="text" @bind-value=inputPatientName class="w-1/2" />
+	</p>
+	<p class="w-1/2">Max Number of Entries: <input type="number" max=50 min=5 @bind-value=maxNumOfEntries />
+	</p>
+	<p class="w-1/2">
+	<input type="submit" value="Search" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" />
+	</p>
+	</form>*@
 
 
 @if (searchResults == null)
@@ -25,7 +49,7 @@
 }
 else
 {
-	<table class="table">
+	<table class="table dark:bg-grey-700 dark:text-slate-200">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -57,11 +81,20 @@ else
 	</table>
 }
 
+<div class="w-1/6 mt-3 relative right-0 ">
+    <label for="small-input" class="block mb-2 text-sm font-bold text-gray-900 dark:text-gray-300">Max number of entries</label>
+    <input type="number" max=50 min=5 @bind-value=maxNumOfEntries id="small-input" class="borderless block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+</div>
+
 
 @code {
 	//input variables
 	private string inputPatientName = "";
 	private int maxNumOfEntries = 10;
+	private string currentModel = "Patient";
+
+	private string[]? customers;
+
 
 	//stores all the results
 	private Hl7.Fhir.Model.Patient[]? searchResults;
@@ -74,7 +107,6 @@ else
 		//
 		searchResults = new Patient[maxNumOfEntries];
 		Console.WriteLine("Searching");
-
 
 		//Create a new instance (connection to the server) by first (optional) specifying some settings
 		//then connecting to the server
@@ -120,10 +152,19 @@ else
 			{
 				searchResults[j] = new Patient();
 			}
+			if(j == 0)
+			{
+				var name =  new HumanName().WithGiven("No results found...");
+				searchResults[j].Name.Add(name);
+			}
 
 		}
 
 		Console.WriteLine("Results Found");
 	}
+
+
+
+	
 
 }

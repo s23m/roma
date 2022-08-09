@@ -55,6 +55,10 @@
             "Hl7.Fhir.Support": {
               "target": "Package",
               "version": "[4.1.0, )"
+            },
+            "Radzen.Blazor": {
+              "target": "Package",
+              "version": "[3.20.2, )"
             }
           },
           "imports": [

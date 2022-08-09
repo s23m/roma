@@ -74,3 +74,7 @@ C:\Users\macsm\Documents\Git Repos\FHIRBlazor\obj\Debug\net6.0\refint\FHIRBlazor
 C:\Users\macsm\Documents\Git Repos\FHIRBlazor\obj\Debug\net6.0\FHIRBlazor.pdb
 C:\Users\macsm\Documents\Git Repos\FHIRBlazor\obj\Debug\net6.0\FHIRBlazor.genruntimeconfig.cache
 C:\Users\macsm\Documents\Git Repos\FHIRBlazor\obj\Debug\net6.0\ref\FHIRBlazor.dll
+C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\package-lock.json
+C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\package.json
+C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\Radzen.Blazor.dll
+C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\System.Linq.Dynamic.Core.dll

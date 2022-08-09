@@ -11,6 +11,7 @@
     <PackageReference Include="Hl7.Fhir.R4" Version="4.1.0" />
     <PackageReference Include="Hl7.Fhir.Serialization" Version="4.1.0" />
     <PackageReference Include="Hl7.Fhir.Support" Version="4.1.0" />
+    <PackageReference Include="Radzen.Blazor" Version="3.20.2" />
   </ItemGroup>
 
 </Project>
