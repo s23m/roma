@@ -35,8 +35,11 @@
         width: 24px;
     }
 
-input:checked + .slider {
+input + .slider {
     background-color: rgb(20 20 20);
+}
+input:checked + .slider {
+    background-color: rgb(200 200 200);
 }
 
     input:checked + .slider:before {

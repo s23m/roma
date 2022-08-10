@@ -7,9 +7,12 @@
 
 <PageTitle>FHIRBlazor</PageTitle>
 
-<RadzenNotification />
 
 <div class="page @(_darkMode ? "dark" : "")">
+
+	<RadzenNotification />
+	<RadzenDialog />
+
 	<div class="sidebar">
 		<NavMenu />
 	</div>
@@ -29,7 +32,7 @@
 </div>
 
 @code {
-    bool _darkMode = false;
+	bool _darkMode = true;
 
 	private void HandleDarkModeToggled(bool isDarkMode)
 	{
