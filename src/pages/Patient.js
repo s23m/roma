@@ -9,12 +9,23 @@ import '../stylesheets/Patient.css';
 
 const convertSearchResultToRowData = (searchResults) => {
   const rowData = searchResults.map((patient) => {
-    return {
-      givenNames: patient.resource.name[0].given.join(' '),
-      familyName: patient.resource.name[0].family,
-      birthDate:  patient.resource.birthDate,
-      gender: patient.resource.gender,
-      id: patient.resource.id
+    try {
+      return {
+        givenNames: patient.resource.name[0].given.join(' ') || 'n/a',
+        familyName: patient.resource.name[0].family || 'n/a',
+        birthDate:  patient.resource.birthDate || 'n/a',
+        gender: patient.resource.gender || 'n/a',
+        id: patient.resource.id || 'n/a',
+      }
+    }
+    catch {
+      return {
+        givenNames: '<Error>',
+        familyName: '<Check console>',
+        birthDate: 'n/a',
+        gender: 'n/a',
+        id: 'n/a',
+      }
     }
   })
   return rowData;
@@ -44,6 +55,7 @@ const Patient = () => {
     {givenNames: "Adam", familyName: "ThisisAnExample", birthDate: "1970-05-06", gender: "male", id: 123126969},
     {givenNames: 'Abbey',familyName: 'Goodwin', birthDate: "1979-09-06", gender: "male", id: 1777777}
   ])
+  const [notification, setNotification] = useState("")
 
   const onSearchSubmit = async (queryType, queryValue) => {
     const searchResults = await getPatient(queryType, queryValue);
@@ -51,22 +63,26 @@ const Patient = () => {
     if (searchResults.total !== 0) {
       const rowData = convertSearchResultToRowData(searchResults.entry)
       setRowData(rowData)
+      setNotification(`Total entries found: ${searchResults.total || searchResults.entry.length}`)
     } else {
-      // TODO: prompt the number of entries found
-      console.log("No entry found.")
+      setNotification('Total entries found: 0')
     }
+
+    
   };
 
   return (
     <div>
       <SearchBar placeholder={'Search a patient name'} onSubmit={onSearchSubmit} options={searchTypes}/>
 
+      <p>{notification}</p>
+
       <div className='ag-theme-balham-dark' style={{height: '70vh', width: '50vw'}}> 
         <AgGridReact
           columnDefs={columnDefs}
           rowData={rowData}
           pagination={true}
-          paginationPageSize={25}
+          paginationPageSize={50}
           onGridReady={(params) => {
             params.api.sizeColumnsToFit();}}
         />
