@@ -1,73 +1,62 @@
 import React, { useState, useMemo } from 'react';
 import { Table } from 'reactstrap';
+import { AgGridReact } from "ag-grid-react";
 import { getPatient } from '../apis/patient';
 import SearchBar from '../components/SearchBar';
+import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
+import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';
 
-const convertSearchResultToTableData = (searchResults) => {
-  
-  const tableData = searchResults.map((patient) => {
-    const givenNames = patient.resource.name[0].given;
-    const givenNamesString = givenNames.join(' ');
-    const familyName = patient.resource.name[0].family;
 
+const convertSearchResultToRowData = (searchResults) => {
+  const rowData = searchResults.map((patient) => {
     return {
-      givenName: givenNamesString,
-      familyName: familyName,
-    };
-  });
-  
-  return tableData;
+      givenNames: patient.resource.name[0].given.join(' '),
+      familyName: patient.resource.name[0].family,
+    }
+  })
+  return rowData;
 };
 
-// More to be added from available params
+// More to be added from available params of http://hapi.fhir.org/baseR4/
 const searchTypes = ['name', 'family', 'birthdate', 'phone', 'gender'] 
 
 const Patient = () => {
-  const [patientData, setPatientData] = useState([
-    {
-      givenNames: 'Abbey',
-      lastName: 'Goodwin',
-    },
-  ]);
-  const [columnDefs, setColumnDefs] = useState([
-    { field: 'Given names' },
-    { field: 'Family name' },
-  ]);
+  // ag-grid-table variables
+  const columnDefs = [
+    { headerName: "Given names", field: "givenNames", sortable: true, filter: true, minWidth: 100, maxWidth: 150},
+    { headerName: "Family name", field: "familyName", sortable: true, filter: true, minWidth: 100, maxWidth: 150},
+  ];
+  const [rowData, setRowData] = useState([
+    {givenNames: "Adam", familyName: "ThisisAnExample"},
+    {givenNames: 'Abbey',familyName: 'Goodwin'}
+  ])
 
   const onSearchSubmit = async (queryType, queryValue) => {
     const searchResults = await getPatient(queryType, queryValue);
-    const tableData = convertSearchResultToTableData(searchResults.entry);
-
-    setPatientData(tableData);
+    console.log(searchResults);
+    if (searchResults.total !== 0) {
+      const rowData = convertSearchResultToRowData(searchResults.entry)
+      setRowData(rowData)
+    } else {
+      // TODO: prompt the number of entries found
+      console.log("No entry found.")
+    }
   };
-
-  const tableRows = useMemo(
-    () =>
-      patientData.map((patient, i) => {
-        const cells = Object.keys(patient).map((key, j) => (
-          <td key={`col${i}-${j}`}>{patient[key]}</td>
-        ));
-        return <tr key={`row${i}`}>{cells}</tr>;
-      }),
-    [patientData]
-  );
-
-  const tableHeadings = useMemo(
-    () => columnDefs.map((def, i) => <th key={`heading${i}`}>{def.field}</th>),
-    [columnDefs]
-  );
-
 
   return (
     <div>
       <SearchBar placeholder={'Search a patient name'} onSubmit={onSearchSubmit} options={searchTypes}/>
-      <Table dark>
-        <thead>
-          <tr>{tableHeadings}</tr>
-        </thead>
-        <tbody>{tableRows}</tbody>
-      </Table>
+
+      <div className='ag-theme-balham-dark' style={{height: 400, width: 600}}> 
+        <AgGridReact
+          columnDefs={columnDefs}
+          rowData={rowData}
+          pagination={true}
+          paginationPageSize={25}
+          resizable={true}
+        />
+      </div>
     </div>
   );
 };
