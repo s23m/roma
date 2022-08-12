@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import { Table } from 'reactstrap';
+import React, { useState } from 'react';
 import { AgGridReact } from "ag-grid-react";
 import { getPatient } from '../apis/patient';
 import SearchBar from '../components/SearchBar';
