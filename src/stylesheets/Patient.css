@@ -4,3 +4,14 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.ag-theme-balham-dark {
+    height: 600;
+    width: 1000;
+    margin: auto;
+    margin-top: 1rem;
+}
+
+.ag-header-cell-label {
+    justify-content: center;
+}
