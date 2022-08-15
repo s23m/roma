@@ -1,0 +1,44 @@
+﻿@page "/patientsearch"
+@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Rest;
+@using Hl7.Fhir.Serialization;
+
+<PageTitle>Search for a Patient</PageTitle>
+
+<h1>Patient Search</h1>
+
+
+<form onsubmit=@PatientSearch>
+    <p>
+        Patient ID: <input type="number" @bind-value=patientID />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </p>
+</form>
+
+<p>Patient Name: @patientName</p>
+<p>Patient ID: @patientID</p>
+
+@code {
+
+    private int patientID = 0;
+    private Hl7.Fhir.Model.HumanName patientName;
+
+    void PatientSearch()
+    {
+        //Create a new instance (connection to the server) by first (optional) specifying some settings
+        //then connecting to the server
+        var settings = new FhirClientSettings
+        {
+            Timeout = 0,
+            PreferredFormat = ResourceFormat.Json,
+            VerifyFhirVersion = true,
+            PreferredReturn = Prefer.ReturnMinimal
+        };
+        var client = new FhirClient("http://server.fire.ly");
+
+        //Read the current version of a Patient resource
+        var pat_A = client.Read<Patient>("Patient/" + patientID);
+        Console.WriteLine(pat_A.Name[0]);
+        patientName = pat_A.Name[0];
+    }
+}

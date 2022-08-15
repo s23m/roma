@@ -1,0 +1,19 @@
+﻿<div class="switch">
+				<label class="theme-switch" for="checkbox">
+					<input value=@_darkMode @onchange="Toggle" type="checkbox" id="checkbox" />
+					<div class="slider round"></div>
+				</label>
+			</div>
+@code {
+	private bool _darkMode = true;
+
+    [Parameter]
+    public EventCallback<bool> OnDarkModeToggled { get; set; }
+
+    private void Toggle()
+    {
+        _darkMode = !_darkMode;
+        //Console.WriteLine(_darkMode);
+        OnDarkModeToggled.InvokeAsync(_darkMode);
+    }
+}
