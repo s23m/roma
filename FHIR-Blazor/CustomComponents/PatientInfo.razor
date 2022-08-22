@@ -1,5 +1,5 @@
-﻿@page "/quickinfo"
-@page "/quickinfo/{PatientID}"
+﻿@page "/patientinfo"
+@page "/patientinfo/{PatientID}"
 @using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
@@ -52,26 +52,24 @@
 	<div class="col-md-12">
 		<RadzenCard>
 			<h3 class="h5">
-				Patient @PatientID details table (n/a)
-				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Healthy" Class="float-right" />
+				All available patient detials for id: @PatientID 
+				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="@patient.Name[0].Family" Class="float-right" />
 			</h3>
 			@*<RadzenDataGrid AllowFiltering="true" AllowPaging="true" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-				Data="@(orderDetails.Where(o => o.OrderID == OrderID))" TItem="OrderDetail" ColumnWidth="200px" Class="mt-3">
+				 ColumnWidth="200px" Class="mt-3">
 				<Columns>
-				<RadzenDataGridColumn TItem="OrderDetail" Property="Quantity" Title="Quantity" />
-				<RadzenDataGridColumn TItem="OrderDetail" Property="Order.OrderDate" Title="Order Date" />
-				<RadzenDataGridColumn TItem="OrderDetail" Property="Discount" Title="Discount" FormatString="{0:P}" />
+
+
+				<RadzenDataGridColumn Property="Quantity" Title="Quantity" />
+				<RadzenDataGridColumn Property="Order.OrderDate" Title="Order Date" />
+
+
 				</Columns>
 				</RadzenDataGrid>*@
 		</RadzenCard>
 	</div>
 </div>
-<div class="row">
-	<div class="col-md-12 text-right">
-		<RadzenButton Click="@(()=>NavManager.NavigateTo("/patientinfo/"+PatientID))" ButtonStyle="ButtonStyle.Secondary" Text="More Info" Style="width: 150px" />
-		<RadzenButton Click="@((args) => dialogService.Close(true))" ButtonStyle="ButtonStyle.Primary" Text="Close" Style="width: 120px" />
-	</div>
-</div>
+
 
 @code {
 	[Parameter] public string PatientID { get; set; }

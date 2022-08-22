@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
+@inject NavigationManager NavManager
+
 @if (_darkMode)
 {
 	<link rel="stylesheet" href="_content/Radzen.Blazor/css/dark-base.css" />
@@ -12,6 +14,7 @@
 
 	<RadzenNotification />
 	<RadzenDialog />
+	
 
 	<div class="sidebar">
 		<NavMenu />

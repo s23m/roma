@@ -4116,24 +4116,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\razzj\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\macsm\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\IFB399\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
+      "projectUniqueName": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
       "projectName": "FHIRBlazor",
-      "projectPath": "D:\\Code\\IFB399\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
-      "packagesPath": "C:\\Users\\razzj\\.nuget\\packages\\",
-      "outputPath": "D:\\Code\\IFB399\\roma\\FHIR-Blazor\\obj\\",
+      "projectPath": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
+      "packagesPath": "C:\\Users\\macsm\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\razzj\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\macsm\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
