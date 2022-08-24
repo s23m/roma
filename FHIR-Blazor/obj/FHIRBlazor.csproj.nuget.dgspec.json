@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\macsm\\Documents\\Git Repos\\FHIRBlazor\\FHIRBlazor.csproj": {}
+    "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj": {}
   },
   "projects": {
-    "C:\\Users\\macsm\\Documents\\Git Repos\\FHIRBlazor\\FHIRBlazor.csproj": {
+    "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\macsm\\Documents\\Git Repos\\FHIRBlazor\\FHIRBlazor.csproj",
+        "projectUniqueName": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
         "projectName": "FHIRBlazor",
-        "projectPath": "C:\\Users\\macsm\\Documents\\Git Repos\\FHIRBlazor\\FHIRBlazor.csproj",
+        "projectPath": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
         "packagesPath": "C:\\Users\\macsm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\macsm\\Documents\\Git Repos\\FHIRBlazor\\obj\\",
+        "outputPath": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\macsm\\AppData\\Roaming\\NuGet\\NuGet.Config",

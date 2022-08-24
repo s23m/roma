@@ -3,9 +3,9 @@
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
 
-
 @inject NotificationService NotificationService
 @inject DialogService DialogService
+
 
 <div class="my-3">
 	<h1 class="text-center font-bold text-4xl">Patient Name Search</h1>
@@ -43,10 +43,10 @@
 				AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
 				PagerHorizontalAlign="HorizontalAlign.Center">
 	<Columns>
-		<RadzenDataGridColumn TItem="Patient" Property="Name[0]" Title="Name" Sortable="false" Filterable="false">
+		<RadzenDataGridColumn TItem="Patient" Property="Name[0].Family" Title="Name">
 			<Template Context="patient">
 				@*<a href="@()">@patient.Name[0].ToString()</a>*@
-				<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align left; "  Class="m-1" Click=@(() => OpenOrder(patient.Id)) Text="@(patient.Name[0].ToString())" />
+				<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; "  Class="" Click=@(() => OpenOrder(patient.Id)) Text="@(patient.Name[0].ToString())" />
 					</Template>
 		</RadzenDataGridColumn>
 		<RadzenDataGridColumn TItem="Patient" Property="Gender" Title="Gender" />
@@ -65,7 +65,7 @@
 
 <div class="w-1/6 mt-3 relative right-0 ">
 	<label for="small-input" class="block mb-2 text-sm font-bold text-gray-900 dark:text-gray-300">Max number of results</label>
-	<input type="number" max=50 min=5 @bind-value=maxNumOfEntries id="small-input" class="borderless block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+	<input type="number" max=50 min=5 @bind-value=maxNumOfEntries id="small-input" class="borderless block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 </div>
 
 
@@ -91,12 +91,16 @@
 	private string inputPatientName = "";
 	private int maxNumOfEntries = 30;
 	private string errorMessage = "";
-
+	
 	//stores all the results
 	private Hl7.Fhir.Model.Patient[]? searchResults;
 	Bundle results = new Bundle();
 
-	private string serverURL = "http://hapi.fhir.org/baseR4";
+	private string serverURL = "https://server.fire.ly";
+
+	//alternate servers:
+	// https://r4.test.pyrohealth.net/fhir
+	// http://hapi.fhir.org/baseR4
 
 	void NameSearch()
 	{
@@ -107,7 +111,7 @@
 
 		//Defining search paramaters, not sure where to find documentation on these params.
 		var q = new SearchParams()
-				.Where("name:given=" + inputPatientName)
+				.Where("given=" + inputPatientName)
 				//.OrderBy("birthdate", SortOrder.Descending)
 				//.SummaryOnly().Include("Patient:organization")
 				.LimitTo(maxNumOfEntries);

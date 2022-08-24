@@ -78,3 +78,87 @@ C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\package-lock.json
 C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\package.json
 C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\Radzen.Blazor.dll
 C:\Users\macsm\Documents\Git Repos\FHIRBlazor\bin\Debug\net6.0\System.Linq.Dynamic.Core.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\appsettings.Development.json
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\appsettings.json
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\package-lock.json
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\package.json
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.staticwebassets.runtime.json
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.exe
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.deps.json
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.runtimeconfig.json
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.pdb
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Firely.Fhir.Packages.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.ElementModel.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.R4.Core.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.Serialization.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.Support.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.Support.Poco.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.FhirPath.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\Radzen.Blazor.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\SemVer.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\ICSharpCode.SharpZipLib.dll
+D:\Code\IFB399\roma\FHIR-Blazor\bin\Debug\net6.0\System.Linq.Dynamic.Core.dll
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.csproj.AssemblyReference.cache
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.AssemblyInfoInputs.cache
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.AssemblyInfo.cs
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.csproj.CoreCompileInputs.cache
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.MvcApplicationPartsAssemblyInfo.cache
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.RazorAssemblyInfo.cache
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.RazorAssemblyInfo.cs
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\staticwebassets.build.json
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\staticwebassets.development.json
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\bundle\FHIRBlazor.styles.css
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\projectbundle\FHIRBlazor.bundle.scp.css
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.csproj.CopyComplete
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.dll
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\refint\FHIRBlazor.dll
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.pdb
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.genruntimeconfig.cache
+D:\Code\IFB399\roma\FHIR-Blazor\obj\Debug\net6.0\ref\FHIRBlazor.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\appsettings.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\package-lock.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\package.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.staticwebassets.runtime.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.exe
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.deps.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.runtimeconfig.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\FHIRBlazor.pdb
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Firely.Fhir.Packages.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.ElementModel.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.R4.Core.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.Serialization.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.Support.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.Fhir.Support.Poco.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Hl7.FhirPath.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\Radzen.Blazor.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\SemVer.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\ICSharpCode.SharpZipLib.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\bin\Debug\net6.0\System.Linq.Dynamic.Core.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.csproj.AssemblyReference.cache
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.AssemblyInfoInputs.cache
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.AssemblyInfo.cs
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.csproj.CoreCompileInputs.cache
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.RazorAssemblyInfo.cache
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.RazorAssemblyInfo.cs
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\bundle\FHIRBlazor.styles.css
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\scopedcss\projectbundle\FHIRBlazor.bundle.scp.css
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.csproj.CopyComplete
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\refint\FHIRBlazor.dll
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.pdb
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\FHIRBlazor.genruntimeconfig.cache
+C:\Users\macsm\Documents\Git Repos\roma\FHIR-Blazor\obj\Debug\net6.0\ref\FHIRBlazor.dll
