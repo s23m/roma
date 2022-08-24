@@ -12,16 +12,37 @@ import '../stylesheets/PatientInfo.css';
 //     return patientData.meta.versionId;
 //   }
 // };
+const convertData = (patientData) => {
+  
+  // This communication part is clunky, to be improved
+  var communication = patientData.communication[0].language.coding[0].display
+  patientData.communication.slice(1).forEach(element => 
+    communication = communication + ', ' + element.language.coding[0].display)
+
+  const data = {
+    streetAddress: patientData.address[0].line.join(' '),
+    city: patientData.address[0].city,
+    postalCode: patientData.address[0].postalCode,
+    birthDate: patientData.birthDate,
+    communication: communication,
+  }
+  return data
+}
+
 
 const PatientInfo = () => {
-  const { id } = useParams();
-  const [patientData, setPatientData] = useState();
+  const { id } = useParams()
+  const [patientData, setPatientData] = useState()
 
-  // Render patient information
   useEffect(() => {
     getPatient(id)
-      .then((response) => setPatientData(response.meta.versionId));
-  });
+      .then((response) => {
+        console.log('1', response)
+        return convertData(response)})
+      .then(response => {
+        console.log('2', response)
+        setPatientData(response)})
+  }, [id]);
 
   return (
     <div>
@@ -31,10 +52,12 @@ const PatientInfo = () => {
           <th>Data type</th>
           <th>Data value</th>
         </tr>
-        <tr>
-          <td>Version ID</td>
-          <td>{patientData}</td>
-        </tr>
+        {Object.keys(patientData).map(key => (
+            <tr>
+              <td>{key}</td>
+              <td>{patientData[key]}</td>
+            </tr>
+        ))}
       </table>
     </div>
   );
