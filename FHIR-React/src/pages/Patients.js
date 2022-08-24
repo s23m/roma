@@ -21,11 +21,11 @@ const convertSearchResultToRowData = (searchResults) => {
       };
     } catch {
       return {
-        givenNames: '<Error>',
+        givenNames: '<Incompatible Object>',
         familyName: '<Check console>',
-        birthDate: 'n/a',
-        gender: 'n/a',
-        id: 'n/a',
+        birthDate: '',
+        gender: '',
+        id: '',
       };
     }
   });
