@@ -9,7 +9,7 @@ import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';
 
 const baseURL = 'patients';
-const convertSearchResultToRowData = (searchResults) => {
+const convertData = (searchResults) => {
   const rowData = searchResults.map((patient) => {
     try {
       return {
@@ -112,7 +112,7 @@ const Patients = () => {
     console.log(searchResults);  // For debugging
 
     if (searchResults.total !== 0) {
-      const rowData = convertSearchResultToRowData(searchResults.entry);
+      const rowData = convertData(searchResults.entry);
       setRowData(rowData);
       setNotification(`Total entries found: ${searchResults.total || searchResults.entry.length}`);
     } else {
