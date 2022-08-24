@@ -4,6 +4,7 @@
   color: white;
   height: 100%;
   min-height: 100vh;
+  font-size: larger;
 }
 
 .App-header {
@@ -17,6 +18,10 @@
   color: white;
 }
 
+.App h1 {
+  font-size: 40px;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -26,4 +31,6 @@
   min-height: 100vh;
 }
 
-
+.navbar {
+	margin-bottom: 1rem;
+}
