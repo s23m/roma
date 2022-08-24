@@ -80,7 +80,7 @@
 
 	protected override void OnInitialized()
 	{
-		FhirClient client = new FhirClient("http://hapi.fhir.org/baseR4");
+		FhirClient client = new FhirClient("https://server.fire.ly");
 		//Read the current version of a Patient resource
 		patient = client.Read<Patient>("Patient/" + PatientID);
 		Console.WriteLine(patient.Name[0]);

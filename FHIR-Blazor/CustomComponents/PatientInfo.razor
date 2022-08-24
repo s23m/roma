@@ -14,7 +14,8 @@
 		<RadzenCard Style="width: 100%; overflow: hidden;">
 			<h3 class="h5">Info</h3>
 			<div class="d-flex flex-row">
-				<RadzenImage Path="" Class="rounded-circle float-left mt-1 mr-3" Style="width: 90px; height: 90px;" />
+				@*Could use patient.photo to display the photo if available*@
+				<RadzenImage Path="https://cdn-icons-png.flaticon.com/512/149/149071.png" Class="rounded-circle float-left mt-1 mr-3" Style="width: 90px; height: 90px;" />
 				<div>
 					<div>Name</div>
 					<b>@patient.Name[0]</b>
@@ -33,7 +34,7 @@
 					<b>@patient.BirthDate</b>
 					<ErrorBoundary>
 						<ChildContent>
-							<div class="mt-3">@patient.Telecom[0].Use</div>
+							<div class="mt-3">@patient.Telecom.First().Use @patient.Telecom.First().System</div>
 							<b>@patient.Telecom[0].Value</b>
 						</ChildContent>
 						<ErrorContent>
@@ -52,21 +53,154 @@
 	<div class="col-md-12">
 		<RadzenCard>
 			<h3 class="h5">
-				All available patient detials for id: @PatientID 
-				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="@patient.Name[0].Family" Class="float-right" />
+				All available patient detials for id: <b><a href="@($"https://server.fire.ly/Patient/{patient.Id}")">@PatientID</a></b>
+				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Online" Class="float-right" />
 			</h3>
-			@*<RadzenDataGrid AllowFiltering="true" AllowPaging="true" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-				 ColumnWidth="200px" Class="mt-3">
-				<Columns>
 
-
-				<RadzenDataGridColumn Property="Quantity" Title="Quantity" />
-				<RadzenDataGridColumn Property="Order.OrderDate" Title="Order Date" />
-
-
-				</Columns>
-				</RadzenDataGrid>*@
 		</RadzenCard>
+
+		<RadzenTabs TabPosition="@tabPosition" style=" margin: 20px auto;" RenderMode="TabRenderMode.Client">
+			<Tabs>
+
+				@*//more general info
+
+					Things to include:
+					patient.communication
+						this shows languages and preferred language
+					patient.maritalstatus
+						self explanatory
+					patient.generalPractitioner
+						is a reference to their nominated primary care provider
+					patient.link
+						link to another patient resource of note
+					patient.deceased
+						Display if they are. This is an optional input
+				*@
+
+				<RadzenTabsItem Text="General">
+					<RadzenCard class="m-3">
+						<h3 class="h5"><b>Other Names</b></h3>
+						<div class="row">
+							<div class="col-md-4">
+								<div>Family</div>
+								<b>@(patient.Name[0].Family)</b>
+								<div class="mt-3">Given</div>
+								@foreach (var name in patient.Name[0].Given)
+								{
+									<p><b>@(name)</b></p>
+								}
+							</div>
+
+						</div>
+					</RadzenCard>
+
+				</RadzenTabsItem>
+
+
+
+				@*Showing patient address
+					This has been verified on patient named
+					Jack M Sprat, id: d338df....
+
+					Could change this to contact,
+					and loop through all telecom inputs aswell
+					or use a dataTable
+				*@
+				<RadzenTabsItem Text="Address">
+					@if (patient.Address.Count > 0)
+					{
+						<ErrorBoundary>
+							<ChildContent>
+
+								<RadzenCard class="m-3">
+									<h3 class="h5"><b>@patient.Address[0].Use Address</b></h3>
+									<div class="row">
+										<div class="col-md-4">
+											<div>Country</div>
+											<b>@(patient.Address[0].Country)</b>
+											<div class="mt-3">State</div>
+											<b>@(patient.Address[0].State)</b>
+										</div>
+										<div class="col-md-4">
+											<div>City</div>
+											<b>@(patient.Address[0].City)</b>
+											<div class="mt-3">Line</div>
+											<b>@(patient.Address[0].Line.First()) </b>
+										</div>
+										<div class="col-md-4">
+											<div>PostCode</div>
+											<b>@(patient.Address[0].PostalCode)</b>
+										</div>
+									</div>
+								</RadzenCard>
+							</ChildContent>
+							<ErrorContent>
+
+							</ErrorContent>
+
+						</ErrorBoundary>
+					}
+					else
+					{
+						<RadzenCard class="m-3">
+							<h3 class="h5"><b>No Address information</b></h3>
+
+						</RadzenCard>
+
+					}
+				</RadzenTabsItem>
+
+
+
+				@*display contact persons info
+
+					This needs to be checked, as i have not found a patient 
+					in the server with Emergency Contact data. If it works it
+					should loop through all available contacts and show them. 
+				*@
+				<RadzenTabsItem Text="Emergency Contact">
+					@if (patient.Contact.Count > 0)
+					{
+						@foreach (var contact in patient.Contact)
+						{
+							<RadzenCard class="m-3">
+								<h3 class="h5"><b>Emergency Contact Information</b></h3>
+								<div class="row">
+									<div class="col-md-4">
+										<div>Relationship</div>
+										<b>@(contact.Relationship.First().Text)</b>
+										<div class="mt-3">Name</div>
+										<b>@(contact.Name.First())</b>
+									</div>
+									<div class="col-md-4">
+										<div class="mt-3">Gender</div>
+										<b>@(contact.Gender) </b>
+										<div>@contact.Telecom.First().Use @contact.Telecom.First().System</div>
+										<b>@(contact.Telecom.First().Value)</b>
+									</div>
+									<div class="col-md-4">
+										<div>Address</div>
+										<b>@patient.Address.First().City, @patient.Address.First().Line.First()</b>
+									</div>
+								</div>
+							</RadzenCard>
+						}
+					}
+					else
+					{
+						<RadzenCard class="m-3">
+							<h3 class="h5"><b>No Emergency Contact Information</b></h3>
+						</RadzenCard>
+					}
+				</RadzenTabsItem>
+
+
+
+
+
+			</Tabs>
+
+		</RadzenTabs>
 	</div>
 </div>
 
@@ -76,9 +210,13 @@
 	private Hl7.Fhir.Model.HumanName patientName;
 	private Patient patient;
 
+	TabPosition tabPosition = TabPosition.Top;
+	private string serverURL = "https://server.fire.ly";
+
 	protected override void OnInitialized()
 	{
-		FhirClient client = new FhirClient("http://hapi.fhir.org/baseR4");
+
+		FhirClient client = new FhirClient(serverURL);
 		//Read the current version of a Patient resource
 		patient = client.Read<Patient>("Patient/" + PatientID);
 		Console.WriteLine(patient.Name[0]);
