@@ -1,3 +1,9 @@
+h3 {
+    margin-top: 1em;
+    padding-left: 2em;
+    text-align: left;
+}
+
 .PatientInfo-table, th, td {
     margin: auto;
     font-size: large;
@@ -5,4 +11,12 @@
     width: 30vw;
     border: 2px solid antiquewhite;
     border-collapse: collapse;
+}
+
+.ag-row .ag-cell {
+    text-align: left;
+}
+
+.ag-header-cell-label {
+    justify-content: left;
 }
