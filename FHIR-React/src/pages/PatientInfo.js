@@ -27,17 +27,13 @@ const convertData = (patientData) => {
 
 const PatientInfo = () => {
   const { id } = useParams();
-  const [patientData, setPatientData] = useState();
+  const [patientData, setPatientData] = useState([]);
 
   useEffect(() => {
     getPatient(id)
       .then((response) => {
-        console.log('1', response);
-        return convertData(response);
-      })
-      .then((response) => {
-        console.log('2', response);
-        setPatientData(response);
+        const convertedData = convertData(response)
+        setPatientData(convertedData)
       });
   }, [id]);
 

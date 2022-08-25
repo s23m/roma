@@ -1,4 +1,8 @@
-.PatientInfo-table {
+.PatientInfo-table, th, td {
     margin: auto;
     font-size: large;
+    text-align: left;
+    width: 30vw;
+    border: 2px solid antiquewhite;
+    border-collapse: collapse;
 }
