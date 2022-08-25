@@ -6,18 +6,14 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 
-// const convertPatientDataToHtml = (patientData) => {
-//   console.log(patientData);
-//   if (patientData.meta.versionId) {
-//     return patientData.meta.versionId;
-//   }
-// };
 const convertData = (patientData) => {
-  
   // This communication part is clunky, to be improved
-  var communication = patientData.communication[0].language.coding[0].display
-  patientData.communication.slice(1).forEach(element => 
-    communication = communication + ', ' + element.language.coding[0].display)
+  var communication = patientData.communication[0].language.coding[0].display;
+  patientData.communication
+    .slice(1)
+    .forEach(
+      (element) => (communication = communication + ', ' + element.language.coding[0].display)
+    );
 
   const data = {
     streetAddress: patientData.address[0].line.join(' '),
@@ -25,23 +21,24 @@ const convertData = (patientData) => {
     postalCode: patientData.address[0].postalCode,
     birthDate: patientData.birthDate,
     communication: communication,
-  }
-  return data
-}
-
+  };
+  return data;
+};
 
 const PatientInfo = () => {
-  const { id } = useParams()
-  const [patientData, setPatientData] = useState()
+  const { id } = useParams();
+  const [patientData, setPatientData] = useState();
 
   useEffect(() => {
     getPatient(id)
       .then((response) => {
-        console.log('1', response)
-        return convertData(response)})
-      .then(response => {
-        console.log('2', response)
-        setPatientData(response)})
+        console.log('1', response);
+        return convertData(response);
+      })
+      .then((response) => {
+        console.log('2', response);
+        setPatientData(response);
+      });
   }, [id]);
 
   return (
@@ -52,11 +49,11 @@ const PatientInfo = () => {
           <th>Data type</th>
           <th>Data value</th>
         </tr>
-        {Object.keys(patientData).map(key => (
-            <tr>
-              <td>{key}</td>
-              <td>{patientData[key]}</td>
-            </tr>
+        {Object.keys(patientData).map((key) => (
+          <tr>
+            <td>{key}</td>
+            <td>{patientData[key]}</td>
+          </tr>
         ))}
       </table>
     </div>
