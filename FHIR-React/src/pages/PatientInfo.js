@@ -6,31 +6,41 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 
+/**
+ * A function that checks the validity of the value before passing to Client side. 
+ * It also handles the data differently if `dataType` is given. 
+ * @param {*} data 
+ * @param {string} dataType 
+ * @returns dataValue
+ */ 
+const getValue = (data, dataType=undefined) => {
+  console.log(data)
+  if (dataType === 'communication' && data !== undefined) {
+    var communication = [];
+    data.forEach(
+      (element) => (communication = communication.concat([element.language.coding[0].display])));
+    return JSON.stringify(communication)
+  }
+  if (data !== undefined) {
+    return data
+  }
+  return 'n/a'
+}
+
 const convertData = (patientData) => {
-
-  var communication = [];
-  patientData.communication
-    .forEach(
-      (element) => (communication = communication.concat([element.language.coding[0].display]))
-    );
-
-  const data = [
-    { dataType: 'name', dataValue: JSON.stringify(patientData.name) || 'n/a'},
-    { dataType: 'resourceType', dataValue: patientData.resourceType || 'n/a' },
-    { dataType: 'streetAddress', dataValue: patientData.address[0].line.join(' ') || 'n/a' },
-    { dataType: 'city', dataValue: patientData.address[0].city || 'n/a' },
-    { dataType: 'postalCode', dataValue: patientData.address[0].postalCode || 'n/a' },
-    { dataType: 'birthDate', dataValue: patientData.birthDate || 'n/a' },
-    { dataType: 'communication', dataValue: communication || 'n/a' },
-    { dataType: 'gender', dataValue: patientData.gender || 'n/a' },
-    { dataType: 'identifier', dataValue: JSON.stringify(patientData.identifier) || 'n/a' },
-    { dataType: 'lastUpdated', dataValue: patientData.meta.lastUpdated || 'n/a' },
-    // { dataType: 'security', dataValue: patientData.meta.security[0].display || 'n/a' },
-    { dataType: 'security', dataValue: patientData.meta.security[0].display || 'n/a' },
-    { dataType: 'versionId', dataValue: patientData.meta.versionId || 'n/a' },
-    { dataType: 'telecom', dataValue: JSON.stringify(patientData.telecom) || 'n/a' },
-  ];
-  return data;
+  return [
+    { dataType: 'name', dataValue: getValue(JSON.stringify(patientData.name)) },
+    { dataType: 'resourceType', dataValue: getValue(patientData.resourceType) },
+    { dataType: 'streetAddress', dataValue: getValue(JSON.stringify(patientData.address)) },
+    { dataType: 'birthDate', dataValue:  getValue(patientData.birthDate) },
+    { dataType: 'communication', dataValue: getValue(patientData.communication, 'communication') },
+    { dataType: 'gender', dataValue: getValue(patientData.gender) },
+    { dataType: 'identifier', dataValue: getValue(JSON.stringify(patientData.identifier)) },
+    { dataType: 'lastUpdated', dataValue: getValue(patientData.meta.lastUpdated) },
+    { dataType: 'security', dataValue: getValue(patientData.meta.security) },
+    { dataType: 'versionId', dataValue: getValue(patientData.meta.versionId) },
+    { dataType: 'telecom', dataValue: getValue(JSON.stringify(patientData.telecom)) },
+  ];  
 };
 
 const PatientInfo = () => {
