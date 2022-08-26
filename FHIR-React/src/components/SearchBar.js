@@ -16,7 +16,7 @@ export default function SearchBar({ placeholder, onSubmit: onSubmitHandler, opti
       <InputGroup>
         <Input placeholder={placeholder} onChange={(e) => setInputValue(e.target.value)} />
 
-        <label>Search by: </label>
+        <label> Search by: </label>
         <Input 
           type="select"
           value={selectedOption} 

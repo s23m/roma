@@ -32,7 +32,7 @@ const convertData = (searchResults) => {
   return rowData;
 };
 
-const createDetailedPatientPageHyperlink = (params) => {
+const createHyperlinkToPatientPage = (params) => {
   return (
     <a href={`${baseURL}/${params.value}`} rel="noreferrer" target="_blank">
       {' '}
@@ -95,7 +95,7 @@ const Patients = () => {
     {
       headerName: 'ID',
       field: 'id',
-      cellRenderer: (params) => createDetailedPatientPageHyperlink(params),
+      cellRenderer: (params) => createHyperlinkToPatientPage(params),
     },
   ];
   const [rowData, setRowData] = useState([
