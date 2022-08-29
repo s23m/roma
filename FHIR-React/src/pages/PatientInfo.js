@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPatient } from '../apis/patient';
+import AllergyIntolerance from '../components/AllergyIntolerance';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
@@ -14,7 +15,6 @@ import '../stylesheets/PatientInfo.css';
  * @returns dataValue
  */ 
 const getValue = (data, dataType=undefined) => {
-  console.log(data)
   if (dataType === 'communication' && data !== undefined) {
     var communication = [];
     data.forEach(
@@ -22,24 +22,30 @@ const getValue = (data, dataType=undefined) => {
     return JSON.stringify(communication)
   }
   if (data !== undefined) {
+    if (typeof data === 'object') return JSON.stringify(data)
     return data
   }
   return 'n/a'
 }
 
 const convertData = (patientData) => {
+  // See patient data structure here: https://www.hl7.org/fhir/patient.html#patient
   return [
-    { dataType: 'name', dataValue: getValue(JSON.stringify(patientData.name)) },
-    { dataType: 'resourceType', dataValue: getValue(patientData.resourceType) },
-    { dataType: 'streetAddress', dataValue: getValue(JSON.stringify(patientData.address)) },
-    { dataType: 'birthDate', dataValue:  getValue(patientData.birthDate) },
-    { dataType: 'communication', dataValue: getValue(patientData.communication, 'communication') },
+    { dataType: 'identifier', dataValue: getValue(patientData.identifier) },
+    { dataType: 'active', dataValue: getValue(patientData.active) },
+    { dataType: 'name', dataValue: getValue(patientData.name) },
+    { dataType: 'telecom', dataValue: getValue(patientData.telecom) },
     { dataType: 'gender', dataValue: getValue(patientData.gender) },
-    { dataType: 'identifier', dataValue: getValue(JSON.stringify(patientData.identifier)) },
-    { dataType: 'lastUpdated', dataValue: getValue(patientData.meta.lastUpdated) },
-    { dataType: 'security', dataValue: getValue(patientData.meta.security) },
-    { dataType: 'versionId', dataValue: getValue(patientData.meta.versionId) },
-    { dataType: 'telecom', dataValue: getValue(JSON.stringify(patientData.telecom)) },
+    { dataType: 'birthDate', dataValue:  getValue(patientData.birthDate) },
+    { dataType: 'deceased', dataValue:  getValue(patientData.deceased) },
+    { dataType: 'address', dataValue: getValue(patientData.address) },
+    { dataType: 'maritalStatus', dataValue:  getValue(patientData.maritalStatus) },
+    { dataType: 'multipleBirth', dataValue:  getValue(patientData.multipleBirth) },
+    { dataType: 'photo', dataValue:  getValue(patientData.photo) },
+    { dataType: 'contact', dataValue:  getValue(patientData.contact) },
+    { dataType: 'communication', dataValue: getValue(patientData.communication, 'communication') },
+    // { dataType: 'meta', dataValue: getValue(JSON.stringify(patientData.meta)) }, // Do we need to display meta?
+    { dataType: 'resourceType', dataValue: getValue(patientData.resourceType) },
   ];  
 };
 
@@ -64,7 +70,7 @@ const PatientInfo = () => {
 
   useEffect(() => {
     getPatient(id).then((response) => {
-      console.log(response);
+      console.log('Patient Response:', response);
       const data = convertData(response);
       setRowData(data);
     });
@@ -85,6 +91,9 @@ const PatientInfo = () => {
           }}
         />
       </div>
+
+      <h4>Allergy Intolerance</h4>
+      <AllergyIntolerance patientID={123}/>
     </div>
   );
 };

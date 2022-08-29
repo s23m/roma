@@ -15,6 +15,5 @@ export const searchPatient = async (queryType, queryValue) => {
 export const getPatient = async (id) => {
   const fullUrl = `${PATIENT_URL}/${id}`;
   const response = await axios.get(fullUrl);
-  // responseHandler( response.data )
   return response.data;
 };

@@ -4,6 +4,12 @@ h3 {
     text-align: left;
 }
 
+h4 {
+    margin-top: 1em;
+    padding-left: 2.3em;
+    text-align: left;
+}
+
 .PatientInfo-table, th, td {
     margin: auto;
     font-size: large;
