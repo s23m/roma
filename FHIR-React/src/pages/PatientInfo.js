@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPatient } from '../apis/patient';
-import AllergyIntolerance from '../components/AllergyIntolerance';
 import { AgGridReact } from 'ag-grid-react';
+import AllergyIntolerance from '../components/AllergyIntolerance';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
@@ -53,7 +53,7 @@ const PatientInfo = () => {
   const { id } = useParams();
   // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '70vh', width: '60vw' }), []);
+  const gridStyle = useMemo(() => ({ height: '50vh', width: '60vw' }), []);
   const defaultColDef = { 
     filter: true, 
     resizable: true,
@@ -93,7 +93,7 @@ const PatientInfo = () => {
       </div>
 
       <h4>Allergy Intolerance</h4>
-      <AllergyIntolerance patientID={123}/>
+      <AllergyIntolerance patientID={id}/>
     </div>
   );
 };
