@@ -2,8 +2,8 @@
 import React, { useState, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { searchPatient } from '../apis/patient';
-import SearchBar from '../components/SearchBar';
 import { Spinner } from 'reactstrap';
+import SearchBar from '../components/SearchBar';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';

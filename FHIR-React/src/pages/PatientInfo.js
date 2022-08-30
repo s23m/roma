@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPatient } from '../apis/patient';
 import { AgGridReact } from 'ag-grid-react';
+import AllergyIntolerance from '../components/AllergyIntolerance';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
@@ -11,10 +12,9 @@ import '../stylesheets/PatientInfo.css';
  * It also handles the data differently if `dataType` is given. 
  * @param {*} data 
  * @param {string} dataType 
- * @returns dataValue
+ * @returns value
  */ 
 const getValue = (data, dataType=undefined) => {
-  console.log(data)
   if (dataType === 'communication' && data !== undefined) {
     var communication = [];
     data.forEach(
@@ -22,24 +22,30 @@ const getValue = (data, dataType=undefined) => {
     return JSON.stringify(communication)
   }
   if (data !== undefined) {
+    if (typeof data === 'object') return JSON.stringify(data)
     return data
   }
   return 'n/a'
 }
 
 const convertData = (patientData) => {
+  // See patient data structure here: https://www.hl7.org/fhir/patient.html#patient
   return [
-    { dataType: 'name', dataValue: getValue(JSON.stringify(patientData.name)) },
-    { dataType: 'resourceType', dataValue: getValue(patientData.resourceType) },
-    { dataType: 'streetAddress', dataValue: getValue(JSON.stringify(patientData.address)) },
-    { dataType: 'birthDate', dataValue:  getValue(patientData.birthDate) },
-    { dataType: 'communication', dataValue: getValue(patientData.communication, 'communication') },
-    { dataType: 'gender', dataValue: getValue(patientData.gender) },
-    { dataType: 'identifier', dataValue: getValue(JSON.stringify(patientData.identifier)) },
-    { dataType: 'lastUpdated', dataValue: getValue(patientData.meta.lastUpdated) },
-    { dataType: 'security', dataValue: getValue(patientData.meta.security) },
-    { dataType: 'versionId', dataValue: getValue(patientData.meta.versionId) },
-    { dataType: 'telecom', dataValue: getValue(JSON.stringify(patientData.telecom)) },
+    { dataType: 'identifier', value: getValue(patientData.identifier) },
+    { dataType: 'active', value: getValue(patientData.active) },
+    { dataType: 'name', value: getValue(patientData.name) },
+    { dataType: 'telecom', value: getValue(patientData.telecom) },
+    { dataType: 'gender', value: getValue(patientData.gender) },
+    { dataType: 'birthDate', value:  getValue(patientData.birthDate) },
+    { dataType: 'deceased', value:  getValue(patientData.deceased) },
+    { dataType: 'address', value: getValue(patientData.address) },
+    { dataType: 'maritalStatus', value:  getValue(patientData.maritalStatus) },
+    { dataType: 'multipleBirth', value:  getValue(patientData.multipleBirth) },
+    { dataType: 'photo', value:  getValue(patientData.photo) },
+    { dataType: 'contact', value:  getValue(patientData.contact) },
+    { dataType: 'communication', value: getValue(patientData.communication, 'communication') },
+    // { dataType: 'meta', value: getValue(JSON.stringify(patientData.meta)) }, // Do we need to display meta?
+    { dataType: 'resourceType', value: getValue(patientData.resourceType) },
   ];  
 };
 
@@ -47,7 +53,7 @@ const PatientInfo = () => {
   const { id } = useParams();
   // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '70vh', width: '60vw' }), []);
+  const gridStyle = useMemo(() => ({ height: '60vh', width: '60vw' }), []);
   const defaultColDef = { 
     filter: true, 
     resizable: true,
@@ -58,13 +64,13 @@ const PatientInfo = () => {
   };
   const columnDefs = [
     { headerName: 'Data type', field: 'dataType', maxWidth: 200},
-    { headerName: 'Data value', field: 'dataValue' },
+    { headerName: 'Value', field: 'value' },
   ];
 
 
   useEffect(() => {
     getPatient(id).then((response) => {
-      console.log(response);
+      console.log('Patient Response:', response);
       const data = convertData(response);
       setRowData(data);
     });
@@ -85,6 +91,9 @@ const PatientInfo = () => {
           }}
         />
       </div>
+
+      <h4>Allergy Intolerance</h4>
+      <AllergyIntolerance patientID={id}/>
     </div>
   );
 };

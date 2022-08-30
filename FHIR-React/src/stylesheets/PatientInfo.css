@@ -1,6 +1,12 @@
 h3 {
-    margin-top: 1em;
+    padding-top: 10px;
     padding-left: 2em;
+    text-align: left;
+}
+
+h4 {
+    padding-top: 10px;
+    padding-left: 4%;
     text-align: left;
 }
 
