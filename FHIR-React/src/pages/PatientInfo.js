@@ -12,7 +12,7 @@ import '../stylesheets/PatientInfo.css';
  * It also handles the data differently if `dataType` is given. 
  * @param {*} data 
  * @param {string} dataType 
- * @returns dataValue
+ * @returns value
  */ 
 const getValue = (data, dataType=undefined) => {
   if (dataType === 'communication' && data !== undefined) {
@@ -31,21 +31,21 @@ const getValue = (data, dataType=undefined) => {
 const convertData = (patientData) => {
   // See patient data structure here: https://www.hl7.org/fhir/patient.html#patient
   return [
-    { dataType: 'identifier', dataValue: getValue(patientData.identifier) },
-    { dataType: 'active', dataValue: getValue(patientData.active) },
-    { dataType: 'name', dataValue: getValue(patientData.name) },
-    { dataType: 'telecom', dataValue: getValue(patientData.telecom) },
-    { dataType: 'gender', dataValue: getValue(patientData.gender) },
-    { dataType: 'birthDate', dataValue:  getValue(patientData.birthDate) },
-    { dataType: 'deceased', dataValue:  getValue(patientData.deceased) },
-    { dataType: 'address', dataValue: getValue(patientData.address) },
-    { dataType: 'maritalStatus', dataValue:  getValue(patientData.maritalStatus) },
-    { dataType: 'multipleBirth', dataValue:  getValue(patientData.multipleBirth) },
-    { dataType: 'photo', dataValue:  getValue(patientData.photo) },
-    { dataType: 'contact', dataValue:  getValue(patientData.contact) },
-    { dataType: 'communication', dataValue: getValue(patientData.communication, 'communication') },
-    // { dataType: 'meta', dataValue: getValue(JSON.stringify(patientData.meta)) }, // Do we need to display meta?
-    { dataType: 'resourceType', dataValue: getValue(patientData.resourceType) },
+    { dataType: 'identifier', value: getValue(patientData.identifier) },
+    { dataType: 'active', value: getValue(patientData.active) },
+    { dataType: 'name', value: getValue(patientData.name) },
+    { dataType: 'telecom', value: getValue(patientData.telecom) },
+    { dataType: 'gender', value: getValue(patientData.gender) },
+    { dataType: 'birthDate', value:  getValue(patientData.birthDate) },
+    { dataType: 'deceased', value:  getValue(patientData.deceased) },
+    { dataType: 'address', value: getValue(patientData.address) },
+    { dataType: 'maritalStatus', value:  getValue(patientData.maritalStatus) },
+    { dataType: 'multipleBirth', value:  getValue(patientData.multipleBirth) },
+    { dataType: 'photo', value:  getValue(patientData.photo) },
+    { dataType: 'contact', value:  getValue(patientData.contact) },
+    { dataType: 'communication', value: getValue(patientData.communication, 'communication') },
+    // { dataType: 'meta', value: getValue(JSON.stringify(patientData.meta)) }, // Do we need to display meta?
+    { dataType: 'resourceType', value: getValue(patientData.resourceType) },
   ];  
 };
 
@@ -53,7 +53,7 @@ const PatientInfo = () => {
   const { id } = useParams();
   // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '50vh', width: '60vw' }), []);
+  const gridStyle = useMemo(() => ({ height: '60vh', width: '60vw' }), []);
   const defaultColDef = { 
     filter: true, 
     resizable: true,
@@ -64,7 +64,7 @@ const PatientInfo = () => {
   };
   const columnDefs = [
     { headerName: 'Data type', field: 'dataType', maxWidth: 200},
-    { headerName: 'Data value', field: 'dataValue' },
+    { headerName: 'Value', field: 'value' },
   ];
 
 
