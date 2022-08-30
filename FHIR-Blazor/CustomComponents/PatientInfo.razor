@@ -53,7 +53,7 @@
 	<div class="col-md-12">
 		<RadzenCard>
 			<h3 class="h5">
-				All available patient detials for id: <b><a href="@($"https://server.fire.ly/Patient/{patient.Id}")">@PatientID</a></b>
+				All available patient detials for id: <b><a href="@($"http://hapi.fhir.org/baseR4/Patient/{patient.Id}")">@PatientID</a></b>
 				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Online" Class="float-right" />
 			</h3>
 
@@ -211,7 +211,7 @@
 	private Patient patient;
 
 	TabPosition tabPosition = TabPosition.Top;
-	private string serverURL = "https://server.fire.ly";
+	private string serverURL = "http://hapi.fhir.org/baseR4";
 
 	protected override void OnInitialized()
 	{
