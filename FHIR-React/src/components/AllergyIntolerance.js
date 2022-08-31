@@ -5,7 +5,6 @@ import { extractContent } from '../pages/PatientInfo';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
-import '../stylesheets/PatientInfo.css';
 
 
 export const extractEntryArray = (entry) => {
