@@ -6,6 +6,7 @@ import AllergyIntolerance from '../components/AllergyIntolerance';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
+import MedicationStatement from '../components/MedicationStatement';
 
 /**
  * Extract the keys & values of the object and return it in a string in a tree-like structure.
@@ -13,7 +14,8 @@ import '../stylesheets/PatientInfo.css';
  * @param {string} indent
  * @returns content
  */
-const extractContent = (object, indent = '', content = '') => {
+export const extractContent = (object, indent = '', content = '') => {
+  if (object === undefined) return 'undefined'
   if (typeof object === 'object') {
     Object.entries(object).forEach(([key, value]) => {
       // To avoid printing numbers as keys when object is an Array
@@ -40,42 +42,24 @@ const extractContent = (object, indent = '', content = '') => {
 };
 
 
-/**
- * A function that checks the validity of the value before passing to Client side.
- * It also handles the data differently if `dataType` is given.
- * @param {*} data
- * @param {string} dataType
- * @returns value
- */
-const getValue = (data, dataType = undefined) => {
-  if (data !== undefined) {
-    if (typeof data === 'object') {
-      console.log(extractContent(data));
-      return extractContent(data);
-    }
-    return data;
-  }
-  return 'n/a';
-};
-
 const convertData = (patientData) => {
   // See patient data structure here: https://www.hl7.org/fhir/patient.html#patient
   return [
-    { dataType: 'identifier', value: getValue(patientData.identifier) },
-    { dataType: 'active', value: getValue(patientData.active) },
-    { dataType: 'name', value: getValue(patientData.name) },
-    { dataType: 'telecom', value: getValue(patientData.telecom) },
-    { dataType: 'gender', value: getValue(patientData.gender) },
-    { dataType: 'birthDate', value: getValue(patientData.birthDate) },
-    { dataType: 'deceased', value: getValue(patientData.deceased) },
-    { dataType: 'address', value: getValue(patientData.address) },
-    { dataType: 'maritalStatus', value: getValue(patientData.maritalStatus) },
-    { dataType: 'multipleBirth', value: getValue(patientData.multipleBirth) },
-    { dataType: 'photo', value: getValue(patientData.photo) },
-    { dataType: 'contact', value: getValue(patientData.contact) },
-    { dataType: 'communication', value: getValue(patientData.communication) },
-    // { dataType: 'meta', value: getValue(JSON.stringify(patientData.meta)) }, // Do we need to display meta?
-    { dataType: 'resourceType', value: getValue(patientData.resourceType) },
+    { dataType: 'identifier', value: extractContent(patientData.identifier) },
+    { dataType: 'active', value: extractContent(patientData.active) },
+    { dataType: 'name', value: extractContent(patientData.name) },
+    { dataType: 'telecom', value: extractContent(patientData.telecom) },
+    { dataType: 'gender', value: extractContent(patientData.gender) },
+    { dataType: 'birthDate', value: extractContent(patientData.birthDate) },
+    { dataType: 'deceased', value: extractContent(patientData.deceased) },
+    { dataType: 'address', value: extractContent(patientData.address) },
+    { dataType: 'maritalStatus', value: extractContent(patientData.maritalStatus) },
+    { dataType: 'multipleBirth', value: extractContent(patientData.multipleBirth) },
+    { dataType: 'photo', value: extractContent(patientData.photo) },
+    { dataType: 'contact', value: extractContent(patientData.contact) },
+    { dataType: 'communication', value: extractContent(patientData.communication) },
+    { dataType: 'resourceType', value: extractContent(patientData.resourceType) },
+    { dataType: 'meta', value: extractContent(patientData.meta) },
   ];
 };
 
@@ -121,7 +105,9 @@ const PatientInfo = () => {
       </div>
 
       <h4>Allergy Intolerance</h4>
-      <AllergyIntolerance patientID={id} />
+      <AllergyIntolerance patientId={id} />
+      <h4>Medication Statement</h4>
+      <MedicationStatement patientId={id} />
     </div>
   );
 };
