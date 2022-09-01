@@ -7,6 +7,7 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 import MedicationStatement from '../components/MedicationStatement';
+import ImmunizationRecommendation from '../components/ImmunizationRecommendation';
 
 /**
  * Extract the keys & values of the object and return it in a string in a tree-like structure.
@@ -108,6 +109,8 @@ const PatientInfo = () => {
       <AllergyIntolerance patientId={id} />
       <h4>Medication Statement</h4>
       <MedicationStatement patientId={id} />
+      <h4>Immunization Recommendation</h4>
+      <ImmunizationRecommendation patientId={id} />
     </div>
   );
 };

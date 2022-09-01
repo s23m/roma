@@ -27,13 +27,13 @@ const convertData = (response) => {
     { dataType: 'Meta', value: extractContent(response.meta) },
     { dataType: 'Resource Type', value: extractContent(response.resourceType) },
     { dataType: 'Type', value: extractContent(response.type) },
-  ].concat(extractEntryArray(response.entry));  
+  ].concat(extractEntryArray(response.entry));
 };
 
 export default function AllergyIntolerance({patientId}) {
   // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '30vh', width: '60vw' }), []);
+  const gridStyle = useMemo(() => ({ height: '50vh', width: '60vw' }), []);
   const defaultColDef = { 
     filter: true, 
     resizable: true,
@@ -47,6 +47,7 @@ export default function AllergyIntolerance({patientId}) {
     { headerName: 'Value', field: 'value' },
   ];
 
+  // Get and update patient's AllergyIntolerance data
   useEffect(() => {
     getAllergyIntolerance(patientId).then((response) => {
       console.log('AllergyIntolerance Response:', response);

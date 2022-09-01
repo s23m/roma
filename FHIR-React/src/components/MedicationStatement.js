@@ -8,7 +8,7 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 
 
-
+// patient ID to test: 6968973
 
 const convertData = (response) => {
   return [
@@ -21,7 +21,6 @@ const convertData = (response) => {
   ].concat(extractEntryArray(response.entry));
 };
 
-// patient ID to test: 6968973
 export default function MedicationStatement({ patientId }) {
   // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
@@ -39,6 +38,7 @@ export default function MedicationStatement({ patientId }) {
     { headerName: 'Value', field: 'value' },
   ];
 
+  // Get and update patient's MedicationStatement data
   useEffect(() => {
     // ------------------------------------
     getMedicationStatement(patientId).then((response) => {
