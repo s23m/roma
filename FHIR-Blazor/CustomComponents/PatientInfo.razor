@@ -194,6 +194,18 @@
 					}
 				</RadzenTabsItem>
 
+				<RadzenTabsItem Text="Known Allergies">
+					<RadzenDataGrid TItem="AllergyIntolerance" PageSize="15" AllowPaging="true"
+				AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
+				PagerHorizontalAlign="HorizontalAlign.Center">
+						<Columns>
+							<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Allergy" Title="Allergy" />
+							<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Severity" Title="Severity" />
+							<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction" />
+
+						</Columns>
+					</RadzenDataGrid>
+				</RadzenTabsItem>
 
 
 
@@ -209,6 +221,7 @@
 	[Parameter] public string PatientID { get; set; }
 	private Hl7.Fhir.Model.HumanName patientName;
 	private Patient patient;
+	private AllergyIntolerance patientAllergy;
 
 	TabPosition tabPosition = TabPosition.Top;
 	private string serverURL = "http://hapi.fhir.org/baseR4";
@@ -221,6 +234,13 @@
 		patient = client.Read<Patient>("Patient/" + PatientID);
 		Console.WriteLine(patient.Name[0]);
 		patientName = patient.Name[0];
+
+		//Read the patients current allergies
+		patientAllergy = client.Read<AllergyIntolerance>("AllergyIntolerance/" + 2830868);
+		Console.WriteLine(patientAllergy.CategoryElement[0].Value);
+		Console.WriteLine(patientAllergy.Criticality);
+		Console.WriteLine(patientAllergy.Code.Coding[0].Display);
+		Console.WriteLine(patientAllergy.Reaction[0].Manifestation[0].Coding[0].Display);
 	}
 }
 
