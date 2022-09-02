@@ -1,6 +1,6 @@
 import Patients from '../pages/Patients';
 import PatientInfo from '../pages/PatientInfo';
-import SiteNavBar from '../components/SiteNavBar';
+import NavBar from '../components/NavBar';
 import { Container } from 'reactstrap';
 import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
 import '../stylesheets/App.css';
@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   const AppConstantElements = (
     <div className="App">
-      <SiteNavBar />
+      <NavBar />
       <Container>
         <h1>ROMA FHIR</h1>
         <Outlet></Outlet>

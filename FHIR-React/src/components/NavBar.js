@@ -1,5 +1,6 @@
 import { Navbar, Collapse, Nav, NavItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import '../stylesheets/NavBar.css';
 
 const SiteNavBar = () => (
   <Navbar color="dark" container="md" dark expand>
