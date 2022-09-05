@@ -26,6 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: cd FHIR-React
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
@@ -36,6 +37,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: cypress-io/github-action@v2
         with:
+          run: cd FHIR-React
           start: npm start
           wait-on: "http://localhost:5000"
           browser: chrome
