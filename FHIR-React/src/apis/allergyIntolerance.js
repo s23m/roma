@@ -1,8 +1,6 @@
 import axios from 'axios';
 import BASE_URL from './baseUrl';
 
-
-
 const ALLERGYINTOLERANCE_URL = `${BASE_URL}AllergyIntolerance`;
 
 export const getAllergyIntolerance = async (patientId) => {
