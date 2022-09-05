@@ -10,7 +10,7 @@ import MedicationStatement from '../components/MedicationStatement';
 import ImmunizationRecommendation from '../components/ImmunizationRecommendation';
 
 /**
- * Extract the keys & values of the object and return it in a string in a tree-like structure.
+ * Extract the keys & values of an object and return it in a string in a tree-like structure. 
  * @param {Object} object
  * @param {string} indent
  * @returns content
