@@ -1,6 +1,7 @@
 import axios from 'axios';
 import BASE_URL from './baseUrl';
 
+
 const IMMUNIZATIONRECOMMENDATION_URL = `${BASE_URL}ImmunizationRecommendation`;
 
 export const getImmunizationRecommendation = async (patientId) => {

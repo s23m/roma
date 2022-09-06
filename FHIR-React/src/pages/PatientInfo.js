@@ -3,11 +3,13 @@ import { useParams } from 'react-router-dom';
 import { getPatient } from '../apis/patient';
 import { AgGridReact } from 'ag-grid-react';
 import AllergyIntolerance from '../components/AllergyIntolerance';
-import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
-import 'ag-grid-community/styles/ag-theme-balham.css';
-import '../stylesheets/PatientInfo.css';
 import MedicationStatement from '../components/MedicationStatement';
 import ImmunizationRecommendation from '../components/ImmunizationRecommendation';
+
+import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
+import 'ag-grid-community/styles/ag-theme-balham.css';
+import '../stylesheets/PatientInfo.css'; // Place this import below ag-grid to overwrite it
+
 
 /**
  * Extract the keys & values of an object and return it in a string in a tree-like structure. 

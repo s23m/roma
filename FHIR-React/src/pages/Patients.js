@@ -6,7 +6,7 @@ import { Spinner } from 'reactstrap';
 import SearchBar from '../components/SearchBar';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
-import '../stylesheets/Patient.css';
+import '../stylesheets/Patient.css'; // Place this import below ag-grid to overwrite it
 
 const baseURL = 'patients';
 const convertData = (searchResults) => {

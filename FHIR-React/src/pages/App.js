@@ -6,6 +6,7 @@ import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
 import '../stylesheets/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 function App() {
   const AppConstantElements = (
     <div className="App">
