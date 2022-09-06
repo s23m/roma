@@ -3,8 +3,10 @@
 @using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
+@using FHIRBlazor.Pages;
 
 @inject Radzen.DialogService dialogService
+@inject NotificationService NotificationService
 @inject NavigationManager NavManager
 
 @*https://blazor.radzen.com/dialog*@
@@ -54,7 +56,7 @@
 		<RadzenCard>
 			<h3 class="h5">
 				All available patient detials for id: <b><a href="@($"http://hapi.fhir.org/baseR4/Patient/{patient.Id}")">@PatientID</a></b>
-				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Online" Class="float-right" />
+				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="@patient.TypeName" Class="float-right" />
 			</h3>
 
 		</RadzenCard>
@@ -66,15 +68,15 @@
 
 					Things to include:
 					patient.communication
-						this shows languages and preferred language
+					this shows languages and preferred language
 					patient.maritalstatus
-						self explanatory
+					self explanatory
 					patient.generalPractitioner
-						is a reference to their nominated primary care provider
+					is a reference to their nominated primary care provider
 					patient.link
-						link to another patient resource of note
+					link to another patient resource of note
 					patient.deceased
-						Display if they are. This is an optional input
+					Display if they are. This is an optional input
 				*@
 
 				<RadzenTabsItem Text="General">
@@ -154,9 +156,9 @@
 
 				@*display contact persons info
 
-					This needs to be checked, as i have not found a patient 
+					This needs to be checked, as i have not found a patient
 					in the server with Emergency Contact data. If it works it
-					should loop through all available contacts and show them. 
+					should loop through all available contacts and show them.
 				*@
 				<RadzenTabsItem Text="Emergency Contact">
 					@if (patient.Contact.Count > 0)
@@ -170,7 +172,7 @@
 										<div>Relationship</div>
 										<b>@(contact.Relationship.First().Text)</b>
 										<div class="mt-3">Name</div>
-										<b>@(contact.Name.First())</b>
+										<b>@(contact.Name.First().Value)</b>
 									</div>
 									<div class="col-md-4">
 										<div class="mt-3">Gender</div>
@@ -195,16 +197,72 @@
 				</RadzenTabsItem>
 
 				<RadzenTabsItem Text="Known Allergies">
-					<RadzenDataGrid TItem="AllergyIntolerance" PageSize="15" AllowPaging="true"
-				AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
-				PagerHorizontalAlign="HorizontalAlign.Center">
-						<Columns>
-							<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Allergy" Title="Allergy" />
-							<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Severity" Title="Severity" />
-							<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction" />
 
-						</Columns>
-					</RadzenDataGrid>
+					<ErrorBoundary>
+						<ChildContent>
+
+							<RadzenDataGrid Data="@allergyResults" TItem="AllergyIntolerance" PageSize="15" AllowPaging="true"
+											AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
+											PagerHorizontalAlign="HorizontalAlign.Center">
+								<Columns>
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Substance">
+										<Template Context="allergy">
+											@if (allergy.Reaction.Count > 0)
+											{
+												<a>@allergy.Reaction.First().Substance.Text</a>
+											}
+											else
+											{
+												<a>No info</a>
+											}
+										</Template>
+									</RadzenDataGridColumn>
+
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction">
+										<Template Context="allergy">
+											@if (allergy.Reaction.Count > 0)
+											{
+												@if (allergy.Reaction.First().Manifestation.Count > 0)
+												{
+													<a>@allergy.Reaction.First().Manifestation.First().Coding.First().Display</a>
+												}
+											}
+											else
+											{
+												<a>No info</a>
+											}
+										</Template>
+									</RadzenDataGridColumn>
+
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Criticality" Title="Criticality" />
+
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Category" Title="Category">
+										<Template Context="allergy"><a>@allergy.Category.First()</a></Template>
+									</RadzenDataGridColumn>
+
+
+
+
+
+
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" />
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Id" Title="ID" />
+
+
+
+								</Columns>
+							</RadzenDataGrid>
+
+						</ChildContent>
+						<ErrorContent>
+							<RadzenCard class="m-3">
+								<h3 class="h5"><b>There was an error</b></h3>
+
+							</RadzenCard>
+						</ErrorContent>
+
+					</ErrorBoundary>
+
 				</RadzenTabsItem>
 
 
@@ -222,6 +280,17 @@
 	private Hl7.Fhir.Model.HumanName patientName;
 	private Patient patient;
 	private AllergyIntolerance patientAllergy;
+	private Bundle allergySearch = new Bundle();
+	private Hl7.Fhir.Model.AllergyIntolerance[]? allergyResults;
+
+
+
+	void ShowError(NotificationMessage message)
+	{
+		NotificationService.Notify(message);
+		Console.WriteLine($"{message.Severity} notification");
+	}
+	private string errorMessage = "";
 
 	TabPosition tabPosition = TabPosition.Top;
 	private string serverURL = "http://hapi.fhir.org/baseR4";
@@ -235,12 +304,95 @@
 		Console.WriteLine(patient.Name[0]);
 		patientName = patient.Name[0];
 
+
+
+
+
+
+		var q = new SearchParams()
+				.Where("patient=" + PatientID);
+		//.OrderBy("birthdate", SortOrder.Descending)
+		//.SummaryOnly().Include("Patient:organization")
+		//.LimitTo(maxNumOfEntries);
+
+		//HAPI returns a Bundle when searching (i assume other servers do the same)
+		try
+		{
+			allergySearch = client.Search<AllergyIntolerance>(q);
+			allergyResults = new AllergyIntolerance[allergySearch.Entry.Count];
+
+			//for every search result
+			for (int i = 0; i < allergySearch.Entry.Count; i++)
+			{
+				//add patient to our list
+				allergyResults[i] = (AllergyIntolerance)allergySearch.Entry[i].Resource;
+				Console.WriteLine(allergyResults[i]);
+				Console.WriteLine(allergyResults[i].Id);
+				Console.WriteLine(allergyResults[i].Criticality);
+				Console.WriteLine(allergyResults[i].Category);
+				Console.WriteLine(allergyResults[i].Onset);
+				try
+				{
+					Console.WriteLine(allergyResults[i].Reaction.First().Substance.Coding.First().Display);
+					Console.WriteLine(allergyResults[i].Reaction.First().Substance.Text);
+
+
+				}
+				catch
+				{
+					Console.WriteLine("THERE WAS AN ERROR");
+				}
+
+				if (allergyResults[i].Reaction.Count > 0)
+				{
+					Console.WriteLine("YES");
+
+				}
+				else
+				{
+					Console.WriteLine("NO");
+
+				}
+
+				Console.WriteLine("");
+			}
+			Console.WriteLine("Results Found");
+		}
+		catch (Exception ex)
+		{
+			errorMessage = ex.Message;
+			ShowError(new NotificationMessage
+				{
+					Style = "position: relative; top: 1%; left: 60%; transform: translate(-35%, 35%); width: 60%; max-width: 3000px;",
+					Severity = NotificationSeverity.Error,
+					Summary = "There has been an error",
+					Detail = errorMessage,
+					Duration = 40000
+				}
+			);
+			Console.WriteLine("Error info:" + ex.Message);
+		}
+		finally
+		{
+			Console.WriteLine("Done");
+		}
+
+
+
+
+
+
+
+
+
+
+
 		//Read the patients current allergies
-		patientAllergy = client.Read<AllergyIntolerance>("AllergyIntolerance/" + 2830868);
-		Console.WriteLine(patientAllergy.CategoryElement[0].Value);
-		Console.WriteLine(patientAllergy.Criticality);
-		Console.WriteLine(patientAllergy.Code.Coding[0].Display);
-		Console.WriteLine(patientAllergy.Reaction[0].Manifestation[0].Coding[0].Display);
+		//patientAllergy = client.Read<AllergyIntolerance>("AllergyIntolerance/" + 2830868);
+		//Console.WriteLine(patientAllergy.CategoryElement[0].Value);
+		//Console.WriteLine(patientAllergy.Criticality);
+		//Console.WriteLine(patientAllergy.Code.Coding[0].Display);
+		//Console.WriteLine(patientAllergy.Reaction[0].Manifestation[0].Coding[0].Display);
 	}
 }
 
