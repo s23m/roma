@@ -34,16 +34,18 @@
 				<div class="col">
 					<div>Birthdate</div>
 					<b>@patient.BirthDate</b>
-					<ErrorBoundary>
+
+					@*UN COMMENT*@
+					@*<ErrorBoundary>
 						<ChildContent>
-							<div class="mt-3">@patient.Telecom.First().Use @patient.Telecom.First().System</div>
-							<b>@patient.Telecom[0].Value</b>
+						<div class="mt-3">@patient.Telecom.First().Use @patient.Telecom.First().System</div>
+						<b>@patient.Telecom.First().Value</b>
 						</ChildContent>
 						<ErrorContent>
-							<div class="mt-3">Contact</div>
-							<b>Unknown</b>
+						<div class="mt-3">Contact</div>
+						<b>Unknown</b>
 						</ErrorContent>
-					</ErrorBoundary>
+						</ErrorBoundary>*@
 
 
 				</div>
@@ -55,7 +57,7 @@
 	<div class="col-md-12">
 		<RadzenCard>
 			<h3 class="h5">
-				All available patient detials for id: <b><a href="@($"http://hapi.fhir.org/baseR4/Patient/{patient.Id}")">@PatientID</a></b>
+				All available patient details for id: <b><a href="@($"http://hapi.fhir.org/baseR4/Patient/{patient.Id}")">@PatientID</a></b>
 				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="@patient.TypeName" Class="float-right" />
 			</h3>
 
@@ -196,35 +198,26 @@
 					}
 				</RadzenTabsItem>
 
-				<RadzenTabsItem Text="Known Allergies">
 
+				@*Allergy tab*@
+				<RadzenTabsItem Text="Known Allergies">
 					<ErrorBoundary>
 						<ChildContent>
-
-							<RadzenDataGrid Data="@allergyResults" TItem="AllergyIntolerance" PageSize="15" AllowPaging="true"
+							<RadzenDataGrid Data="@allergyResults" TItem="AllergyIntolerance" PageSize="10" AllowPaging="true"
 											AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
 											PagerHorizontalAlign="HorizontalAlign.Center">
 								<Columns>
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Substance">
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Substance" Filterable="false" Sortable="false">
 										<Template Context="allergy">
 											@if (allergy.Reaction.Count > 0)
 											{
-												<a>@allergy.Reaction.First().Substance.Text</a>
-											}
-											else
-											{
-												<a>No info</a>
-											}
-										</Template>
-									</RadzenDataGridColumn>
-
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction">
-										<Template Context="allergy">
-											@if (allergy.Reaction.Count > 0)
-											{
-												@if (allergy.Reaction.First().Manifestation.Count > 0)
+												@if (allergy.Reaction.First().Substance != null)
 												{
-													<a>@allergy.Reaction.First().Manifestation.First().Coding.First().Display</a>
+													<a>@allergy.Reaction.First().Substance.Text</a>
+												}
+												else
+												{
+													<a>No info</a>
 												}
 											}
 											else
@@ -233,43 +226,113 @@
 											}
 										</Template>
 									</RadzenDataGridColumn>
-
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Criticality" Title="Criticality" />
-
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Category" Title="Category">
-										<Template Context="allergy"><a>@allergy.Category.First()</a></Template>
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction" Filterable="false" Sortable="false">
+										<Template Context="allergy">
+											@if (allergy.Reaction.Count > 0)
+											{
+												var count = allergy.Reaction.First().Manifestation.Count;
+												var temp = 1;
+												@foreach (var reaction in allergy.Reaction.First().Manifestation)
+												{
+													if (temp >= count)
+													{
+														<a>@reaction.Coding.First().Display</a>
+													}
+													else
+													{
+														<a>@reaction.Coding.First().Display, </a>
+													}
+													temp++;
+												}
+											}
+											else
+											{
+												<a>No info</a>
+											}
+										</Template>
 									</RadzenDataGridColumn>
-
-
-
-
-
-
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" />
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Criticality" Title="Criticality" Filterable="false" Sortable="false" />
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Category" Title="Category" Filterable="false" Sortable="false">
+										<Template Context="allergy">
+											@if (allergy.Category.Count() > 0)
+											{
+												<a>@allergy.Category.First()</a>
+											}
+											else
+											{
+												<a>No info</a>
+											}
+										</Template>
+									</RadzenDataGridColumn>
+									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" Filterable="false" Sortable="false" />
 									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Id" Title="ID" />
-
-
-
 								</Columns>
 							</RadzenDataGrid>
-
 						</ChildContent>
 						<ErrorContent>
 							<RadzenCard class="m-3">
 								<h3 class="h5"><b>There was an error</b></h3>
-
 							</RadzenCard>
 						</ErrorContent>
-
 					</ErrorBoundary>
-
 				</RadzenTabsItem>
 
 
-
-
+				@*Medication tab*@
+				<RadzenTabsItem Text="Medication Statements">
+					<ErrorBoundary>
+						<ChildContent>
+							<RadzenDataGrid Data="@medResults" TItem="MedicationStatement" PageSize="10" AllowPaging="true"
+											AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
+											PagerHorizontalAlign="HorizontalAlign.Center">
+								<Columns>
+									<RadzenDataGridColumn TItem="MedicationStatement" Property="Medication" Title="Medication" Filterable="false" Sortable="false">
+										<Template Context="medstatement">
+											@*This is to handle the two different datatypes for medication*@
+											@if (medstatement.Medication.TypeName == "CodeableConcept")
+											{
+												var temp = (CodeableConcept)medstatement.Medication;
+												<a>@temp.Coding.First().Display</a>
+											}
+											else
+											{
+												var temp = (ResourceReference)medstatement.Medication;
+												@*Console.WriteLine(temp.Display);
+												Console.WriteLine(temp.Reference);*@
+												@if (temp.Reference.StartsWith("Medication"))
+												{
+													@*Due to med reference, open dialogue to view medication specifically*@
+													<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; " Class="" Text="View Medication" />
+												}
+												else
+												{
+													<a>@temp.Display</a>
+												}
+											}
+										</Template>
+									</RadzenDataGridColumn>
+									<RadzenDataGridColumn TItem="MedicationStatement" Property="Dosage" Title="Dosage" Filterable="false" Sortable="false">
+										<Template Context="medstatement">
+											<a>@medstatement.Dosage.First().Text</a>
+										</Template>
+									</RadzenDataGridColumn>
+									<RadzenDataGridColumn TItem="MedicationStatement" Property="ReasonCode" Title="Reason" Filterable="false" Sortable="false">
+										<Template Context="medstatement">
+											<a>@medstatement.ReasonCode.First().Text</a>
+										</Template>
+									</RadzenDataGridColumn>
+									<RadzenDataGridColumn TItem="MedicationStatement" Property="Id" Title="ID" />
+								</Columns>
+							</RadzenDataGrid>
+						</ChildContent>
+						<ErrorContent>
+							<RadzenCard class="m-3">
+								<h3 class="h5"><b>There was an error</b></h3>
+							</RadzenCard>
+						</ErrorContent>
+					</ErrorBoundary>
+				</RadzenTabsItem>
 			</Tabs>
-
 		</RadzenTabs>
 	</div>
 </div>
@@ -282,6 +345,8 @@
 	private AllergyIntolerance patientAllergy;
 	private Bundle allergySearch = new Bundle();
 	private Hl7.Fhir.Model.AllergyIntolerance[]? allergyResults;
+	private Bundle medSearch = new Bundle();
+	private Hl7.Fhir.Model.MedicationStatement[]? medResults;
 
 
 
@@ -307,15 +372,11 @@
 
 
 
-
-
+		//Allergy Information
 		var q = new SearchParams()
-				.Where("patient=" + PatientID);
-		//.OrderBy("birthdate", SortOrder.Descending)
-		//.SummaryOnly().Include("Patient:organization")
-		//.LimitTo(maxNumOfEntries);
+			.Where("patient=" + PatientID)
+			.LimitTo(100);
 
-		//HAPI returns a Bundle when searching (i assume other servers do the same)
 		try
 		{
 			allergySearch = client.Search<AllergyIntolerance>(q);
@@ -326,37 +387,7 @@
 			{
 				//add patient to our list
 				allergyResults[i] = (AllergyIntolerance)allergySearch.Entry[i].Resource;
-				Console.WriteLine(allergyResults[i]);
-				Console.WriteLine(allergyResults[i].Id);
-				Console.WriteLine(allergyResults[i].Criticality);
-				Console.WriteLine(allergyResults[i].Category);
-				Console.WriteLine(allergyResults[i].Onset);
-				try
-				{
-					Console.WriteLine(allergyResults[i].Reaction.First().Substance.Coding.First().Display);
-					Console.WriteLine(allergyResults[i].Reaction.First().Substance.Text);
-
-
-				}
-				catch
-				{
-					Console.WriteLine("THERE WAS AN ERROR");
-				}
-
-				if (allergyResults[i].Reaction.Count > 0)
-				{
-					Console.WriteLine("YES");
-
-				}
-				else
-				{
-					Console.WriteLine("NO");
-
-				}
-
-				Console.WriteLine("");
 			}
-			Console.WriteLine("Results Found");
 		}
 		catch (Exception ex)
 		{
@@ -372,19 +403,38 @@
 			);
 			Console.WriteLine("Error info:" + ex.Message);
 		}
-		finally
+
+
+
+		//Medication Information
+		var sParams = new SearchParams()
+			.Where("subject=" + PatientID)
+			.LimitTo(100);
+		try
 		{
-			Console.WriteLine("Done");
+			medSearch = client.Search<MedicationStatement>(sParams);
+			medResults = new MedicationStatement[medSearch.Entry.Count];
+
+			//for every search result
+			for (int i = 0; i < medSearch.Entry.Count; i++)
+			{
+				medResults[i] = (MedicationStatement)medSearch.Entry[i].Resource;
+			}
 		}
-
-
-
-
-
-
-
-
-
+		catch (Exception ex)
+		{
+			errorMessage = ex.Message;
+			ShowError(new NotificationMessage
+				{
+					Style = "position: relative; top: 1%; left: 60%; transform: translate(-35%, 35%); width: 60%; max-width: 3000px;",
+					Severity = NotificationSeverity.Error,
+					Summary = "There has been an error",
+					Detail = errorMessage,
+					Duration = 40000
+				}
+			);
+			Console.WriteLine("Error info:" + ex.Message);
+		}
 
 
 		//Read the patients current allergies
