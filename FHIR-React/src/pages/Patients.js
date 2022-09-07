@@ -127,7 +127,7 @@ const Patients = () => {
       ) : (
         <SearchBar
           placeholder={'Search a patient name'}
-          onSubmit={onSearchSubmit}
+          onSubmitHandler={onSearchSubmit}
           options={queryParams}
         />
       )}

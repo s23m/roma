@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../stylesheets/SearchBar.css';
 import { InputGroup, Input, Button, Form } from 'reactstrap';
 
-export default function SearchBar({ placeholder, onSubmit: onSubmitHandler, options }) {
+export default function SearchBar({ placeholder, onSubmitHandler, options }) {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('name');
 
