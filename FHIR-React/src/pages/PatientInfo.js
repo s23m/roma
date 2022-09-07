@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPatient } from '../apis/patient';
 import { AgGridReact } from 'ag-grid-react';
@@ -18,7 +18,7 @@ import '../stylesheets/PatientInfo.css'; // Place this import below ag-grid to o
  * @returns content
  */
 export const extractContent = (object, indent = '', content = '') => {
-  if (object === undefined) return 'undefined'
+  if (object === undefined) return;
   if (typeof object === 'object') {
     Object.entries(object).forEach(([key, value]) => {
       // To avoid printing numbers as keys when object is an Array
@@ -36,40 +36,62 @@ export const extractContent = (object, indent = '', content = '') => {
     // console.log(indent, object)
     content += ' ' + object + '\n';
   }
-
-  // content.replace('\n', <br/>)
-  // parser = new DOMParser(); 
-  // xmlDoc = parser.parseFromString(content,"text/xml");
-  // return xmlDoc;
   return content;
 };
 
 
 const convertData = (patientData) => {
+
+  const getTelecom = (telecom) => {
+    const telecomString = [];
+    if (telecom === undefined) return;
+    if (telecom !== undefined) {
+      telecom.forEach((element) => {
+        telecomString.push(`${element.system} ${element.value} ${element.use}`);
+      })
+      return telecomString;
+    }
+  }
+  const getAddress = (address) => {
+    const addressString = [];
+    if (address === undefined) return;
+    if (address !== undefined) {
+      address.forEach((element) => {
+        addressString.push(`${element.line.join(' ')}, ${element.city}, ${element.state}, ${element.country}, ${element.postalCode}`);
+      })
+      return addressString;
+    }
+  }
+  const getCommunication = (communication) => {
+    const communicationString = [];
+    if (communication === undefined) return;
+    if (communication !== undefined) {
+      communication.forEach((element) => {
+        communicationString.push(element.language.coding[0].display);
+      })
+      return communicationString;
+    }
+  }
   // See patient data structure here: https://www.hl7.org/fhir/patient.html#patient
   return [
-    { dataType: 'identifier', value: extractContent(patientData.identifier) },
-    { dataType: 'active', value: extractContent(patientData.active) },
-    { dataType: 'name', value: extractContent(patientData.name) },
-    { dataType: 'telecom', value: extractContent(patientData.telecom) },
+    { dataType: 'name', value: patientData.name? patientData.name[0].given.join(' ') + ' ' + patientData.name[0].family : ''},
+    { dataType: 'active', value: patientData.active },
+    { dataType: 'telecom', value: getTelecom(patientData.telecom) },
     { dataType: 'gender', value: extractContent(patientData.gender) },
     { dataType: 'birthDate', value: extractContent(patientData.birthDate) },
     { dataType: 'deceased', value: extractContent(patientData.deceased) },
-    { dataType: 'address', value: extractContent(patientData.address) },
-    { dataType: 'maritalStatus', value: extractContent(patientData.maritalStatus) },
+    { dataType: 'address', value: patientData.address? getAddress(patientData.address) : '' },
+    { dataType: 'maritalStatus', value: patientData.maritalStatus? extractContent(patientData.maritalStatus.coding[0].display) : '' },
     { dataType: 'multipleBirth', value: extractContent(patientData.multipleBirth) },
-    { dataType: 'photo', value: extractContent(patientData.photo) },
-    { dataType: 'contact', value: extractContent(patientData.contact) },
-    { dataType: 'communication', value: extractContent(patientData.communication) },
-    { dataType: 'resourceType', value: extractContent(patientData.resourceType) },
-    { dataType: 'meta', value: extractContent(patientData.meta) },
+    { dataType: 'contact', value: patientData.contact ? patientData.contact[0].name.given.join(' ') + ' ' + patientData.contact[0].name.family : '' },
+    { dataType: 'communication', value: patientData.communication? getCommunication(patientData.communication) : '' },
   ];
 };
 
 const PatientInfo = () => {
   const { id } = useParams();
-  // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
+  // ag-grid-table variables
   const gridOptions = { 
     defaultColDef:{
       filter: true,
