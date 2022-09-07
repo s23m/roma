@@ -26,3 +26,9 @@ h4 {
 .ag-header-cell-label {
     justify-content: left;
 }
+
+p {
+    text-align: left;
+    padding: 0 0 0 4%;
+    margin-bottom: 0px;
+}

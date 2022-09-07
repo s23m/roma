@@ -8,7 +8,7 @@ import ImmunizationRecommendation from '../components/ImmunizationRecommendation
 
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
-import '../stylesheets/PatientInfo.css'; // Place this import below ag-grid to overwrite it
+import '../stylesheets/PatientInfo.css'; // Place this import below ag-grid to overwrite it (for styling customization purpose)
 
 
 /**
@@ -70,19 +70,23 @@ const PatientInfo = () => {
   const { id } = useParams();
   // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '60vh', width: '60vw' }), []);
-  const defaultColDef = {
-    filter: true,
-    resizable: true,
-    wrapText: true,
-    autoHeight: true,
-    autoWidth: true,
-    editable: true,
-  };
-  const columnDefs = [
-    { headerName: 'Data type', field: 'dataType', maxWidth: 200 },
-    { headerName: 'Value', field: 'value' },
-  ];
+  const gridOptions = { 
+    defaultColDef:{
+      filter: true,
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+      autoWidth: true,
+      editable: true,
+      // suppressSizeToFit: true,
+    },
+    columnDefs: [
+      { headerName: 'Data type', field: 'dataType', maxWidth: 200 },
+      { headerName: 'Value', field: 'value' },
+    ],
+    domLayout: 'autoHeight',  // https://www.ag-grid.com/javascript-data-grid/grid-size/
+    onGridReady: (params) => params.api.sizeColumnsToFit(),
+  }
 
   useEffect(() => {
     getPatient(id).then((response) => {
@@ -95,15 +99,10 @@ const PatientInfo = () => {
   return (
     <div>
       <h3>Patient ID ⟨ {id} ⟩</h3>
-      <div className="ag-theme-balham-dark" style={gridStyle}>
+      <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
         <AgGridReact
-          columnDefs={columnDefs}
+          gridOptions={gridOptions}
           rowData={rowData}
-          defaultColDef={defaultColDef}
-          onGridReady={(params) => {
-            params.api.sizeColumnsToFit();
-            params.columnApi.autoSizeColumns();
-          }}
         />
       </div>
 

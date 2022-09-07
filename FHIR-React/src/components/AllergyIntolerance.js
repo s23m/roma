@@ -5,6 +5,7 @@ import { extractContent } from '../pages/PatientInfo';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
+import '../stylesheets/PatientInfo.css'; // Place this import below ag-grid to overwrite it (for styling customization purpose)
 
 
 export const extractEntryArray = (entry) => {
@@ -19,54 +20,84 @@ export const extractEntryArray = (entry) => {
   }
 };
 
-const convertData = (response) => {
-  return [
-    { dataType: 'ID', value: response.id },
-    { dataType: 'Total entries', value: response.total },
-    { dataType: 'Link', value: extractContent(response.link) },
-    { dataType: 'Meta', value: extractContent(response.meta) },
-    { dataType: 'Resource Type', value: extractContent(response.resourceType) },
-    { dataType: 'Type', value: extractContent(response.type) },
-  ].concat(extractEntryArray(response.entry));
+const getReaction = (reaction) => {
+  const reactionString = [];
+  if (reaction[0].manifestation === undefined) return 'undefined';
+  if (reaction[0].manifestation !== undefined) {
+    reaction[0].manifestation.forEach((element) => {
+      reactionString.push(element.coding[0].display);
+    })
+    return reactionString;
+  }
+}
+
+const convertData = (entries) => {
+  const rowData = entries.map((entry) => {
+    try {
+      return {
+        id: extractContent(entry.resource.id),
+        code: extractContent(entry.resource.code.coding[0].code),
+        display: extractContent(entry.resource.code.coding[0].display),
+        category: extractContent(entry.resource.category),
+        reaction: getReaction(entry.resource.reaction),
+        recordedDate: extractContent(entry.resource.recordedDate),
+      };
+    } catch {
+      return {
+        givenNames: '<Incompatible Object>',
+        familyName: '<Check console>',
+        birthDate: '',
+        gender: '',
+        id: '',
+      };
+    }
+  });
+  return rowData;
 };
 
 export default function AllergyIntolerance({patientId}) {
-  // ag-grid-table variables
+  const [total, setTotal] = useState('-');
   const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '50vh', width: '60vw' }), []);
-  const defaultColDef = { 
-    filter: true, 
-    resizable: true,
-    wrapText: true,
-    autoHeight: true,
-    autoWidth: true,
-    editable: true,
-  };
-  const columnDefs = [
-    { headerName: 'Data type', field: 'dataType', maxWidth: 200},
-    { headerName: 'Value', field: 'value' },
-  ];
+  // ag-grid-table variables
+  const gridOptions = {
+    columnDefs: [
+      { headerName: 'ID', field: 'id', width: 110},
+      { headerName: 'Code', field: 'code', width: 140 },
+      { headerName: 'Display', field: 'display' },
+      { headerName: 'Category', field: 'category' },
+      { headerName: 'Reaction', field: 'reaction' },
+      { headerName: 'Recorded date', field: 'recordedDate', width: 140  },
+    ],
+    defaultColDef: { 
+      filter: true, 
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+      autoWidth: true,
+      editable: true,
+    }, 
+    domLayout: 'autoHeight', 
+    onGridReady: (params) => params.api.sizeColumnsToFit(),
+  }
 
   // Get and update patient's AllergyIntolerance data
   useEffect(() => {
     getAllergyIntolerance(patientId).then((response) => {
       console.log('AllergyIntolerance Response:', response);
-      const data = convertData(response);
+      setTotal(response.total)
+      const data = convertData(response.entry);
+      console.log(data)
       setRowData(data);
     });
   }, [patientId]);
   
   return (
     <div>
-      <div className="ag-theme-balham-dark" style={gridStyle}>
+      <p>Total: {total}</p>
+      <div className="ag-theme-balham-dark" style={{ width:'60vw' }}>
         <AgGridReact
-          columnDefs={columnDefs}
+          gridOptions={gridOptions}
           rowData={rowData}
-          defaultColDef={defaultColDef}
-          onGridReady={(params) => {
-            params.api.sizeColumnsToFit();
-            params.columnApi.autoSizeColumns();
-          }}
         />
       </div>
     </div>

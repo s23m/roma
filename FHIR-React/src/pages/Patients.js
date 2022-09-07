@@ -6,7 +6,7 @@ import { Spinner } from 'reactstrap';
 import SearchBar from '../components/SearchBar';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
-import '../stylesheets/Patient.css'; // Place this import below ag-grid to overwrite it
+import '../stylesheets/Patient.css'; // Place this import below ag-grid to overwrite it (for styling customization purpose)
 
 const baseURL = 'patients';
 const convertData = (searchResults) => {
@@ -42,7 +42,7 @@ const createHyperlinkToPatientPage = (params) => {
 };
 
 // All params existed in https://hapi.fhir.org/baseR4/swagger-ui/?page=Patient
-const searchTypes = [
+const queryParams = [
   'name',
   'family',
   'birthdate',
@@ -128,7 +128,7 @@ const Patients = () => {
         <SearchBar
           placeholder={'Search a patient name'}
           onSubmit={onSearchSubmit}
-          options={searchTypes}
+          options={queryParams}
         />
       )}
 
