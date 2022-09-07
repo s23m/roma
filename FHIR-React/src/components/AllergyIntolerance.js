@@ -3,13 +3,9 @@ import { getAllergyIntolerance } from '../apis/allergyIntolerance';
 import { extractContent } from '../pages/PatientInfo';
 
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
-import 'ag-grid-community/styles/ag-theme-balham.css';
-import '../stylesheets/PatientInfo.css'; // Place this import below ag-grid to overwrite it (for styling customization purpose)
 
 
 // Test Patient ID: 1059, 6968973
-
 export const extractEntryArray = (entry) => {
   if (entry === undefined) return;
   if (entry !== undefined) {
@@ -23,7 +19,7 @@ export const extractEntryArray = (entry) => {
 };
 
 
-const convertData = (entries) => {
+const convertEntry = (entries) => {
   const getReaction = (reaction) => {
     const reactionString = [];
     if (reaction[0].manifestation === undefined) return 'undefined';
@@ -36,14 +32,15 @@ const convertData = (entries) => {
   }
 
   const rowData = entries.map((entry) => {
+    const resource = entry.resource;
     return {
-      id: entry.resource.id ? entry.resource.id : '',
-      code: entry.resource.code ? entry.resource.code.coding[0].code : '',
-      display: entry.resource.code ? entry.resource.code.coding[0].display : '',
-      category: entry.resource.category ? entry.resource.category : '' ,
-      reaction: entry.resource.reaction ? getReaction(entry.resource.reaction) : '',
-      criticality: entry.resource.criticality ? entry.resource.criticality : '',
-      recordedDate: entry.resource.recordedDate ? entry.resource.recordedDate : '',
+      id: resource.id,
+      code: resource.code ? resource.code.coding[0].code : '',
+      display: resource.code ? resource.code.coding[0].display : '',
+      category: resource.category,
+      reaction: resource.reaction ? getReaction(resource.reaction) : '',
+      criticality: resource.criticality,
+      recordedDate: resource.recordedDate,
     }
   });
   return rowData;
@@ -81,7 +78,7 @@ export default function AllergyIntolerance({patientId}) {
     getAllergyIntolerance(patientId).then((response) => {
       console.log('AllergyIntolerance Response:', response);
       setTotal(response.total)
-      const data = convertData(response.entry);
+      const data = convertEntry(response.entry);
       // console.log(data)
       setRowData(data);
     });

@@ -5,7 +5,7 @@ h3 {
 }
 
 h4 {
-    padding-top: 20px;
+    padding-top: 3rem;
     padding-left: 4%;
     text-align: left;
 }
@@ -27,7 +27,7 @@ h4 {
     justify-content: left;
 }
 
-p {
+div p {
     text-align: left;
     padding: 0 0 0 4%;
     margin-bottom: 0px;

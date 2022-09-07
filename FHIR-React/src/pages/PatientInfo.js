@@ -112,7 +112,7 @@ const PatientInfo = () => {
 
   useEffect(() => {
     getPatient(id).then((response) => {
-      console.log('Patient Response:', response);
+      console.log('Patient:', response);
       const data = convertData(response);
       setRowData(data);
     });

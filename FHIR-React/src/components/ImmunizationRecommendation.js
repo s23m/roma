@@ -2,10 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { extractContent } from '../pages/PatientInfo';
 import { extractEntryArray } from './AllergyIntolerance';
 import { getImmunizationRecommendation } from '../apis/immunizationRecommendation';
-
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
-import 'ag-grid-community/styles/ag-theme-balham.css';
 
 
 // Testing patient ID: 2686624
