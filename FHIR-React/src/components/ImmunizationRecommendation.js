@@ -1,60 +1,64 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { extractContent } from '../pages/PatientInfo';
-import { extractEntryArray } from './AllergyIntolerance';
 import { getImmunizationRecommendation } from '../apis/immunizationRecommendation';
 import { AgGridReact } from 'ag-grid-react';
 
 
 // Testing patient ID: 2686624
-const convertData = (response) => {
-  return [
-    { dataType: 'ID', value: response.id },
-    { dataType: 'Total entries', value: response.total },
-    { dataType: 'Link', value: extractContent(response.link) },
-    { dataType: 'Meta', value: extractContent(response.meta) },
-    { dataType: 'Resource Type', value: extractContent(response.resourceType) },
-    { dataType: 'Type', value: extractContent(response.type) },
-  ].concat(extractEntryArray(response.entry));
+const convertEntry = (entries) => {
+  const rowData = entries.map((entry) => {
+    const resource = entry.resource;
+    return {
+      id: resource.id,
+      vaccine: resource.recommendation ? `${resource.recommendation[0].vaccineCode[0].coding[0].code} (${resource.recommendation[0].vaccineCode[0].coding[0].display})` : '',
+      date: resource.date,
+    }
+  });
+  return rowData;
 };
 
 export default function ImmunizationRecommendation({ patientId }) {
-  // ag-grid-table variables
+  const [total, setTotal] = useState('-');
   const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '50vh', width: '60vw' }), []);
-  const defaultColDef = {
-    filter: true,
-    resizable: true,
-    wrapText: true,
-    autoHeight: true,
-    autoWidth: true,
-    editable: true,
-  };
-  const columnDefs = [
-    { headerName: 'Data type', field: 'dataType', maxWidth: 200 },
-    { headerName: 'Value', field: 'value' },
-  ];
+
+  // ag-grid-table variables
+  const gridOptions = {
+    defaultColDef: {
+      filter: true,
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+      autoWidth: true,
+      editable: true,
+    },
+    columnDefs: [
+      { headerName: 'ID', field: 'id', width: 110 },
+      { headerName: 'Vaccine', field: 'vaccine' },
+      { headerName: 'Date', field: 'date' },
+    ],
+    domLayout: 'autoHeight', 
+    onGridReady: (params) => params.api.sizeColumnsToFit(),
+  }
 
   // Get and update patient's ImmunizationRecommendation data
   useEffect(() => {
-    // ------------------------------------
     getImmunizationRecommendation(patientId).then((response) => {
       console.log('ImmunizationRecommendation:', response);
-      const data = convertData(response);
-      setRowData(data);
+      setTotal(response.total)
+      if (response.total !== 0) {
+        const data = convertEntry(response.entry);
+        setRowData(data);
+      }
     });
   }, [patientId]);
 
   return (
     <div>
-      <div className="ag-theme-balham-dark" style={gridStyle}>
+      <p>Total: {total}</p>
+      <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
         <AgGridReact
-          columnDefs={columnDefs}
+          gridOptions={gridOptions}
           rowData={rowData}
-          defaultColDef={defaultColDef}
-          onGridReady={(params) => {
-            params.api.sizeColumnsToFit();
-            params.columnApi.autoSizeColumns();
-          }}
         />
       </div>
     </div>

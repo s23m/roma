@@ -16,7 +16,6 @@ const convertEntry = (entries) => {
       reasonCode: resource.reasonCode ? resource.reasonCode[0].text : '',
     }
   });
-  console.log(rowData)
   return rowData;
 };
 
@@ -38,7 +37,7 @@ export default function MedicationStatement({ patientId }) {
       { headerName: 'ID', field: 'id', width: 110 },
       { headerName: 'Medication', field: 'medicationCodeableConcept' },
       { headerName: 'Dosage', field: 'dosage' },
-      { headerName: 'Reason Code', field: 'reasonCode' },
+      { headerName: 'Reason', field: 'reasonCode' },
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),
@@ -49,8 +48,10 @@ export default function MedicationStatement({ patientId }) {
     getMedicationStatement(patientId).then((response) => {
       console.log('MedicationStatement:', response);
       setTotal(response.total)
-      const data = convertEntry(response.entry);
-      setRowData(data);
+      if (response.total !== 0) {
+        const data = convertEntry(response.entry);
+        setRowData(data);
+      }
     });
   }, [patientId]);
 

@@ -78,9 +78,10 @@ export default function AllergyIntolerance({patientId}) {
     getAllergyIntolerance(patientId).then((response) => {
       console.log('AllergyIntolerance Response:', response);
       setTotal(response.total)
-      const data = convertEntry(response.entry);
-      // console.log(data)
-      setRowData(data);
+      if (response.total !== 0) {
+        const data = convertEntry(response.entry);
+        setRowData(data);
+      }
     });
   }, [patientId]);
   
