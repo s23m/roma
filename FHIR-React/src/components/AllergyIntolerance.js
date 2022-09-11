@@ -1,71 +1,97 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAllergyIntolerance } from '../apis/allergyIntolerance';
+import { extractContent } from '../pages/PatientInfo';
+
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
-import 'ag-grid-community/styles/ag-theme-balham.css';
-import '../stylesheets/PatientInfo.css';
 
 
-const getValue = (data, dataType=undefined) => {
-  if (data !== undefined) {
-    if (typeof data === 'object') return JSON.stringify(data)
-    return data
-  }
-  return 'Description is not available'
-}
-
-const convertEntry = (entry) => {
+// Test Patient ID: 1059, 6968973
+export const extractEntryArray = (entry) => {
   if (entry === undefined) return;
-  
-  var entries = [];
-  entry.forEach((element, index) => {
-    entries.push({dataType: 'Entry '+index, value: getValue(element.resource.code.text)})
-  })
-  return entries;
-}
-
-const convertData = (response) => {
-  return [
-    { dataType: 'Total entries', value: response.total },
-  ].concat(convertEntry(response.entry));  
+  if (entry !== undefined) {
+    var entries = [];
+    entry.forEach((element, index) => {
+      const entryNumber = index + 1;
+      entries.push({ dataType: 'Entry ' + entryNumber, value: extractContent(element) });
+    });
+    return entries;
+  }
 };
 
-export default function AllergyIntolerance({patientID}) {
-  // ag-grid-table variables
-  const [rowData, setRowData] = useState([]);
-  const gridStyle = useMemo(() => ({ height: '30vh', width: '60vw' }), []);
-  const defaultColDef = { 
-    filter: true, 
-    resizable: true,
-    wrapText: true,
-    autoHeight: true,
-    autoWidth: true,
-    editable: true,
-  };
-  const columnDefs = [
-    { headerName: 'Data type', field: 'dataType', maxWidth: 200},
-    { headerName: 'Value', field: 'value' },
-  ];
 
+const convertEntry = (entries) => {
+  const getReaction = (reaction) => {
+    const reactionString = [];
+    if (reaction[0].manifestation === undefined) return 'undefined';
+    if (reaction[0].manifestation !== undefined) {
+      reaction[0].manifestation.forEach((element) => {
+        reactionString.push(element.coding[0].display);
+      })
+      return reactionString;
+    }
+  }
+
+  const rowData = entries.map((entry) => {
+    const resource = entry.resource;
+    return {
+      id: resource.id,
+      code: resource.code ? resource.code.coding[0].code : '',
+      display: resource.code ? resource.code.coding[0].display : '',
+      category: resource.category,
+      reaction: resource.reaction ? getReaction(resource.reaction) : '',
+      criticality: resource.criticality,
+      recordedDate: resource.recordedDate,
+    }
+  });
+  return rowData;
+};
+
+export default function AllergyIntolerance({patientId}) {
+  const [total, setTotal] = useState('-');
+  const [rowData, setRowData] = useState([]);
+  
+  // ag-grid-table variables
+  const gridOptions = {
+    columnDefs: [
+      { headerName: 'ID', field: 'id', width: 110},
+      { headerName: 'Code', field: 'code', width: 140 },
+      { headerName: 'Display', field: 'display' },
+      { headerName: 'Category', field: 'category' },
+      { headerName: 'Reaction', field: 'reaction' },
+      { headerName: 'Criticality', field: 'criticality', width: 90 },      
+      { headerName: 'Recorded date', field: 'recordedDate', width: 140  },
+    ],
+    defaultColDef: { 
+      filter: true, 
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+      autoWidth: true,
+      editable: true,
+    }, 
+    domLayout: 'autoHeight', 
+    onGridReady: (params) => params.api.sizeColumnsToFit(),
+  }
+
+  // Get and update patient's AllergyIntolerance data
   useEffect(() => {
-    getAllergyIntolerance(patientID).then((response) => {
+    getAllergyIntolerance(patientId).then((response) => {
       console.log('AllergyIntolerance Response:', response);
-      const data = convertData(response);
-      setRowData(data);
+      setTotal(response.total)
+      if (response.total !== 0) {
+        const data = convertEntry(response.entry);
+        setRowData(data);
+      }
     });
-  }, [patientID]);
+  }, [patientId]);
   
   return (
     <div>
-      <div className="ag-theme-balham-dark" style={gridStyle}>
+      <p>Total: {total}</p>
+      <div className="ag-theme-balham-dark" style={{ width:'60vw' }}>
         <AgGridReact
-          columnDefs={columnDefs}
+          gridOptions={gridOptions}
           rowData={rowData}
-          defaultColDef={defaultColDef}
-          onGridReady={(params) => {
-            params.api.sizeColumnsToFit();
-            params.columnApi.autoSizeColumns();
-          }}
         />
       </div>
     </div>
