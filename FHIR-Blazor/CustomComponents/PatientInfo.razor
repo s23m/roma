@@ -198,140 +198,22 @@
 					}
 				</RadzenTabsItem>
 
-
 				@*Allergy tab*@
 				<RadzenTabsItem Text="Known Allergies">
-					<ErrorBoundary>
-						<ChildContent>
-							<RadzenDataGrid Data="@allergyResults" TItem="AllergyIntolerance" PageSize="10" AllowPaging="true"
-											AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
-											PagerHorizontalAlign="HorizontalAlign.Center">
-								<Columns>
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Substance" Filterable="false" Sortable="false">
-										<Template Context="allergy">
-											@if (allergy.Reaction.Count > 0)
-											{
-												@if (allergy.Reaction.First().Substance != null)
-												{
-													<a>@allergy.Reaction.First().Substance.Text</a>
-												}
-												else
-												{
-													<a>No info</a>
-												}
-											}
-											else
-											{
-												<a>No info</a>
-											}
-										</Template>
-									</RadzenDataGridColumn>
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction" Filterable="false" Sortable="false">
-										<Template Context="allergy">
-											@if (allergy.Reaction.Count > 0)
-											{
-												var count = allergy.Reaction.First().Manifestation.Count;
-												var temp = 1;
-												@foreach (var reaction in allergy.Reaction.First().Manifestation)
-												{
-													if (temp >= count)
-													{
-														<a>@reaction.Coding.First().Display</a>
-													}
-													else
-													{
-														<a>@reaction.Coding.First().Display, </a>
-													}
-													temp++;
-												}
-											}
-											else
-											{
-												<a>No info</a>
-											}
-										</Template>
-									</RadzenDataGridColumn>
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Criticality" Title="Criticality" Filterable="false" Sortable="false" />
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Category" Title="Category" Filterable="false" Sortable="false">
-										<Template Context="allergy">
-											@if (allergy.Category.Count() > 0)
-											{
-												<a>@allergy.Category.First()</a>
-											}
-											else
-											{
-												<a>No info</a>
-											}
-										</Template>
-									</RadzenDataGridColumn>
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" Filterable="false" Sortable="false" />
-									<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Id" Title="ID" />
-								</Columns>
-							</RadzenDataGrid>
-						</ChildContent>
-						<ErrorContent>
-							<RadzenCard class="m-3">
-								<h3 class="h5"><b>There was an error</b></h3>
-							</RadzenCard>
-						</ErrorContent>
-					</ErrorBoundary>
+					<PatientAllergy PatientID=@PatientID></PatientAllergy>
 				</RadzenTabsItem>
 
 
-				@*Medication tab*@
+				@*Medications tab*@
 				<RadzenTabsItem Text="Medication Statements">
-					<ErrorBoundary>
-						<ChildContent>
-							<RadzenDataGrid Data="@medResults" TItem="MedicationStatement" PageSize="10" AllowPaging="true"
-											AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
-											PagerHorizontalAlign="HorizontalAlign.Center">
-								<Columns>
-									<RadzenDataGridColumn TItem="MedicationStatement" Property="Medication" Title="Medication" Filterable="false" Sortable="false">
-										<Template Context="medstatement">
-											@*This is to handle the two different datatypes for medication*@
-											@if (medstatement.Medication.TypeName == "CodeableConcept")
-											{
-												var temp = (CodeableConcept)medstatement.Medication;
-												<a>@temp.Coding.First().Display</a>
-											}
-											else
-											{
-												var temp = (ResourceReference)medstatement.Medication;
-												@*Console.WriteLine(temp.Display);
-												Console.WriteLine(temp.Reference);*@
-												@if (temp.Reference.StartsWith("Medication"))
-												{
-													@*Due to med reference, open dialogue to view medication specifically*@
-													<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; " Class="" Text="View Medication" />
-												}
-												else
-												{
-													<a>@temp.Display</a>
-												}
-											}
-										</Template>
-									</RadzenDataGridColumn>
-									<RadzenDataGridColumn TItem="MedicationStatement" Property="Dosage" Title="Dosage" Filterable="false" Sortable="false">
-										<Template Context="medstatement">
-											<a>@medstatement.Dosage.First().Text</a>
-										</Template>
-									</RadzenDataGridColumn>
-									<RadzenDataGridColumn TItem="MedicationStatement" Property="ReasonCode" Title="Reason" Filterable="false" Sortable="false">
-										<Template Context="medstatement">
-											<a>@medstatement.ReasonCode.First().Text</a>
-										</Template>
-									</RadzenDataGridColumn>
-									<RadzenDataGridColumn TItem="MedicationStatement" Property="Id" Title="ID" />
-								</Columns>
-							</RadzenDataGrid>
-						</ChildContent>
-						<ErrorContent>
-							<RadzenCard class="m-3">
-								<h3 class="h5"><b>There was an error</b></h3>
-							</RadzenCard>
-						</ErrorContent>
-					</ErrorBoundary>
+					<PatientMedStatement PatientID=@PatientID></PatientMedStatement>
 				</RadzenTabsItem>
+
+				@*Conditions tab*@
+				<RadzenTabsItem Text="Conditions">
+					<PatientCondition PatientID=@PatientID></PatientCondition>
+				</RadzenTabsItem>
+
 			</Tabs>
 		</RadzenTabs>
 	</div>
@@ -340,15 +222,7 @@
 
 @code {
 	[Parameter] public string PatientID { get; set; }
-	private Hl7.Fhir.Model.HumanName patientName;
 	private Patient patient;
-	private AllergyIntolerance patientAllergy;
-	private Bundle allergySearch = new Bundle();
-	private Hl7.Fhir.Model.AllergyIntolerance[]? allergyResults;
-	private Bundle medSearch = new Bundle();
-	private Hl7.Fhir.Model.MedicationStatement[]? medResults;
-
-
 
 	void ShowError(NotificationMessage message)
 	{
@@ -367,82 +241,8 @@
 		//Read the current version of a Patient resource
 		patient = client.Read<Patient>("Patient/" + PatientID);
 		Console.WriteLine(patient.Name[0]);
-		patientName = patient.Name[0];
 
 
-
-
-		//Allergy Information
-		var q = new SearchParams()
-			.Where("patient=" + PatientID)
-			.LimitTo(100);
-
-		try
-		{
-			allergySearch = client.Search<AllergyIntolerance>(q);
-			allergyResults = new AllergyIntolerance[allergySearch.Entry.Count];
-
-			//for every search result
-			for (int i = 0; i < allergySearch.Entry.Count; i++)
-			{
-				//add patient to our list
-				allergyResults[i] = (AllergyIntolerance)allergySearch.Entry[i].Resource;
-			}
-		}
-		catch (Exception ex)
-		{
-			errorMessage = ex.Message;
-			ShowError(new NotificationMessage
-				{
-					Style = "position: relative; top: 1%; left: 60%; transform: translate(-35%, 35%); width: 60%; max-width: 3000px;",
-					Severity = NotificationSeverity.Error,
-					Summary = "There has been an error",
-					Detail = errorMessage,
-					Duration = 40000
-				}
-			);
-			Console.WriteLine("Error info:" + ex.Message);
-		}
-
-
-
-		//Medication Information
-		var sParams = new SearchParams()
-			.Where("subject=" + PatientID)
-			.LimitTo(100);
-		try
-		{
-			medSearch = client.Search<MedicationStatement>(sParams);
-			medResults = new MedicationStatement[medSearch.Entry.Count];
-
-			//for every search result
-			for (int i = 0; i < medSearch.Entry.Count; i++)
-			{
-				medResults[i] = (MedicationStatement)medSearch.Entry[i].Resource;
-			}
-		}
-		catch (Exception ex)
-		{
-			errorMessage = ex.Message;
-			ShowError(new NotificationMessage
-				{
-					Style = "position: relative; top: 1%; left: 60%; transform: translate(-35%, 35%); width: 60%; max-width: 3000px;",
-					Severity = NotificationSeverity.Error,
-					Summary = "There has been an error",
-					Detail = errorMessage,
-					Duration = 40000
-				}
-			);
-			Console.WriteLine("Error info:" + ex.Message);
-		}
-
-
-		//Read the patients current allergies
-		//patientAllergy = client.Read<AllergyIntolerance>("AllergyIntolerance/" + 2830868);
-		//Console.WriteLine(patientAllergy.CategoryElement[0].Value);
-		//Console.WriteLine(patientAllergy.Criticality);
-		//Console.WriteLine(patientAllergy.Code.Coding[0].Display);
-		//Console.WriteLine(patientAllergy.Reaction[0].Manifestation[0].Coding[0].Display);
 	}
 }
 

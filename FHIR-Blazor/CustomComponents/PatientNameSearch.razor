@@ -54,11 +54,6 @@
 		<RadzenDataGridColumn TItem="Patient" Property="Id" Title="ID">
 			<Template Context="patient"><a  href="@($"{serverURL}/Patient/{patient.Id}")">@patient.Id</a></Template>
 		</RadzenDataGridColumn>
-@*		<RadzenDataGridColumn TItem="Patient" Property="Id" Title="Patient Details">
-            <Template Context="patient">
-                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Style="font-size: 14px;" Icon="info" Class="m-1" Click=@(() => OpenOrder(patient.Id)) Text="Quick Info" />
-            </Template>
-        </RadzenDataGridColumn>*@
 	</Columns>
 </RadzenDataGrid>
 
