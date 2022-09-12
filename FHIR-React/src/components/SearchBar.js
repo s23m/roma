@@ -13,20 +13,30 @@ export default function SearchBar({ placeholder, onSubmit: onSubmitHandler, opti
         onSubmitHandler(selectedOption, inputValue);
       }}
     >
-      <InputGroup>
-        <Input placeholder={placeholder} onChange={(e) => setInputValue(e.target.value)} />
+      <InputGroup className="search-bar-group">
+        <div className="search-selector-container">
+          <label className="search-selector-label">Search by: </label>
+          <Input
+            className="search-selector"
+            type="select"
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.target.value)}
+          >
+            {options.map((op) => (
+              <option value={op}>{op}</option>
+            ))}
+          </Input>
+        </div>
+        <div className="search-input-container">
+          <Input
+            type="text"
+            className="search-input"
+            placeholder={placeholder}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
 
-        <label> Search by: </label>
-        <Input 
-          type="select"
-          value={selectedOption} 
-          onChange={(e) => setSelectedOption(e.target.value)}
-        >
-          {options.map((op) => <option value={op}>{op}</option>)}
-        </Input>
-
-        <Button type="submit">Submit</Button>
-
+          <Button type="submit">Submit</Button>
+        </div>
       </InputGroup>
     </Form>
   );

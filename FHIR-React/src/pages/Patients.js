@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { searchPatient } from '../apis/patient';
@@ -7,6 +6,7 @@ import SearchBar from '../components/SearchBar';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';
+import '../stylesheets/App.css';
 
 const baseURL = 'patients';
 const convertData = (searchResults) => {
@@ -81,7 +81,7 @@ const searchTypes = [
 
 const Patients = () => {
   // ag-grid-table variables
-  const gridStyle = useMemo(() => ({ height: '70vh', width: '60vw' }), []);
+  const gridStyle = useMemo(() => ({ height: '70vh', width: '100%' }), []);
   const defaultColDef = {
     filter: true,
     sortable: true,
@@ -99,17 +99,23 @@ const Patients = () => {
     },
   ];
   const [rowData, setRowData] = useState([
-    { givenNames: 'Adam', familyName: 'ThisisAnExample', birthDate: '1970-05-06', gender: 'male', id: 123126969 },
+    {
+      givenNames: 'Adam',
+      familyName: 'ThisisAnExample',
+      birthDate: '1970-05-06',
+      gender: 'male',
+      id: 123126969,
+    },
     { givenNames: 'Joe', familyName: 'Blow', birthDate: '1979-09-06', gender: 'male', id: 1777777 },
   ]);
   const [notification, setNotification] = useState('');
   const [loading, setLoading] = useState(false);
 
   const onSearchSubmit = async (queryType, queryValue) => {
-    setLoading(true); 
+    setLoading(true);
     const searchResults = await searchPatient(queryType, queryValue); // Get data
     setLoading(false);
-    console.log(searchResults);  // For debugging
+    console.log(searchResults); // For debugging
 
     if (searchResults.total !== 0) {
       const rowData = convertData(searchResults.entry);
@@ -122,11 +128,12 @@ const Patients = () => {
 
   return (
     <div>
+      <p className="page-heading">Search for patient record</p>
       {loading ? (
         <Spinner />
       ) : (
         <SearchBar
-          placeholder={'Search a patient name'}
+          placeholder={'Enter search query'}
           onSubmit={onSearchSubmit}
           options={searchTypes}
         />
