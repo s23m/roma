@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const SiteNavBar = () => (
   <Navbar color="dark" container="md" dark expand>
     <Link to="/" className="navbar-brand">
-      Home
+      ROMA FHIR
     </Link>
     <Collapse navbar>
       <Nav className="me-auto" navbar>

@@ -1,6 +1,35 @@
+.search-bar-group {
+  display: flex;
+  flex-direction: column;
+}
+
 .searchInput {
   margin-top: 105px;
   display: flex;
+}
+
+.search-input-container {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.search-input {
+  width: 100% !important;
+}
+
+.search-selector-container {
+  display: flex;
+  justify-content: center;
+}
+
+.search-selector-label {
+  margin-right: 1rem;
+}
+
+.search-selector {
+  width: 50% !important;
 }
 
 .search input {

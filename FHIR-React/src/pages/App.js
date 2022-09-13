@@ -11,7 +11,6 @@ function App() {
     <div className="App">
       <SiteNavBar />
       <Container>
-        <h1>ROMA FHIR</h1>
         <Outlet></Outlet>
       </Container>
     </div>
@@ -21,7 +20,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={AppConstantElements}>
-          <Route path="patients/:id" element={<PatientInfo/>} />
+          <Route path="patients/:id" element={<PatientInfo />} />
           <Route path="patients" element={<Patients />} />
         </Route>
       </Routes>
