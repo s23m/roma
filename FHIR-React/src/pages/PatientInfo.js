@@ -43,7 +43,7 @@ export const extractContent = (object, indent = '', content = '') => {
 
 const convertData = (patientData) => {
 
-  const getTelecom = (telecom) => {
+  const handleTelecom = (telecom) => {
     const telecomString = [];
     if (telecom === undefined) return;
     if (telecom !== undefined) {
@@ -53,17 +53,20 @@ const convertData = (patientData) => {
       return telecomString;
     }
   }
-  const getAddress = (address) => {
+  const handleAddress = (address) => {
     const addressString = [];   
     if (address === undefined) return;
     if (address !== undefined) {
       address.forEach((element) => {
-        addressString.push(`${element.line.join(' ')}, ${element.city}, ${element.state}, ${element.country}, ${element.postalCode}`);
+        Object.values(element).forEach(value => {
+          if (Array.isArray(value)) {value = value.join(' ');}
+          addressString.push(value)
+        })
       })
       return addressString;
     }
   }
-  const getCommunication = (communication) => {
+  const handleCommunication = (communication) => {
     const communicationString = [];
     if (communication === undefined) return;
     if (communication !== undefined) {
@@ -73,19 +76,33 @@ const convertData = (patientData) => {
       return communicationString;
     }
   }
+  const handleContact = (contact) => {
+    const contactString = [];
+    if (contact[0].name === undefined) return;
+    if (contact[0].name !== undefined) {
+      contact.forEach((element) => {
+        Object.values(element.name).forEach(value => {
+          if (Array.isArray(value)) {value = value.join(' ');}
+          contactString.push(value)
+        })
+      })
+      return contactString;
+    }
+  }
   // See patient data structure here: https://www.hl7.org/fhir/patient.html#patient
   return [
-    { dataType: 'name', value: patientData.name? patientData.name[0].given.join(' ') + ' ' + patientData.name[0].family : ''},
-    { dataType: 'active', value: patientData.active },
-    { dataType: 'telecom', value: getTelecom(patientData.telecom) },
-    { dataType: 'gender', value: extractContent(patientData.gender) },
-    { dataType: 'birthDate', value: extractContent(patientData.birthDate) },
-    { dataType: 'deceased', value: extractContent(patientData.deceased) },
-    { dataType: 'address', value: patientData.address? getAddress(patientData.address) : '' },
-    { dataType: 'maritalStatus', value: patientData.maritalStatus? extractContent(patientData.maritalStatus.coding[0].display) : '' },
-    { dataType: 'multipleBirth', value: extractContent(patientData.multipleBirth) },
-    { dataType: 'contact', value: patientData.contact ? patientData.contact[0].name.given.join(' ') + ' ' + patientData.contact[0].name.family : '' },
-    { dataType: 'communication', value: patientData.communication? getCommunication(patientData.communication) : '' },
+    { dataType: 'Name', value: patientData.name? patientData.name[0].given.join(' ') + ' ' + patientData.name[0].family : ''},
+    { dataType: 'Active', value: patientData.active },
+    { dataType: 'Telecom', value: handleTelecom(patientData.telecom) },
+    { dataType: 'Gender', value: extractContent(patientData.gender) },
+    { dataType: 'BirthDate', value: extractContent(patientData.birthDate) },
+    { dataType: 'Deceased', value: extractContent(patientData.deceased) },
+    { dataType: 'Address', value: patientData.address? handleAddress(patientData.address) : '' },
+    { dataType: 'Marital Status', value: patientData.maritalStatus? extractContent(patientData.maritalStatus.coding[0].display) : '' },
+    { dataType: 'Multiple Birth', value: extractContent(patientData.multipleBirth) },
+    { dataType: 'Contact', value: handleContact(patientData.contact) },
+    //  ? patientData.contact[0].name.given.join(' ') + ' ' + patientData.contact[0].name.family : '' },
+    { dataType: 'Communication', value: patientData.communication? handleCommunication(patientData.communication) : '' },
   ];
 };
 
