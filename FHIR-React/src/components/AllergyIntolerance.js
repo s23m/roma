@@ -6,21 +6,26 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 
-const convertEntry = (entry) => {
-  if (entry === undefined) return;
+const convertEntry = (response) => {
+  if (response.entry === undefined) return [];
 
-  var entries = [];
-  entry.forEach((element, index) => {
-    entries.push({ dataType: 'Entry ' + index, value: getValue(element.resource.code.text) });
-  });
+  const entries = response.entry.map((entry, i) => ({
+    dataType: 'Entry ' + i,
+    value: getValue(entry.resource.code.text),
+  }));
+
+  // var entries = [];
+  // entry.forEach((element, index) => {
+  //   entries.push({ dataType: 'Entry ' + index, value: getValue(element.resource.code.text) });
+  // });
   return entries;
 };
 
-const convertData = (response) => {
-  return [{ dataType: 'Total entries', value: response.total }].concat(
-    convertEntry(response.entry)
-  );
-};
+// const convertData = (response) => {
+//   return [{ dataType: 'Total entries', value: response.total }].concat(
+//     convertEntry(response.entry)
+//   );
+// };
 
 export default function AllergyIntolerance({ patientID }) {
   // ag-grid-table variables
@@ -42,24 +47,29 @@ export default function AllergyIntolerance({ patientID }) {
   useEffect(() => {
     getAllergyIntolerance(patientID).then((response) => {
       console.log('AllergyIntolerance Response:', response);
-      const data = convertData(response);
+      const data = convertEntry(response.entry);
       setRowData(data);
     });
   }, [patientID]);
 
   return (
     <div>
-      <div className="ag-theme-balham-dark" style={gridStyle}>
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={rowData}
-          defaultColDef={defaultColDef}
-          onGridReady={(params) => {
-            params.api.sizeColumnsToFit();
-            params.columnApi.autoSizeColumns();
-          }}
-        />
-      </div>
+      <p>Count: {rowData.length}</p>
+      {rowData.length > 0 ? (
+        <div className="ag-theme-balham-dark" style={gridStyle}>
+          <AgGridReact
+            columnDefs={columnDefs}
+            rowData={rowData}
+            defaultColDef={defaultColDef}
+            onGridReady={(params) => {
+              params.api.sizeColumnsToFit();
+              params.columnApi.autoSizeColumns();
+            }}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

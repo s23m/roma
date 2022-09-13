@@ -10,7 +10,7 @@ const convertProcedureData = (data) =>
         name: procedure.resource.code.text,
       }));
 
-const Procedures = ({ patientID, setCountCallback }) => {
+const Procedures = ({ patientID }) => {
   const [rowData, setRowData] = useState([]);
   const gridStyle = useMemo(() => ({ height: '30vh', width: '60vw' }), []);
   const defaultColDef = {
@@ -31,23 +31,27 @@ const Procedures = ({ patientID, setCountCallback }) => {
       console.log('Procedures response:', response);
       const data = convertProcedureData(response);
       setRowData(data);
-      setCountCallback(data.length);
     });
-  }, [patientID, setCountCallback]);
+  }, [patientID]);
 
   return (
     <div>
-      <div className="ag-theme-balham-dark" style={gridStyle}>
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={rowData}
-          defaultColDef={defaultColDef}
-          onGridReady={(params) => {
-            params.api.sizeColumnsToFit();
-            params.columnApi.autoSizeColumns();
-          }}
-        />
-      </div>
+      <p>Count: {rowData.length}</p>
+      {rowData.length > 0 ? (
+        <div className="ag-theme-balham-dark" style={gridStyle}>
+          <AgGridReact
+            columnDefs={columnDefs}
+            rowData={rowData}
+            defaultColDef={defaultColDef}
+            onGridReady={(params) => {
+              params.api.sizeColumnsToFit();
+              params.columnApi.autoSizeColumns();
+            }}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Spinner } from 'reactstrap';
 import '../stylesheets/PatientInfoBasicCard.css';
-import '../stylesheets/PatientInfo.css';
 
-const PatientInfoBasicCard = ({ patientInfo, id }) => {
+const PatientInfoBasicCard = ({ patientInfo }) => {
   const [patientBasicInfo, setPatientBasicInfo] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +28,7 @@ const PatientInfoBasicCard = ({ patientInfo, id }) => {
   return loading ? (
     <Spinner />
   ) : (
-    <div class="card bg-dark">
+    <div class="card bg-dark basic-info-card">
       <div class="card-header">Basic info</div>
       <table class="table table-dark table-borderless">
         <tbody>
