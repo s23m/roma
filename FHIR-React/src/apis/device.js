@@ -9,3 +9,9 @@ export const getDevice = async (deviceId) => {
   const response = await axios.get(fullUrl);
   return response.data;
 };
+
+export const getDeviceName = async (deviceReference) => {
+  const fullUrl = `${BASE_URL}/${deviceReference}`;
+  const response = await axios.get(fullUrl);
+  return response.data.deviceName[0].name;
+};

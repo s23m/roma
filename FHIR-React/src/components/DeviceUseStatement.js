@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { getDevice } from '../apis/device';
+import { getDevice, getDeviceName } from '../apis/device';
 import { getDeviceUseStatement } from '../apis/deviceUseStatement';
 import { AgGridReact } from 'ag-grid-react';
 
 // Test patient ID: 2913418
 const convertEntry = (entries) => {
+  
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
+    // const deviceName = '';
+    // getDevice(resource.id).then(response => {
+    //   deviceName = response.deviceName[0].name;
+    // });
     return {
       id: resource.device? resource.device.reference.split('/')[1] : '',
-      name: '000',
+      name: getDeviceName(resource.device.reference).then(value => {
+        console.log('value', value);
+      }),
       derivedFrom: resource.derivedFrom? resource.derivedFrom[0].reference : '',
       source: resource.source? resource.source.reference : '',
     }
