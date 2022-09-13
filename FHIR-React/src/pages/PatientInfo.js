@@ -6,7 +6,9 @@ import AllergyIntolerance from '../components/AllergyIntolerance';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
+import '../stylesheets/App.css';
 import Procedures from '../components/Procedures';
+import PatientInfoBasicCard from '../components/PatientInfoBasicCard';
 
 /**
  * A function that checks the validity of the value before passing to Client side.
@@ -17,42 +19,60 @@ import Procedures from '../components/Procedures';
  */
 const getValue = (data, dataType = undefined) => {
   if (dataType === 'communication' && data !== undefined) {
-    var communication = [];
-    data.forEach(
-      (element) => (communication = communication.concat([element.language.coding[0].display]))
-    );
-    return JSON.stringify(communication);
+    const validCommunications = data.filter((element) => !!element.language.coding);
+
+    const communications = validCommunications.map((element) => element.language.coding[0].display);
+
+    return JSON.stringify(communications);
   }
   if (data !== undefined) {
     if (typeof data === 'object') return JSON.stringify(data);
     return data;
   }
-  return 'n/a';
+  return 'N/A';
 };
 
 const convertData = (patientData) => {
   // See patient data structure here: https://www.hl7.org/fhir/patient.html#patient
   return [
-    { dataType: 'identifier', value: getValue(patientData.identifier) },
+    {
+      dataType: 'identifier',
+      value: getValue(patientData.identifier),
+    },
     { dataType: 'active', value: getValue(patientData.active) },
     { dataType: 'name', value: getValue(patientData.name) },
     { dataType: 'telecom', value: getValue(patientData.telecom) },
     { dataType: 'gender', value: getValue(patientData.gender) },
-    { dataType: 'birthDate', value: getValue(patientData.birthDate) },
+    {
+      dataType: 'birthDate',
+      value: getValue(patientData.birthDate),
+    },
     { dataType: 'deceased', value: getValue(patientData.deceased) },
     { dataType: 'address', value: getValue(patientData.address) },
-    { dataType: 'maritalStatus', value: getValue(patientData.maritalStatus) },
-    { dataType: 'multipleBirth', value: getValue(patientData.multipleBirth) },
+    {
+      dataType: 'maritalStatus',
+      value: getValue(patientData.maritalStatus),
+    },
+    {
+      dataType: 'multipleBirth',
+      value: getValue(patientData.multipleBirth),
+    },
     { dataType: 'photo', value: getValue(patientData.photo) },
     { dataType: 'contact', value: getValue(patientData.contact) },
-    { dataType: 'communication', value: getValue(patientData.communication, 'communication') },
-    // { dataType: 'meta', value: getValue(JSON.stringify(patientData.meta)) }, // Do we need to display meta?
-    { dataType: 'resourceType', value: getValue(patientData.resourceType) },
+    {
+      dataType: 'communication',
+      value: getValue(patientData.communication, 'communication'),
+    },
+    {
+      dataType: 'resourceType',
+      value: getValue(patientData.resourceType),
+    },
   ];
 };
 
 const PatientInfo = () => {
   const { id } = useParams();
+  const [patientData, setPatientData] = useState({});
   // ag-grid-table variables
   const [procedureCount, setProcedureCount] = useState(0);
   const [rowData, setRowData] = useState([]);
@@ -74,6 +94,7 @@ const PatientInfo = () => {
     getPatient(id).then((response) => {
       console.log('Patient Response:', response);
       const data = convertData(response);
+      setPatientData(response);
       setRowData(data);
     });
   }, [id]);
@@ -86,7 +107,8 @@ const PatientInfo = () => {
 
   return (
     <div>
-      <h3>Patient ID ⟨ {id} ⟩</h3>
+      <h3>Patient ID: {id}</h3>
+      <PatientInfoBasicCard patientInfo={patientData} id={id}></PatientInfoBasicCard>
       <div className="ag-theme-balham-dark" style={gridStyle}>
         <AgGridReact
           columnDefs={columnDefs}

@@ -1,0 +1,3 @@
+.borderless-card {
+    --bs-card-border-width: 0px !important;
+}

@@ -126,18 +126,16 @@ const Patients = () => {
     }
   };
 
+  const searchBar = SearchBar({
+    placeholder: 'Enter search query',
+    onSubmit: onSearchSubmit,
+    options: searchTypes,
+  });
+
   return (
     <div>
-      <p className="page-heading">Search for patient record</p>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <SearchBar
-          placeholder={'Enter search query'}
-          onSubmit={onSearchSubmit}
-          options={searchTypes}
-        />
-      )}
+      <h3>Search for patient records</h3>
+      {loading ? <Spinner /> : searchBar}
 
       <p>{notification}</p>
 

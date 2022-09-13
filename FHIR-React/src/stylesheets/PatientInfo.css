@@ -1,13 +1,11 @@
-h3 {
-    padding-top: 10px;
-    padding-left: 2em;
-    text-align: left;
-}
-
 h4 {
     padding-top: 10px;
     padding-left: 4%;
     text-align: left;
+}
+
+.card-header {
+    font-size: 1.5rem;
 }
 
 .PatientInfo-table, th, td {
