@@ -5,6 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 import AllergyIntolerance from '../components/AllergyIntolerance';
 import MedicationStatement from '../components/MedicationStatement';
 import ImmunizationRecommendation from '../components/ImmunizationRecommendation';
+import DeviceUseStatement from '../components/DeviceUseStatement';
 
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
@@ -53,7 +54,7 @@ const convertData = (patientData) => {
     }
   }
   const getAddress = (address) => {
-    const addressString = [];
+    const addressString = [];   
     if (address === undefined) return;
     if (address !== undefined) {
       address.forEach((element) => {
@@ -134,6 +135,8 @@ const PatientInfo = () => {
       <MedicationStatement patientId={id} />
       <h4>Immunization Recommendation</h4>
       <ImmunizationRecommendation patientId={id} />
+      <h4>Device Use Statement</h4>
+      <DeviceUseStatement patientId={id} />
     </div>
   );
 };
