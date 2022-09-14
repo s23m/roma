@@ -206,17 +206,22 @@
 
 				@*Allergy tab*@
 				<RadzenTabsItem Text="Known Allergies">
-					<PatientAllergy PatientID=@PatientID></PatientAllergy>
+					<Allergies PatientID=@PatientID></Allergies>
 				</RadzenTabsItem>
 
 				@*Medications tab*@
 				<RadzenTabsItem Text="Medication Statements">
-					<PatientMedStatement PatientID=@PatientID></PatientMedStatement>
+					<MedStatements PatientID=@PatientID></MedStatements>
 				</RadzenTabsItem>
 
 				@*Conditions tab*@
 				<RadzenTabsItem Text="Conditions">
-					<PatientCondition PatientID=@PatientID></PatientCondition>
+					<Conditions PatientID=@PatientID></Conditions>
+				</RadzenTabsItem>
+
+				@*Diagnostic Report tab*@
+				<RadzenTabsItem Text="Diagnostic Reports">
+					<DiagnosticReports PatientID=@PatientID></DiagnosticReports>
 				</RadzenTabsItem>
 
 			</Tabs>

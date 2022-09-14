@@ -46,13 +46,13 @@
 		<RadzenDataGridColumn TItem="Patient" Property="Name[0].Family" Title="Name">
 			<Template Context="patient">
 				@*<a href="@()">@patient.Name[0].ToString()</a>*@
-				<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; "  Class="" Click=@(() => OpenOrder(patient.Id)) Text="@(patient.Name[0].ToString())" />
-					</Template>
+				<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; " Class="" Click=@(() => OpenOrder(patient.Id)) Text="@(patient.Name[0].ToString())" />
+			</Template>
 		</RadzenDataGridColumn>
 		<RadzenDataGridColumn TItem="Patient" Property="Gender" Title="Gender" />
 		<RadzenDataGridColumn TItem="Patient" Property="BirthDate" Title="Birth Date" />
 		<RadzenDataGridColumn TItem="Patient" Property="Id" Title="ID">
-			<Template Context="patient"><a  href="@($"{serverURL}/Patient/{patient.Id}")">@patient.Id</a></Template>
+			<Template Context="patient"><a href="@($"{serverURL}/Patient/{patient.Id}")">@patient.Id</a></Template>
 		</RadzenDataGridColumn>
 	</Columns>
 </RadzenDataGrid>
@@ -69,9 +69,17 @@
 	{
 		await DialogService.OpenAsync<PatientQuickInfo>($"Patient {patientID}",
 				new Dictionary<string, object>() { { "PatientID", patientID } },
-				new DialogOptions { Width = "700px", Height = "530px", Resizable = true, Draggable = true, 
-				CloseDialogOnOverlayClick = true, CloseDialogOnEsc = true, Style="color: #e2e8f0" });
-			}
+				new DialogOptions
+					{
+						Width = "700px",
+						Height = "380px",
+						Resizable = true,
+						Draggable = true,
+						CloseDialogOnOverlayClick = true,
+						CloseDialogOnEsc = true,
+						Style = "color: #e2e8f0"
+					});
+	}
 
 
 
@@ -86,7 +94,7 @@
 	private string inputPatientName = "";
 	private int maxNumOfEntries = 30;
 	private string errorMessage = "";
-	
+
 	//stores all the results
 	private Hl7.Fhir.Model.Patient[]? searchResults;
 	Bundle results = new Bundle();

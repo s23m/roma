@@ -58,9 +58,12 @@
 						@*Needs error handling*@
 						@if (medstatement.ReasonCode != null)
 						{
-							@if (medstatement.ReasonCode.Count > 0)
+							@foreach (var reason in medstatement.ReasonCode)
 							{
-								<a>@medstatement.ReasonCode.First().Text</a>
+								@if (reason.Text != null)
+								{
+									<a>@reason.Text</a>
+								}
 							}
 						}
 					</Template>

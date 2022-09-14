@@ -108,26 +108,6 @@
 			for (int i = 0; i < search.Entry.Count; i++)
 			{
 				results[i] = (Condition)search.Entry[i].Resource;
-				Console.WriteLine(results[i].Id);
-				Console.WriteLine(results[i].Code.Coding.First().Display);
-				Console.WriteLine(results[i].Code.Coding.First().Code);
-
-				//check whether there is a note first, then grab text
-				Console.WriteLine(results[i].Note);
-
-
-				//create date handler to handle
-				// dateTime
-				// Age
-				// Period
-				// Range
-				// string
-				Console.WriteLine(results[i].Onset);
-
-				//handle no data
-				Console.WriteLine(results[i].ClinicalStatus);
-
-				Console.WriteLine();
 			}
 		}
 		catch (Exception ex)
@@ -144,8 +124,6 @@
 			);
 			Console.WriteLine("Error info:" + ex.Message);
 		}
-
-
 	}
 }
 
