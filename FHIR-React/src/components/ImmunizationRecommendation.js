@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { extractContent } from '../pages/PatientInfo';
 import { getImmunizationRecommendation } from '../apis/immunizationRecommendation';
 import { AgGridReact } from 'ag-grid-react';
 
