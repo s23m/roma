@@ -43,6 +43,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50UXVpY2tJbmZvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/TypeHandlers/CodeableConceptHandler.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xUeXBlSGFuZGxlcnNcQ29kZWFibGVDb25jZXB0SGFuZGxlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/TypeHandlers/DateHandler.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xUeXBlSGFuZGxlcnNcRGF0ZUhhbmRsZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

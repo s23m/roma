@@ -2,7 +2,7 @@
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
-@using FHIRBlazor.CustomComponents;
+@using FHIRBlazor.CustomComponents.TypeHandlers;
 
 @inject Radzen.DialogService dialogService
 @inject NotificationService NotificationService
@@ -19,25 +19,22 @@
 					<Template Context="allergy">
 						@if (allergy.Code != null)
 						{
-							@if (allergy.Code.Coding.Count > 0)
-							{
-								<a>@allergy.Code.Coding.First().Display</a>
-							}
+							<CodeableConceptHandler Data=allergy.Code />
 						}
 						else if (allergy.Reaction.Count > 0)
 						{
 							@if (allergy.Reaction.First().Substance != null)
 							{
-								<a>@allergy.Reaction.First().Substance.Text</a>
+								<CodeableConceptHandler Data=allergy.Reaction.First().Substance />
 							}
 							else
 							{
-								<a>No info</a>
+								<a></a>
 							}
 						}
 						else
 						{
-							<a>No info</a>
+							<a></a>
 						}
 					</Template>
 				</RadzenDataGridColumn>
@@ -62,7 +59,7 @@
 						}
 						else
 						{
-							<a>No info</a>
+							<a></a>
 						}
 					</Template>
 				</RadzenDataGridColumn>
@@ -75,11 +72,15 @@
 						}
 						else
 						{
-							<a>No info</a>
+							<a></a>
 						}
 					</Template>
 				</RadzenDataGridColumn>
-				<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" Filterable="false" Sortable="false" />
+				<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" Filterable="false" Sortable="false">
+					<Template Context="allergy">
+						<DateHandler Data=allergy.Onset />
+					</Template>
+				</RadzenDataGridColumn>
 				<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Id" Title="ID">
 					<Template Context="allergy"><a href="@($"{serverURL}/AllergyIntolerance/{allergy.Id}")">@allergy.Id</a></Template>
 				</RadzenDataGridColumn>

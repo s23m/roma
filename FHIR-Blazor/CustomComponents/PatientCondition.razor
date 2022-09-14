@@ -2,7 +2,7 @@
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
-@using FHIRBlazor.CustomComponents;
+@using FHIRBlazor.CustomComponents.TypeHandlers
 
 @inject Radzen.DialogService dialogService
 @inject NotificationService NotificationService
@@ -18,84 +18,49 @@
 
 				<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Condition" Filterable="false" Sortable="false">
 					<Template Context="condition">
-						<a>@condition.Code.Coding.First().Display</a>
+						<CodeableConceptHandler Data=condition.Code />
+					</Template>
+				</RadzenDataGridColumn>
+
+				<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Text" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						<a>@condition.Code.Text</a>
 					</Template>
 				</RadzenDataGridColumn>
 
 				<RadzenDataGridColumn TItem="Condition" Property="Onset" Title="Onset" Filterable="false" Sortable="false">
 					<Template Context="condition">
-						@if (condition.Onset.TypeName == "Age")
-						{
-							var age = (Age)condition.Onset;
-							<a>Age @age.Value</a>
-						}
-						else if (condition.Onset.TypeName == "Period")
-						{
-							var age = (Period)condition.Onset;
-							<a>@age.Start</a>
-						}
-						else if (condition.Onset.TypeName == "Range")
-						{
-							var age = (Hl7.Fhir.Model.Range)condition.Onset;
-							<a>@age.Low</a>
-						}
-						else
-						{
-							<a>@condition.Onset</a>
-						}
+						<DateHandler Data=condition.Onset />
 					</Template>
 				</RadzenDataGridColumn>
 
 				<RadzenDataGridColumn TItem="Condition" Property="Severity" Title="Severity" Filterable="false" Sortable="false">
 					<Template Context="condition">
-						@if (condition.Severity != null)
-						{
-							var temp = (CodeableConcept)condition.Severity;
-							<a>@temp.Text</a>
-						}
-						else
-						{
-							<a></a>
-						}
+						<CodeableConceptHandler Data=condition.Severity />
 					</Template>
 				</RadzenDataGridColumn>
 
 				<RadzenDataGridColumn TItem="Condition" Property="ClinicalStatus" Title="ClinicalStatus" Filterable="false" Sortable="false">
 					<Template Context="condition">
-						@if (condition.ClinicalStatus != null)
-						{
-							var temp = (CodeableConcept)condition.ClinicalStatus;
-							<a>@temp.Text</a>
-						}
-						else
-						{
-							<a></a>
-						}
+						<CodeableConceptHandler Data=condition.ClinicalStatus />
 					</Template>
 				</RadzenDataGridColumn>
 
 				<RadzenDataGridColumn TItem="Condition" Property="Category" Title="Category" Filterable="false" Sortable="false">
 					<Template Context="condition">
-						@if (condition.Category != null)
+						@foreach (var category in condition.Category)
 						{
-							@if (condition.Category.Count > 0)
-							{
-								var temp = (CodeableConcept)condition.Category.First();
-								<a>@temp.Text</a>
-							}
-						}
-						else
-						{
-							<a></a>
+							<CodeableConceptHandler Data=category />
+							<a> </a>
 						}
 					</Template>
 				</RadzenDataGridColumn>
 
-				<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Code" Filterable="false" Sortable="false">
+				@*<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Code" Filterable="false" Sortable="false">
 					<Template Context="condition">
 						<a>@condition.Code.Coding.First().Code</a>
 					</Template>
-				</RadzenDataGridColumn>
+				</RadzenDataGridColumn>*@
 
 				<RadzenDataGridColumn TItem="Condition" Property="Id" Title="ID">
 					<Template Context="condition"><a href="@($"{serverURL}/Condition/{condition.Id}")">@condition.Id</a></Template>

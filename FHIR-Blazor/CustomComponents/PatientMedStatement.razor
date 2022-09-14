@@ -2,7 +2,7 @@
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
-@using FHIRBlazor.CustomComponents;
+@using FHIRBlazor.CustomComponents.TypeHandlers;
 
 @inject Radzen.DialogService dialogService
 @inject NotificationService NotificationService
@@ -21,13 +21,12 @@
 						@if (medstatement.Medication.TypeName == "CodeableConcept")
 						{
 							var temp = (CodeableConcept)medstatement.Medication;
-							<a>@temp.Coding.First().Display</a>
+							<CodeableConceptHandler Data=temp/>
 						}
 						else
 						{
 							var temp = (ResourceReference)medstatement.Medication;
-							@*Console.WriteLine(temp.Display);
-								Console.WriteLine(temp.Reference);*@
+
 							@if (temp.Reference.StartsWith("Medication"))
 							{
 								@*Due to med reference, open dialogue to view medication specifically*@
@@ -42,8 +41,16 @@
 				</RadzenDataGridColumn>
 				<RadzenDataGridColumn TItem="MedicationStatement" Property="Dosage" Title="Dosage" Filterable="false" Sortable="false">
 					<Template Context="medstatement">
-						@*Needs error handling*@
-						<a>@medstatement.Dosage.First().Text</a>
+						@if (medstatement.Dosage != null)
+						{
+							@foreach (var doseage in medstatement.Dosage)
+							{
+								@if (doseage.Text != null)
+								{
+									<a>@doseage.Text</a>
+								}
+							}
+						}
 					</Template>
 				</RadzenDataGridColumn>
 				<RadzenDataGridColumn TItem="MedicationStatement" Property="ReasonCode" Title="Reason" Filterable="false" Sortable="false">
