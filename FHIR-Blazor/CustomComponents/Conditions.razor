@@ -1,0 +1,132 @@
+﻿@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Rest;
+@using Hl7.Fhir.Serialization;
+@using FHIRBlazor.Pages;
+@using FHIRBlazor.CustomComponents.TypeHandlers
+
+@inject Radzen.DialogService dialogService
+@inject NotificationService NotificationService
+@inject NavigationManager NavManager
+
+
+<ErrorBoundary>
+	<ChildContent>
+		<RadzenDataGrid Data="@results" TItem="Condition" PageSize="10" AllowPaging="true"
+						AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
+						PagerHorizontalAlign="HorizontalAlign.Center">
+			<Columns>
+
+				<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Condition" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						<CodeableConceptHandler Data=condition.Code />
+					</Template>
+				</RadzenDataGridColumn>
+
+				<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Text" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						<a>@condition.Code.Text</a>
+					</Template>
+				</RadzenDataGridColumn>
+
+				<RadzenDataGridColumn TItem="Condition" Property="Onset" Title="Onset" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						<DateHandler Data=condition.Onset />
+					</Template>
+				</RadzenDataGridColumn>
+
+				<RadzenDataGridColumn TItem="Condition" Property="Severity" Title="Severity" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						<CodeableConceptHandler Data=condition.Severity />
+					</Template>
+				</RadzenDataGridColumn>
+
+				<RadzenDataGridColumn TItem="Condition" Property="ClinicalStatus" Title="ClinicalStatus" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						<CodeableConceptHandler Data=condition.ClinicalStatus />
+					</Template>
+				</RadzenDataGridColumn>
+
+				<RadzenDataGridColumn TItem="Condition" Property="Category" Title="Category" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						@foreach (var category in condition.Category)
+						{
+							<CodeableConceptHandler Data=category />
+							<a> </a>
+						}
+					</Template>
+				</RadzenDataGridColumn>
+
+				@*<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Code" Filterable="false" Sortable="false">
+					<Template Context="condition">
+						<a>@condition.Code.Coding.First().Code</a>
+					</Template>
+				</RadzenDataGridColumn>*@
+
+				<RadzenDataGridColumn TItem="Condition" Property="Id" Title="ID">
+					<Template Context="condition"><a href="@($"{serverURL}/Condition/{condition.Id}")">@condition.Id</a></Template>
+				</RadzenDataGridColumn>
+			</Columns>
+
+		</RadzenDataGrid>
+	</ChildContent>
+	<ErrorContent>
+		<RadzenCard class="m-3">
+			<h3 class="h5"><b>There was an error</b></h3>
+		</RadzenCard>
+	</ErrorContent>
+</ErrorBoundary>
+
+
+@code {
+	[Parameter] public string PatientID { get; set; }
+	private Bundle search = new Bundle();
+	private Hl7.Fhir.Model.Condition[]? results;
+
+	void ShowError(NotificationMessage message)
+	{
+		NotificationService.Notify(message);
+		Console.WriteLine($"{message.Severity} notification");
+	}
+	private string errorMessage = "";
+
+	private string serverURL = "http://hapi.fhir.org/baseR4";
+
+	protected override void OnInitialized()
+	{
+		FhirClient client = new FhirClient(serverURL);
+
+		//Medication Information
+		var sParams = new SearchParams()
+			.Where("subject=" + PatientID)
+			.LimitTo(100);
+		try
+		{
+			search = client.Search<Condition>(sParams);
+			results = new Condition[search.Entry.Count];
+
+			//for every search result
+			for (int i = 0; i < search.Entry.Count; i++)
+			{
+				results[i] = (Condition)search.Entry[i].Resource;
+			}
+		}
+		catch (Exception ex)
+		{
+			errorMessage = ex.Message;
+			ShowError(new NotificationMessage
+				{
+					Style = "position: relative; top: 1%; left: 60%; transform: translate(-35%, 35%); width: 60%; max-width: 3000px;",
+					Severity = NotificationSeverity.Error,
+					Summary = "There has been an error",
+					Detail = errorMessage,
+					Duration = 40000
+				}
+			);
+			Console.WriteLine("Error info:" + ex.Message);
+		}
+	}
+}
+
+
+
+

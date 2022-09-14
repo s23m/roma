@@ -1,0 +1,52 @@
+﻿@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Rest;
+@using Hl7.Fhir.Serialization;
+@using FHIRBlazor.Pages;
+
+@*This component handles displaying the onset dates in the tables
+
+	This was implemented due to the varying nature of dates
+*@
+
+<ErrorBoundary>
+	<ChildContent>
+		@if (Data != null)
+		{
+			@if (Data.TypeName == "Age")
+			{
+				var age = (Age)Data;
+				<a>Age @age.Value</a>
+			}
+			else if (Data.TypeName == "Period")
+			{
+				var period = (Period)Data;
+				<a>@period.Start</a>
+			}
+			else if (Data.TypeName == "Range")
+			{
+				var range = (Hl7.Fhir.Model.Range)Data;
+				<a>@range.Low</a>
+			}
+			else
+			{
+				<a>@Data</a>
+			}
+		} else
+		{
+			<a></a>
+		}
+	</ChildContent>
+	<ErrorContent>
+		<a>error</a>
+	</ErrorContent>
+</ErrorBoundary>
+
+
+@code {
+	[Parameter] public DataType Data { get; set; }
+
+}
+
+
+
+

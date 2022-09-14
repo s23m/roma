@@ -9,12 +9,12 @@
 
 @*https://blazor.radzen.com/dialog*@
 
-<div class="row">
-	<div class="col-lg-6 d-flex">
+<div class="row mb-4">
+	<div class="col-lg-6 d-flex ">
 		<RadzenCard Style="width: 100%; overflow: hidden;">
 			<h3 class="h5">Info</h3>
 			<div class="d-flex flex-row">
-				<RadzenImage Path="" Class="rounded-circle float-left mt-1 mr-3" Style="width: 90px; height: 90px;" />
+				<RadzenImage Path="https://cdn-icons-png.flaticon.com/512/149/149071.png" Class="rounded-circle float-left mt-1 mr-3" Style="width: 90px; height: 90px;" />
 				<div>
 					<div>Name</div>
 					<b>@patient.Name[0]</b>
@@ -41,31 +41,12 @@
 							<b>Unknown</b>
 						</ErrorContent>
 					</ErrorBoundary>
-
-
 				</div>
 			</div>
 		</RadzenCard>
 	</div>
 </div>
-<div class="row my-4">
-	<div class="col-md-12">
-		<RadzenCard>
-			<h3 class="h5">
-				Patient @PatientID details table (n/a)
-				<RadzenBadge BadgeStyle="BadgeStyle.Secondary" Text="Healthy" Class="float-right" />
-			</h3>
-			@*<RadzenDataGrid AllowFiltering="true" AllowPaging="true" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-				Data="@(orderDetails.Where(o => o.OrderID == OrderID))" TItem="OrderDetail" ColumnWidth="200px" Class="mt-3">
-				<Columns>
-				<RadzenDataGridColumn TItem="OrderDetail" Property="Quantity" Title="Quantity" />
-				<RadzenDataGridColumn TItem="OrderDetail" Property="Order.OrderDate" Title="Order Date" />
-				<RadzenDataGridColumn TItem="OrderDetail" Property="Discount" Title="Discount" FormatString="{0:P}" />
-				</Columns>
-				</RadzenDataGrid>*@
-		</RadzenCard>
-	</div>
-</div>
+
 <div class="row">
 	<div class="col-md-12 text-right">
 		<RadzenButton Click="@(()=>NavManager.NavigateTo("/patientinfo/"+PatientID))" ButtonStyle="ButtonStyle.Secondary" Text="More Info" Style="width: 150px" />
@@ -75,7 +56,6 @@
 
 @code {
 	[Parameter] public string PatientID { get; set; }
-	private Hl7.Fhir.Model.HumanName patientName;
 	private Patient patient;
 
 	protected override void OnInitialized()
@@ -84,7 +64,6 @@
 		//Read the current version of a Patient resource
 		patient = client.Read<Patient>("Patient/" + PatientID);
 		Console.WriteLine(patient.Name[0]);
-		patientName = patient.Name[0];
 	}
 }
 
