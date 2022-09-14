@@ -1,6 +1,7 @@
 .search-bar-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
 }
 
 .searchInput {
@@ -29,7 +30,7 @@
 }
 
 .search-selector {
-  width: 50% !important;
+  width: 30% !important;
 }
 
 .search input {

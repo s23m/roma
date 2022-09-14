@@ -1,0 +1,10 @@
+.card-nav {
+    font-size: 1.2rem !important;
+    color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.active {
+    color:rgb(255, 255, 255) !important;
+    background-color: rgb(33, 37, 41) !important;
+    border-color: rgb(33, 37, 41) !important;
+}

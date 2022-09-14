@@ -1,0 +1,7 @@
+.borderless-card {
+    --bs-card-border-width: 0px !important;
+}
+
+.basic-info-card {
+    margin-bottom: 2rem;
+}

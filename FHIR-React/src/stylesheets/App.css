@@ -1,3 +1,9 @@
+h3 {
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+    text-align: center;
+}
+
 .App {
   text-align: center;
   background-color: #282c34;
