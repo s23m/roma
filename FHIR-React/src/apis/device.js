@@ -23,9 +23,8 @@ export const getDevice = async (deviceId) => {
 
 
 /**
- * 
- * @param {*} deviceReference E.g. "Device/123123123"
- * @returns 
+ * @param {*} entry An entry from DeviceUseStatement
+ * @returns Promise Object of the input entry's device name
  */
 export const getDeviceNames = (entry) => {
   const deviceReference = entry.resource.device.reference;
