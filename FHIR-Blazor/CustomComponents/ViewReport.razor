@@ -47,13 +47,13 @@
 							PagerHorizontalAlign="HorizontalAlign.Center">
 				<Columns>
 
-					<RadzenDataGridColumn TItem="Observation" Width=60% Property="Code" Title="Code">
+					<RadzenDataGridColumn TItem="Observation" Width=60% Property="Code" Title="Code" Filterable="false" Sortable="false">
 						<Template Context="observation">
 							<CodeableConceptHandler Data=observation.Code />
 						</Template>
 					</RadzenDataGridColumn>
 
-					<RadzenDataGridColumn TItem="Observation" Property="Category" Title="Category">
+					<RadzenDataGridColumn TItem="Observation" Property="Category" Title="Category" Filterable="false" Sortable="false">
 						<Template Context="observation">
 							@foreach (var category in observation.Category)
 							{
@@ -68,7 +68,7 @@
 						<Template Context="observation"><CodeableConceptHandler Data=observation.Value/></Template>
 					</RadzenDataGridColumn>*@
 
-					<RadzenDataGridColumn TItem="Observation" Property="Issued" Title="IssueDate">
+					<RadzenDataGridColumn TItem="Observation" Property="Issued" Title="IssueDate" Filterable="false" Sortable="false">
 						<Template Context="observation">@observation.Issued</Template>
 					</RadzenDataGridColumn>
 
@@ -101,12 +101,9 @@
 
 	private string serverURL = "http://hapi.fhir.org/baseR4";
 
-
 	protected override void OnInitialized()
 	{
 		FhirClient client = new FhirClient(serverURL);
-
-
 		try
 		{
 			report = client.Read<DiagnosticReport>("DiagnosticReport/" + ReportID);
@@ -134,9 +131,6 @@
 			//);
 			Console.WriteLine("Error info:");
 		}
-
-
-
 	}
 }
 
