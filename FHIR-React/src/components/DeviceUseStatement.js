@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { getDevice, getDeviceName } from '../apis/device';
+import { getDeviceNames } from '../apis/device';
 import { getDeviceUseStatement } from '../apis/deviceUseStatement';
 import { AgGridReact } from 'ag-grid-react';
 
-// Test patient ID: 2913418
-const convertEntry = (entries) => {
-  
-  const rowData = entries.map((entry) => {
+// Test patient ID: http://localhost:3000/patients/2913418
+
+const convertEntry = (entries, deviceNames) => {
+  const rowData = entries.map( (entry, index) => {
     const resource = entry.resource;
-    // const deviceName = '';
-    // getDevice(resource.id).then(response => {
-    //   deviceName = response.deviceName[0].name;
-    // });
     return {
       id: resource.device? resource.device.reference.split('/')[1] : '',
-      name: getDeviceName(resource.device.reference).then(value => {
-        console.log('value', value);
-      }),
+      name: deviceNames[index],
       derivedFrom: resource.derivedFrom? resource.derivedFrom[0].reference : '',
       source: resource.source? resource.source.reference : '',
     }
@@ -26,7 +20,7 @@ const convertEntry = (entries) => {
 
 export default function DeviceUseStatement({ patientId }) {
   const [total, setTotal] = useState('-');
-  const [rowData, setRowData] = useState([]);
+  const [rowData, setRowData] = useState();
 
   // ag-grid-table variables
   const gridOptions = {
@@ -50,14 +44,20 @@ export default function DeviceUseStatement({ patientId }) {
 
   // Get and update patient's ImmunizationRecommendation data
   useEffect(() => {
-    getDeviceUseStatement(patientId).then((response) => {
-      console.log('DeviceUseStatement:', response);
-      setTotal(response.total)
-      if (response.total !== 0) {
-        const data = convertEntry(response.entry);
-        setRowData(data);
-      }
-    });
+    getDeviceUseStatement(patientId)
+      .then((response) => {
+        console.log('DeviceUseStatement:', response);
+        setTotal(response.total)
+
+        // set data for ag-grid
+        if (response.total !== 0) {
+          Promise.all(response.entry.map(getDeviceNames))
+          .then( deviceNames => {
+            const data = convertEntry(response.entry, deviceNames)
+            setRowData(data)
+          })
+        }
+      })
   }, [patientId]);
 
   return (
