@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Spinner } from 'reactstrap';
 import { getAllergyIntolerance } from '../apis/allergyIntolerance';
 import { AgGridReact } from 'ag-grid-react';
 import { getValue } from '../utils';
@@ -28,6 +29,7 @@ const convertEntry = (response) => {
 // };
 
 export default function AllergyIntolerance({ patientID }) {
+  const [loading, setLoading] = useState(true);
   // ag-grid-table variables
   const [rowData, setRowData] = useState([]);
   const gridStyle = useMemo(() => ({ height: '30vh', width: '60vw' }), []);
@@ -45,14 +47,19 @@ export default function AllergyIntolerance({ patientID }) {
   ];
 
   useEffect(() => {
+    setLoading(true);
+
     getAllergyIntolerance(patientID).then((response) => {
       console.log('AllergyIntolerance Response:', response);
-      const data = convertEntry(response.entry);
+      const data = convertEntry(response);
       setRowData(data);
+      setLoading(false);
     });
   }, [patientID]);
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div>
       <p>Count: {rowData.length}</p>
       {rowData.length > 0 ? (

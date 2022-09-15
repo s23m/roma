@@ -1,5 +1,6 @@
 import { AgGridReact } from 'ag-grid-react';
 import { useState, useMemo, useEffect } from 'react';
+import { Spinner } from 'reactstrap';
 import { getPatientProcedures } from '../apis/procedures';
 
 const convertProcedureData = (data) =>
@@ -11,6 +12,7 @@ const convertProcedureData = (data) =>
       }));
 
 const Procedures = ({ patientID }) => {
+  const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
   const gridStyle = useMemo(() => ({ height: '30vh', width: '60vw' }), []);
   const defaultColDef = {
@@ -27,14 +29,19 @@ const Procedures = ({ patientID }) => {
   ];
 
   useEffect(() => {
+    setLoading(true);
+
     getPatientProcedures(patientID).then((response) => {
       console.log('Procedures response:', response);
       const data = convertProcedureData(response);
       setRowData(data);
+      setLoading(false);
     });
   }, [patientID]);
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div>
       <p>Count: {rowData.length}</p>
       {rowData.length > 0 ? (
