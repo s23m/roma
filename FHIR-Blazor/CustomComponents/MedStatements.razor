@@ -18,25 +18,29 @@
 				<RadzenDataGridColumn TItem="MedicationStatement" Property="Medication" Title="Medication" Filterable="false" Sortable="false">
 					<Template Context="medstatement">
 						@*This is to handle the two different datatypes for medication*@
-						@if (medstatement.Medication.TypeName == "CodeableConcept")
-						{
-							var temp = (CodeableConcept)medstatement.Medication;
-							<CodeableConceptHandler Data=temp/>
-						}
-						else
-						{
-							var temp = (ResourceReference)medstatement.Medication;
-
-							@if (temp.Reference.StartsWith("Medication"))
+						@if (medstatement.Medication != null)
+							@if (medstatement.Medication.TypeName == "CodeableConcept")
 							{
-								@*Due to med reference, open dialogue to view medication specifically*@
-								<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; " Class="" Text="View Medication" />
+								var temp = (CodeableConcept)medstatement.Medication;
+								<CodeableConceptHandler Data=temp />
+
 							}
 							else
 							{
-								<a>@temp.Display</a>
+
+								var temp = (ResourceReference)medstatement.Medication;
+
+								@if (temp.Reference != null && temp.Reference.StartsWith("Medication"))
+								{
+									@*Due to med reference, open dialogue to view medication specifically*@
+									<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; " Class="" Text="View Medication" />
+								}
+								else
+								{
+									<a>@temp.Reference</a>
+								}
+
 							}
-						}
 					</Template>
 				</RadzenDataGridColumn>
 				<RadzenDataGridColumn TItem="MedicationStatement" Property="Dosage" Title="Dosage" Filterable="false" Sortable="false">

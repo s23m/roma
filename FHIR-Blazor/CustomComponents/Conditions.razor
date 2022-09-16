@@ -24,7 +24,10 @@
 
 				<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Text" Filterable="false" Sortable="false">
 					<Template Context="condition">
-						<a>@condition.Code.Text</a>
+						@if (condition.Code != null)
+						{
+							<a>@condition.Code.Text</a>
+						}
 					</Template>
 				</RadzenDataGridColumn>
 
@@ -58,9 +61,9 @@
 
 				@*<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Code" Filterable="false" Sortable="false">
 					<Template Context="condition">
-						<a>@condition.Code.Coding.First().Code</a>
+					<a>@condition.Code.Coding.First().Code</a>
 					</Template>
-				</RadzenDataGridColumn>*@
+					</RadzenDataGridColumn>*@
 
 				<RadzenDataGridColumn TItem="Condition" Property="Id" Title="ID">
 					<Template Context="condition"><a href="@($"{serverURL}/Condition/{condition.Id}")">@condition.Id</a></Template>
