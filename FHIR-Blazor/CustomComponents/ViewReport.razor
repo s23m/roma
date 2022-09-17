@@ -106,9 +106,7 @@
 	}
 	else
 	{
-		<RadzenCard class="w-full">
-			<h3 class="h5"><b>Observations Loading....</b></h3>
-		</RadzenCard>
+		<Spinner />
 	}
 
 </div>
@@ -155,11 +153,12 @@
 			report = client.Read<DiagnosticReport>("DiagnosticReport/" + ReportID);
 
 			//https://stackoverflow.com/questions/61551404/in-blazor-how-to-call-a-function-at-page-load-event-name
-			//allows the page to render on its own thread so data doesn't stop it
+			//allows the page to render on its own thread so data retrieval doesn't pause it
 			await System.Threading.Tasks.Task.Delay(1);
+			Console.WriteLine("pre");
 
 			this.observations = await GetObservationData(report);
-
+			Console.WriteLine("post");
 		}
 		catch (Exception ex)
 		{
