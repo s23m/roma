@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { searchPatient } from '../apis/patient';
 import { Spinner } from 'reactstrap';
 import SearchBar from '../components/SearchBar';
+import { joeBlow } from '../mock-data/patients';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';
@@ -98,6 +99,7 @@ const Patients = () => {
       cellRenderer: (params) => createHyperlinkToPatientPage(params),
     },
   ];
+  const joeBlowData = convertData([{ resource: joeBlow }]);
   const [rowData, setRowData] = useState([
     {
       givenNames: 'Adam',
@@ -106,7 +108,7 @@ const Patients = () => {
       gender: 'male',
       id: 123126969,
     },
-    { givenNames: 'Joe', familyName: 'Blow', birthDate: '1979-09-06', gender: 'male', id: 1777777 },
+    ...joeBlowData,
   ]);
   const [notification, setNotification] = useState('');
   const [loading, setLoading] = useState(false);
@@ -156,4 +158,3 @@ const Patients = () => {
 };
 
 export default Patients;
-
