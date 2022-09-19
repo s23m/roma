@@ -1,5 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-bin
+FHIR-React/bin
 
 # dependencies
 /node_modules
