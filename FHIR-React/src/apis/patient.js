@@ -11,7 +11,7 @@ export const searchPatient = async (queryParam, queryValue) => {
 };
 
 export const getPatient = async (id) => {
-  if (id == joeBlowId) return joeBlow; // Need to use == here
+  if (id === joeBlowId) return joeBlow; // Need to use == here
   const fullUrl = `${PATIENT_URL}/${id}`;
   const response = await axios.get(fullUrl);
   return response.data;
