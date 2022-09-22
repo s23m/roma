@@ -9,7 +9,6 @@ import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';
 import '../stylesheets/App.css';
 
-const baseURL = 'patients';
 const convertData = (searchResults) => {
   const rowData = searchResults.map((patient) => {
     try {
@@ -35,7 +34,7 @@ const convertData = (searchResults) => {
 
 const createHyperlinkToPatientPage = (params) => {
   return (
-    <a href={`${baseURL}/${params.value}`} rel="noreferrer" target="_blank">
+    <a href={`${params.value}`} rel="noreferrer" target="_blank">
       {' '}
       {params.value}{' '}
     </a>
