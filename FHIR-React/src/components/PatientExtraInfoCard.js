@@ -2,6 +2,7 @@ import { bootstrap } from 'bootstrap'; // Need to keep this for tabs to work
 import '../stylesheets/PatientInfoAdditionalCard.css';
 import '../stylesheets/PatientInfoBasicCard.css';
 import '../stylesheets/PatientInfo.css';
+import ImmunizationRecommendation from './ImmunizationRecommendation';
 import PatientAdditionalInfo from './PatientAdditionalInfo';
 import AllergyIntolerance from './AllergyIntolerance';
 import Procedures from './Procedures';
@@ -74,6 +75,20 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
               Medication statement
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link card-nav"
+              id="immunization-recommendation-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#immunization-recommendation"
+              type="button"
+              role="tab"
+              aria-controls="immunization-recommendation"
+              aria-selected="false"
+            >
+              Immunization Recommendation
+            </button>
+          </li>
         </ul>
       </div>
       <div className="tab-content" id="myTabContent">
@@ -93,6 +108,9 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
         </div>
         <div className="tab-pane fade" id="medication-statement" role="tabpanel" aria-labelledby="medication-statement-tab">
           <MedicationStatement patientId={id} />
+        </div>
+        <div className="tab-pane fade" id="immunization-recommendation" role="tabpanel" aria-labelledby="immunization-recommendation-tab">
+          <ImmunizationRecommendation patientId={id} />
         </div>
       </div>
     </div>
