@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getImmunizationRecommendation } from '../apis/immunizationRecommendation';
+import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 
@@ -17,6 +18,7 @@ const convertEntry = (entries) => {
 };
 
 export default function ImmunizationRecommendation({ patientId }) {
+  const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState('-');
   const [rowData, setRowData] = useState([]);
 
@@ -31,9 +33,9 @@ export default function ImmunizationRecommendation({ patientId }) {
       editable: true,
     },
     columnDefs: [
-      { headerName: 'ID', field: 'id', width: 110 },
-      { headerName: 'Vaccine', field: 'vaccine' },
-      { headerName: 'Date', field: 'date' },
+      { headerName: 'ID', field: 'id', width: 200},
+      { headerName: 'Vaccine', field: 'vaccine', width: 400 },
+      { headerName: 'Date', field: 'date', width: 400  },
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),
@@ -41,6 +43,8 @@ export default function ImmunizationRecommendation({ patientId }) {
 
   // Get and update patient's ImmunizationRecommendation data
   useEffect(() => {
+    setLoading(true);
+
     getImmunizationRecommendation(patientId).then((response) => {
       console.log('ImmunizationRecommendation:', response);
       setTotal(response.total)
@@ -48,10 +52,13 @@ export default function ImmunizationRecommendation({ patientId }) {
         const data = convertEntry(response.entry);
         setRowData(data);
       }
+      setLoading(false);
     });
   }, [patientId]);
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div>
       <p>Total: {total}</p>
       <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
