@@ -55,7 +55,7 @@ const convertEntry = (entries) => {
 };
 
 
-export default function AllergyIntolerance({ patientID }) {
+export default function AllergyIntolerance({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
   
@@ -85,7 +85,7 @@ export default function AllergyIntolerance({ patientID }) {
   useEffect(() => {
     setLoading(true);
 
-    getAllergyIntolerance(patientID).then((response) => {
+    getAllergyIntolerance(patientId).then((response) => {
       console.log('AllergyIntolerance Response:', response);
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
@@ -93,7 +93,7 @@ export default function AllergyIntolerance({ patientID }) {
       }
       setLoading(false);
     });
-  }, [patientID]);
+  }, [patientId]);
 
   return loading ? (
     <Spinner />
