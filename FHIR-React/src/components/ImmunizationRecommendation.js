@@ -19,7 +19,6 @@ const convertEntry = (entries) => {
 
 export default function ImmunizationRecommendation({ patientId }) {
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState('-');
   const [rowData, setRowData] = useState([]);
 
   // ag-grid-table variables
@@ -47,7 +46,6 @@ export default function ImmunizationRecommendation({ patientId }) {
 
     getImmunizationRecommendation(patientId).then((response) => {
       console.log('ImmunizationRecommendation:', response);
-      setTotal(response.total)
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);
@@ -60,13 +58,15 @@ export default function ImmunizationRecommendation({ patientId }) {
     <Spinner />
   ) : (
     <div>
-      <p>Total: {total}</p>
-      <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
-        <AgGridReact
-          gridOptions={gridOptions}
-          rowData={rowData}
-        />
-      </div>
+      <p>Total: {rowData.length}</p>
+      {rowData.length > 0 ? (
+        <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
+          <AgGridReact
+            gridOptions={gridOptions}
+            rowData={rowData}
+          />
+        </div>
+      ) : (<br/>)}
     </div>
   );
 }

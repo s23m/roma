@@ -6,6 +6,7 @@ import ImmunizationRecommendation from './ImmunizationRecommendation';
 import PatientAdditionalInfo from './PatientAdditionalInfo';
 import AllergyIntolerance from './AllergyIntolerance';
 import Procedures from './Procedures';
+import DeviceUseStatement from './DeviceUseStatement';
 import MedicationStatement from './MedicationStatement';
 
 const PatientExtraInfoCard = ({ patientInfo, id }) => {
@@ -36,12 +37,12 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
           <li className="nav-item" role="presentation">
             <button
               className="nav-link card-nav"
-              id="profile-tab"
+              id="allergy-intolerance-tab"
               data-bs-toggle="tab"
-              data-bs-target="#profile"
+              data-bs-target="#allergy-intolerance"
               type="button"
               role="tab"
-              aria-controls="profile"
+              aria-controls="allergy-intolerance"
               aria-selected="false"
             >
               Allergy intolerances
@@ -50,12 +51,12 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
           <li className="nav-item" role="presentation">
             <button
               className="nav-link card-nav"
-              id="contact-tab"
+              id="procedures-tab"
               data-bs-toggle="tab"
-              data-bs-target="#contact"
+              data-bs-target="#procedures"
               type="button"
               role="tab"
-              aria-controls="contact"
+              aria-controls="procedures"
               aria-selected="false"
             >
               Procedures
@@ -89,6 +90,20 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
               Immunization Recommendation
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link card-nav"
+              id="device-use-statement-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#device-use-statement"
+              type="button"
+              role="tab"
+              aria-controls="device-use-statement"
+              aria-selected="false"
+            >
+              Device Use Statement
+            </button>
+          </li>
         </ul>
       </div>
       <div className="tab-content" id="myTabContent">
@@ -100,10 +115,10 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
         >
           <PatientAdditionalInfo patientInfo={patientInfo} />
         </div>
-        <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div className="tab-pane fade" id="allergy-intolerance" role="tabpanel" aria-labelledby="allergy-intolerance-tab">
           <AllergyIntolerance patientId={id} />
         </div>
-        <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        <div className="tab-pane fade" id="procedures" role="tabpanel" aria-labelledby="procedures-tab">
           <Procedures patientId={id} />
         </div>
         <div className="tab-pane fade" id="medication-statement" role="tabpanel" aria-labelledby="medication-statement-tab">
@@ -111,6 +126,9 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
         </div>
         <div className="tab-pane fade" id="immunization-recommendation" role="tabpanel" aria-labelledby="immunization-recommendation-tab">
           <ImmunizationRecommendation patientId={id} />
+        </div>
+        <div className="tab-pane fade" id="device-use-statement" role="tabpanel" aria-labelledby="device-use-statement-tab">
+          <DeviceUseStatement patientId={id} />
         </div>
       </div>
     </div>

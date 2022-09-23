@@ -6,11 +6,12 @@ import { AgGridReact } from 'ag-grid-react';
 
 /**
  * Extract the keys & values of an object and return it in a string in a tree-like structure. 
+ * So far, with many branches/layers, it cannot display properly as space in string is altered in HTML element. 
  * @param {Object} object
  * @param {string} indent
  * @returns content
  */
-export const extractContent = (object, indent = '', content = '') => {
+const extractContent = (object, indent = '', content = '') => {
   if (object === undefined) return;
   if (typeof object === 'object') {
     Object.entries(object).forEach(([key, value]) => {
@@ -89,13 +90,15 @@ export default function MedicationStatement({ patientId }) {
     <Spinner />
   ) : (
     <div>
-      <p>Total: {total}</p>
-      <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
-        <AgGridReact
-          gridOptions={gridOptions}
-          rowData={rowData}
-        />
-      </div>
+      <p>Total: {rowData.length}</p>
+      {rowData.length > 0 ? (
+        <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
+          <AgGridReact
+            gridOptions={gridOptions}
+            rowData={rowData}
+          />
+        </div>
+      ) : (<br/>)}
     </div>
   );
 }
