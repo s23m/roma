@@ -5,10 +5,17 @@ import '../stylesheets/PatientInfo.css';
 import PatientAdditionalInfo from './PatientAdditionalInfo';
 import AllergyIntolerance from './AllergyIntolerance';
 import Procedures from './Procedures';
+import MedicationStatement from './MedicationStatement';
 
 const PatientExtraInfoCard = ({ patientInfo, id }) => {
   return (
     <div className="card bg-dark text-center">
+      {/* Instructions & Conventions
+      The use of each card header <li> item's attribute:
+      - "id" (set it related to the tab's content with '-tab' at the end) === tab-content's "aria-labelledby"
+      - "aria-controls" === tab-content's "id"
+      - "data-bs-target" === "aria-controls" but with "#" at the beginning
+      */}
       <div className="card-header">
         <ul className="nav nav-tabs card-header-tabs nav-fill" role="tablist">
           <li className="nav-item" role="presentation">
@@ -53,6 +60,20 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
               Procedures
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link card-nav"
+              id="medication-statement-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#medication-statement"
+              type="button"
+              role="tab"
+              aria-controls="medication-statement"
+              aria-selected="false"
+            >
+              Medication statement
+            </button>
+          </li>
         </ul>
       </div>
       <div className="tab-content" id="myTabContent">
@@ -65,10 +86,13 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
           <PatientAdditionalInfo patientInfo={patientInfo} />
         </div>
         <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-          <AllergyIntolerance patientID={id} />
+          <AllergyIntolerance patientId={id} />
         </div>
         <div className="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-          <Procedures patientID={id} />
+          <Procedures patientId={id} />
+        </div>
+        <div className="tab-pane fade" id="medication-statement" role="tabpanel" aria-labelledby="medication-statement-tab">
+          <MedicationStatement patientId={id} />
         </div>
       </div>
     </div>

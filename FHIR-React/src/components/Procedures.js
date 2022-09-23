@@ -11,7 +11,7 @@ const convertProcedureData = (data) =>
         name: procedure.resource.code.text,
       }));
 
-const Procedures = ({ patientID }) => {
+const Procedures = ({ patientId }) => {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
   const gridStyle = useMemo(() => ({ height: '30vh', width: '60vw' }), []);
@@ -31,13 +31,13 @@ const Procedures = ({ patientID }) => {
   useEffect(() => {
     setLoading(true);
 
-    getPatientProcedures(patientID).then((response) => {
+    getPatientProcedures(patientId).then((response) => {
       console.log('Procedures response:', response);
       const data = convertProcedureData(response);
       setRowData(data);
       setLoading(false);
     });
-  }, [patientID]);
+  }, [patientId]);
 
   return loading ? (
     <Spinner />
