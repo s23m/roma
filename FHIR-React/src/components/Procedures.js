@@ -57,7 +57,7 @@ const Procedures = ({ patientId }) => {
           />
         </div>
       ) : (
-        <></>
+        <br/>
       )}
     </div>
   );

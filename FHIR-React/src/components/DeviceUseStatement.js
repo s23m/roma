@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDeviceNames } from '../apis/device';
 import { getDeviceUseStatement } from '../apis/deviceUseStatement';
+import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 // Test patient ID: http://localhost:3000/patients/2913418
@@ -19,8 +20,8 @@ const convertEntry = (entries, deviceNames) => {
 };
 
 export default function DeviceUseStatement({ patientId }) {
-  const [total, setTotal] = useState('-');
-  const [rowData, setRowData] = useState();
+  const [loading, setLoading] = useState(true);
+  const [rowData, setRowData] = useState([]);
 
   // ag-grid-table variables
   const gridOptions = {
@@ -44,10 +45,11 @@ export default function DeviceUseStatement({ patientId }) {
 
   // Get and update patient's ImmunizationRecommendation data
   useEffect(() => {
+    setLoading(true);
+    
     getDeviceUseStatement(patientId)
       .then((response) => {
         console.log('DeviceUseStatement:', response);
-        setTotal(response.total)
 
         // set data for ag-grid
         if (response.total !== 0) {
@@ -57,18 +59,23 @@ export default function DeviceUseStatement({ patientId }) {
             setRowData(data)
           })
         }
+        setLoading(false);
       })
   }, [patientId]);
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <div>
-      <p>Total: {total}</p>
-      <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
-        <AgGridReact
-          gridOptions={gridOptions}
-          rowData={rowData}
-        />
-      </div>
+      <p>Total: {rowData.length}</p>
+      {rowData.length > 0 ? (
+        <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
+          <AgGridReact
+            gridOptions={gridOptions}
+            rowData={rowData}
+          />
+        </div>
+      ) : (<br/>)}
     </div>
   );
 }

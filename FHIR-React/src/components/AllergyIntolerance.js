@@ -108,7 +108,7 @@ export default function AllergyIntolerance({ patientId }) {
           />
         </div>
       ) : (
-        <></>
+        <br/>
       )}
     </div>
   );

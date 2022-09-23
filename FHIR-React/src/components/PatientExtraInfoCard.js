@@ -6,6 +6,7 @@ import ImmunizationRecommendation from './ImmunizationRecommendation';
 import PatientAdditionalInfo from './PatientAdditionalInfo';
 import AllergyIntolerance from './AllergyIntolerance';
 import Procedures from './Procedures';
+import DeviceUseStatement from './DeviceUseStatement';
 import MedicationStatement from './MedicationStatement';
 
 const PatientExtraInfoCard = ({ patientInfo, id }) => {
@@ -89,6 +90,20 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
               Immunization Recommendation
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link card-nav"
+              id="device-use-statement-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#device-use-statement"
+              type="button"
+              role="tab"
+              aria-controls="device-use-statement"
+              aria-selected="false"
+            >
+              Device Use Statement
+            </button>
+          </li>
         </ul>
       </div>
       <div className="tab-content" id="myTabContent">
@@ -111,6 +126,9 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
         </div>
         <div className="tab-pane fade" id="immunization-recommendation" role="tabpanel" aria-labelledby="immunization-recommendation-tab">
           <ImmunizationRecommendation patientId={id} />
+        </div>
+        <div className="tab-pane fade" id="device-use-statement" role="tabpanel" aria-labelledby="device-use-statement-tab">
+          <DeviceUseStatement patientId={id} />
         </div>
       </div>
     </div>
