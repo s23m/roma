@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getImmunizationRecommendation } from '../apis/immunizationRecommendation';
 import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';

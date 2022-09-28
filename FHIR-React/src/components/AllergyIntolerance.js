@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Spinner } from 'reactstrap';
 import { getAllergyIntolerance } from '../apis/allergyIntolerance';
 import { AgGridReact } from 'ag-grid-react';

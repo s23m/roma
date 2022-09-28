@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../stylesheets/SearchBar.css';
 import { InputGroup, Input, Button, Form } from 'reactstrap';
 

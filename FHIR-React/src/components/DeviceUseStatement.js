@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getDeviceNames } from '../apis/device';
 import { getDeviceUseStatement } from '../apis/deviceUseStatement';
 import { Spinner } from 'reactstrap';

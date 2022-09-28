@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getMedicationStatement } from '../apis/medicationStatement';
 import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
@@ -49,7 +49,6 @@ const convertEntry = (entries) => {
 
 export default function MedicationStatement({ patientId }) {
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState('-');
   const [rowData, setRowData] = useState([]);
 
   // ag-grid-table variables
@@ -77,7 +76,6 @@ export default function MedicationStatement({ patientId }) {
     setLoading(true);
     getMedicationStatement(patientId).then((response) => {
       console.log('MedicationStatement:', response);
-      setTotal(response.total)
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);
