@@ -43,10 +43,10 @@ const convertEntry = (entries) => {
     const resource = entry.resource;
     return {
       id: resource.id,
-      code: resource.code ? resource.code.coding[0].code : '',
-      display: resource.code ? resource.code.coding[0].display : '',
-      category: resource.category,
-      reaction: resource.reaction ? getReaction(resource.reaction) : '',
+      code: resource.code ? resource.code.coding[0].code : 'N/A',
+      display: resource.code ? resource.code.coding[0].display : 'N/A',
+      category: resource.category || 'N/A',
+      reaction: resource.reaction ? getReaction(resource.reaction) : 'N/A',
       criticality: resource.criticality,
       recordedDate: resource.recordedDate,
     }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Spinner } from 'reactstrap';
+import { extractValue } from '../apis/utils';
 
 const NA_ARRAY = ['N/A'];
 
@@ -45,13 +46,12 @@ const getPatientCommunicationInfo = (patientInfo) => {
   return patientCommunications;
 };
 
-// Address can be in different formats given different locations, so it is difficult to correctly show address
-// showing json instead
-const getPatientAddress = (patientInfo) => {
-  if (!patientInfo.address || typeof patientInfo.address !== 'object') return 'N/A';
-
-  return JSON.stringify(patientInfo.address);
-};
+// // Address can be in different formats given different locations, so it is difficult to correctly show address
+// // showing json instead
+// const getPatientAddress = (patientInfo) => {
+//   if (!patientInfo.address || typeof patientInfo.address !== 'object') return 'N/A';
+//   return JSON.stringify(patientInfo.address);
+// };
 
 const getMaritalStatus = (patientInfo) => {
   if (!patientInfo.maritalStatus) return NA_ARRAY;
@@ -82,7 +82,8 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
     patientAdditionalInfo.identifier = getPatientIdentifiers(patientInfo);
     patientAdditionalInfo.telecom = getPatientTelecomInfo(patientInfo);
     patientAdditionalInfo.communication = getPatientCommunicationInfo(patientInfo);
-    patientAdditionalInfo.address = getPatientAddress(patientInfo);
+    // patientAdditionalInfo.address = getPatientAddress(patientInfo);
+    patientAdditionalInfo.address = extractValue(patientInfo.address);
     patientAdditionalInfo.active = patientInfo.active ? patientInfo.active : 'N/A';
     patientAdditionalInfo.maritalStatus = getMaritalStatus(patientInfo);
 

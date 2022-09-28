@@ -10,10 +10,10 @@ const convertEntry = (entries, deviceNames) => {
   const rowData = entries.map( (entry, index) => {
     const resource = entry.resource;
     return {
-      id: resource.device? resource.device.reference.split('/')[1] : '',
+      id: resource.device? resource.device.reference.split('/')[1] : 'N/A',
       name: deviceNames[index],
-      derivedFrom: resource.derivedFrom? resource.derivedFrom[0].reference : '',
-      source: resource.source? resource.source.reference : '',
+      derivedFrom: resource.derivedFrom? resource.derivedFrom[0].reference : 'N/A',
+      source: resource.source? resource.source.reference : 'N/A',
     }
   });
   return rowData;

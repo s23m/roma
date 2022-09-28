@@ -4,34 +4,21 @@ import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 
-/**
- * Extract the keys & values of an object and return it in a string in a tree-like structure. 
- * So far, with many branches/layers, it cannot display properly as space in string is altered in HTML element. 
- * @param {Object} object
- * @param {string} indent
- * @returns content
- */
-const extractContent = (object, indent = '', content = '') => {
-  if (object === undefined) return;
-  if (typeof object === 'object') {
-    Object.entries(object).forEach(([key, value]) => {
-      // To avoid printing numbers as keys when object is an Array
-      if (!Array.isArray(object)) {
-        content += indent + key + ':';
-      }
-      // If this is an object of length >=1 and its value is not string
-      // (Basically it's not a single simple value), add a \n
-      if (Object.keys(value).length >= 1 && typeof Object.entries(value)[0][1] !== 'string') {
-        content += '\n';
-      }
-      content = extractContent(value, indent + ' ', content);
-    });
-  } else {
-    // console.log(indent, object)
-    content += ' ' + object + '\n';
+const getMedication = (medicationCodeableConcept) => {
+  let medication = [];
+  if (medicationCodeableConcept.text) {
+    medication.push(medicationCodeableConcept.text);
   }
-  return content;
-};
+  else if (medicationCodeableConcept.coding) {
+    medication.push(medicationCodeableConcept.coding[0].display)
+  } 
+  return medication.join(', ')
+}
+
+const getDosage = (dosage) => {
+  if (dosage)  return dosage[0].text || 'N/A';
+  if (!dosage) return 'N/A';
+}
 
 // patient ID to test: http://localhost:3000/patients/6968973
 const convertEntry = (entries) => {
@@ -39,13 +26,15 @@ const convertEntry = (entries) => {
     const resource = entry.resource;
     return {
       id: resource.id,
-      medicationCodeableConcept: resource.medicationCodeableConcept ? extractContent(resource.medicationCodeableConcept.text) : '',
-      dosage: resource.dosage ? resource.dosage[0].text : '',
-      reasonCode: resource.reasonCode ? resource.reasonCode[0].text : '',
+      medication: resource.medicationCodeableConcept ? getMedication(resource.medicationCodeableConcept) : 'N/A',
+      dosage: getDosage(resource.dosage),
+      reasonCode: resource.reasonCode ? resource.reasonCode[0].text : 'N/A',
     }
   });
   return rowData;
 };
+
+
 
 export default function MedicationStatement({ patientId }) {
   const [loading, setLoading] = useState(true);
@@ -62,8 +51,8 @@ export default function MedicationStatement({ patientId }) {
       editable: true,
     },
     columnDefs: [
-      { headerName: 'ID', field: 'id', width: 110 },
-      { headerName: 'Medication', field: 'medicationCodeableConcept' },
+      { headerName: 'ID', field: 'id', minWidth: 110 },
+      { headerName: 'Medication', field: 'medication' },
       { headerName: 'Dosage', field: 'dosage' },
       { headerName: 'Reason', field: 'reasonCode' },
     ],
