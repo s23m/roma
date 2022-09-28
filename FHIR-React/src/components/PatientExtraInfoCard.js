@@ -8,13 +8,14 @@ import AllergyIntolerance from './AllergyIntolerance';
 import Procedures from './Procedures';
 import DeviceUseStatement from './DeviceUseStatement';
 import MedicationStatement from './MedicationStatement';
+import DiagnosticReport from './DiagnosticReport';
 
 const PatientExtraInfoCard = ({ patientInfo, id }) => {
   return (
     <div className="card bg-dark text-center">
       {/* Instructions & Conventions
       The use of each card header <li> item's attribute:
-      - "id" (set it related to the tab's content with '-tab' at the end) === tab-content's "aria-labelledby"
+      - "id" (set it related to the tab's content with '-tab' at the end) === <div className='tab-content''s aria-labelledby property
       - "aria-controls" === tab-content's "id"
       - "data-bs-target" === "aria-controls" but with "#" at the beginning
       */}
@@ -104,6 +105,20 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
               Device Use Statement
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link card-nav"
+              id="diagnostic-report-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#diagnostic-report"
+              type="button"
+              role="tab"
+              aria-controls="diagnostic-report"
+              aria-selected="false"
+            >
+              Diagnostic Report
+            </button>
+          </li>
         </ul>
       </div>
       <div className="tab-content" id="myTabContent">
@@ -129,6 +144,9 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
         </div>
         <div className="tab-pane fade" id="device-use-statement" role="tabpanel" aria-labelledby="device-use-statement-tab">
           <DeviceUseStatement patientId={id} />
+        </div>
+        <div className="tab-pane fade" id="diagnostic-report" role="tabpanel" aria-labelledby="diagnostic-report-tab">
+          <DiagnosticReport patientId={id} />
         </div>
       </div>
     </div>

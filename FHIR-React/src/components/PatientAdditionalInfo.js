@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Spinner } from 'reactstrap';
+import { extractValue } from '../apis/utils';
 
 const NA_ARRAY = ['N/A'];
 
@@ -45,14 +46,19 @@ const getPatientCommunicationInfo = (patientInfo) => {
   return patientCommunications;
 };
 
-// Address can be in different formats given different locations, so it is difficult to correctly show address
-// showing json instead
-const getPatientAddress = (patientInfo) => {
-  if (!patientInfo.address || typeof patientInfo.address !== 'object') return 'N/A';
+// // Address can be in different formats given different locations, so it is difficult to correctly show address
+// // showing json instead
+// const getPatientAddress = (patientInfo) => {
+//   if (!patientInfo.address || typeof patientInfo.address !== 'object') return 'N/A';
+//   return JSON.stringify(patientInfo.address);
+// };
 
-  return JSON.stringify(patientInfo.address);
-};
-
+const getMaritalStatus = (patientInfo) => {
+  if (!patientInfo.maritalStatus) return NA_ARRAY;
+  if (patientInfo.maritalStatus) {
+    return patientInfo.maritalStatus.coding[0].display
+  }
+}
 const createArrayCardBody = (arr) =>
   arr.map((element) => {
     return (
@@ -76,11 +82,10 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
     patientAdditionalInfo.identifier = getPatientIdentifiers(patientInfo);
     patientAdditionalInfo.telecom = getPatientTelecomInfo(patientInfo);
     patientAdditionalInfo.communication = getPatientCommunicationInfo(patientInfo);
-    patientAdditionalInfo.address = getPatientAddress(patientInfo);
+    // patientAdditionalInfo.address = getPatientAddress(patientInfo);
+    patientAdditionalInfo.address = extractValue(patientInfo.address);
     patientAdditionalInfo.active = patientInfo.active ? patientInfo.active : 'N/A';
-    patientAdditionalInfo.maritalStatus = patientInfo.maritalStatus
-      ? patientInfo.maritalStatus
-      : 'N/A';
+    patientAdditionalInfo.maritalStatus = getMaritalStatus(patientInfo);
 
     setPatientAdditionalInfo(patientAdditionalInfo);
     setLoading(false);
@@ -95,7 +100,7 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
           <td>
             <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Identifiers</h6>
-              <h5 className="card-title">
+              <h5 className="card-title text-left">
                 {createArrayCardBody(patientAdditionalInfo.identifier)}
               </h5>
             </div>
@@ -103,7 +108,7 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
           <td>
             <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Contact</h6>
-              <h5 className="card-title">{createArrayCardBody(patientAdditionalInfo.telecom)}</h5>
+              <h5 className="card-title text-left">{createArrayCardBody(patientAdditionalInfo.telecom)}</h5>
             </div>
           </td>
         </tr>
@@ -111,7 +116,7 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
           <td>
             <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Languages</h6>
-              <h5 className="card-title">
+              <h5 className="card-title text-left">
                 {createArrayCardBody(patientAdditionalInfo.communication)}
               </h5>
             </div>
@@ -119,7 +124,7 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
           <td>
             <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Address</h6>
-              <h5 className="card-title">{patientAdditionalInfo.address}</h5>
+              <h5 className="card-title text-left" text-left>{patientAdditionalInfo.address}</h5>
             </div>
           </td>
         </tr>
@@ -127,13 +132,13 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
           <td>
             <div class="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Marital status</h6>
-              <h5 className="card-title">{patientAdditionalInfo.maritalStatus}</h5>
+              <h5 className="card-title text-left">{patientAdditionalInfo.maritalStatus}</h5>
             </div>
           </td>
           <td>
             <div class="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Active?</h6>
-              <h5 className="card-title">{patientAdditionalInfo.active}</h5>
+              <h5 className="card-title text-left">{patientAdditionalInfo.active}</h5>
             </div>
           </td>
         </tr>

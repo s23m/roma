@@ -4,6 +4,11 @@ h4 {
     text-align: left;
 }
 
+h5.card-title.text-left {
+    text-align: left;
+    margin: 0 0 0 4rem;
+}
+
 .card-header {
     font-size: 1.5rem;
     background-color: rgba(255, 255, 255, 0.05) !important;

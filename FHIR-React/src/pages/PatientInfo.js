@@ -21,7 +21,6 @@ const PatientInfo = () => {
 
   return (
     <div>
-      <h3>Patient ID: {id}</h3>
       <PatientInfoBasicCard patientInfo={patientData} />
       <PatientExtraInfoCard patientInfo={patientData} id={id} />
     </div>

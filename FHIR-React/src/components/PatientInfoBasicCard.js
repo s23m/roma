@@ -20,6 +20,7 @@ const PatientInfoBasicCard = ({ patientInfo }) => {
     patientBasicInfo.dob = patientInfo.birthDate ? patientInfo.birthDate : 'N/A';
     patientBasicInfo.gender = patientInfo.gender ? patientInfo.gender : 'N/A';
     patientBasicInfo.deceased = patientInfo.deceased ? patientInfo.deceased : 'N/A';
+    patientBasicInfo.id = patientInfo.id;
 
     setPatientBasicInfo(patientBasicInfo);
     setLoading(false);
@@ -29,9 +30,17 @@ const PatientInfoBasicCard = ({ patientInfo }) => {
     <Spinner />
   ) : (
     <div class="card bg-dark basic-info-card">
-      <div class="card-header">Basic info</div>
+      <div class="card-header">Patient's basic information</div>
       <table class="table table-dark table-borderless">
         <tbody>
+          <tr>
+            <td>
+              <div class="card bg-dark borderless-card text-center">
+                <h6 class="card-subtitle mb-2 text-muted">ID</h6>
+                <h5 class="card-title">{patientBasicInfo.id}</h5>
+              </div>
+            </td>
+          </tr>
           <tr>
             <td>
               <div class="card bg-dark borderless-card text-center">

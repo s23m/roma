@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react';
-import { getDeviceNames } from '../apis/device';
-import { getDeviceUseStatement } from '../apis/deviceUseStatement';
+import { getDiagnosticReport } from '../apis/diagnosticReport';
 import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
-// Test patient ID: http://localhost:3000/patients/2913418
 
-const convertEntry = (entries, deviceNames) => {
-  const rowData = entries.map( (entry, index) => {
+// Test patient ID: http://localhost:3000/patients/30358
+// id, status, result
+
+const convertEntry = (entries) => {
+  const rowData = entries.map( (entry) => {
     const resource = entry.resource;
     return {
-      id: resource.device? resource.device.reference.split('/')[1] : 'N/A',
-      name: deviceNames[index],
-      derivedFrom: resource.derivedFrom? resource.derivedFrom[0].reference : 'N/A',
-      source: resource.source? resource.source.reference : 'N/A',
+      id: resource.id,
+      status: resource.status,
+      result: resource.result? resource.result[0].reference : 'N/A',
     }
   });
   return rowData;
 };
 
-export default function DeviceUseStatement({ patientId }) {
+export default function DiagnosticReport({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
 
@@ -34,10 +34,9 @@ export default function DeviceUseStatement({ patientId }) {
       editable: true,
     },
     columnDefs: [
-      { headerName: 'Device ID', field: 'id', width: 110 },
-      { headerName: 'Device name', field: 'name' },
-      { headerName: 'Derived from', field: 'derivedFrom' },
-      { headerName: 'Source', field: 'source' },
+      { headerName: 'ID', field: 'id' },
+      { headerName: 'Status', field: 'status' },
+      { headerName: 'Result', field: 'result' },
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),
@@ -47,17 +46,14 @@ export default function DeviceUseStatement({ patientId }) {
   useEffect(() => {
     setLoading(true);
     
-    getDeviceUseStatement(patientId)
+    getDiagnosticReport(patientId)
       .then((response) => {
-        console.log('DeviceUseStatement:', response);
+        console.log('Diagnostic Report response:', response);
 
         // set data for ag-grid
         if (response.total !== 0) {
-          Promise.all(response.entry.map(getDeviceNames))
-          .then( deviceNames => {
-            const data = convertEntry(response.entry, deviceNames)
+            const data = convertEntry(response.entry)
             setRowData(data)
-          })
         }
         setLoading(false);
       })
