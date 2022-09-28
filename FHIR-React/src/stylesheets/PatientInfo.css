@@ -6,7 +6,7 @@ h4 {
 
 h5.card-title.text-left {
     text-align: left;
-    margin: auto;
+    margin: 0 0 0 4rem;
 }
 
 .card-header {
