@@ -7,8 +7,8 @@ import { AgGridReact } from 'ag-grid-react';
 // Test patient ID: http://localhost:3000/patients/30358
 // id, status, result
 
-const convertEntry = (entries, deviceNames) => {
-  const rowData = entries.map( (entry, index) => {
+const convertEntry = (entries) => {
+  const rowData = entries.map( (entry) => {
     const resource = entry.resource;
     return {
       id: resource.id,

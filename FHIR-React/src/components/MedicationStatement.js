@@ -33,7 +33,7 @@ const extractContent = (object, indent = '', content = '') => {
   return content;
 };
 
-// patient ID to test: 6968973
+// patient ID to test: http://localhost:3000/patients/6968973
 const convertEntry = (entries) => {
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
