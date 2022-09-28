@@ -36,7 +36,7 @@ export const extractKeyAndValue = (object, indent = '', content = '') => {
  * @returns content
  */
 export const extractValue = (object, indent = '', content = '') => {
-  if (object === undefined) return;
+  if (object === undefined) return 'N/A';
   if (typeof object === 'object') {
     Object.entries(object).forEach(([key, value]) => {
       content = extractValue(value, indent + ' ', content);
