@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../stylesheets/SearchBar.css';
 import { InputGroup, Input, Button, Form } from 'reactstrap';
 
-export default function SearchBar({ placeholder, onSubmitHandler, options }) {
+export default function SearchBar({ placeholder, onSubmit, options }) {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('name');
 
@@ -10,7 +10,7 @@ export default function SearchBar({ placeholder, onSubmitHandler, options }) {
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmitHandler(selectedOption, inputValue);
+        onSubmit(selectedOption, inputValue);
       }}
     >
       <InputGroup className="search-bar-group">

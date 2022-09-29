@@ -34,7 +34,7 @@ const convertData = (searchResults) => {
 
 const createHyperlinkToPatientPage = (params) => {
   return (
-    <a href={`${params.value}`} rel="noreferrer" target="_blank">
+    <a href={`patients/${params.value}`} rel="noreferrer" target="_blank">
       {' '}
       {params.value}{' '}
     </a>
