@@ -12,34 +12,49 @@
 {
 	<ErrorBoundary>
 		<ChildContent>
-			<RadzenDataGrid Data="@results" TItem="Immunization" PageSize="10" AllowPaging="true"
+			<RadzenDataGrid Data="@results" TItem="Procedure" PageSize="10" AllowPaging="true"
 						AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
 						PagerHorizontalAlign="HorizontalAlign.Center">
 				<Columns>
 
-					<RadzenDataGridColumn TItem="Immunization" Property="Vaccine" Title="Vaccine" Filterable="false" Sortable="false">
-						<Template Context="immunization">
+					<RadzenDataGridColumn TItem="Procedure" Property="Procedure" Title="Procedure" Filterable="false" Sortable="false">
+						<Template Context="procedure">
 							@if (results == null)
 							{
 								<a>No Results</a>
 							} else
 							{
 								foreach(var result in results){
-									<CodeableConceptHandler Data=result.VaccineCode></CodeableConceptHandler>
+									<a>@result.Code.Text</a>
 								}
 							}
 						</Template>
 					</RadzenDataGridColumn>
 
-					<RadzenDataGridColumn TItem="Immunization" Property="Date" Title="Date" Filterable="false" Sortable="false">
-						<Template Context="immunization">
+					<RadzenDataGridColumn TItem="Procedure" Property="Date" Title="Date" Filterable="false" Sortable="false">
+						<Template Context="procedure">
 							@if (results == null)
 							{
 								<a>No Results</a>
 							} else
 							{
 								foreach(var result in results){
-									<a>@result.Occurrence</a>
+									<a>@result.Performed</a>
+									
+								}
+							}
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Procedure" Property="Date" Title="Date" Filterable="false" Sortable="false">
+						<Template Context="procedure">
+							@if (results == null)
+							{
+								<a>No Results</a>
+							} else
+							{
+								foreach(var result in results){
+									<a>@result.Performed</a>
 								}
 							}
 						</Template>
@@ -70,7 +85,7 @@ else
 @code {
 	[Parameter] public string PatientID { get; set; }
 	private Bundle search = new Bundle();
-	private Hl7.Fhir.Model.Immunization[]? results;
+	private Hl7.Fhir.Model.Procedure[]? results;
 	private Boolean loading = true;
 
 	void ShowError(NotificationMessage message)
@@ -83,19 +98,19 @@ else
 	private static string serverURL = "http://hapi.fhir.org/baseR4";
 	FhirClient client = new FhirClient(serverURL);
 
-	public async ValueTask<Boolean> GetImmunizationData()
+	public async ValueTask<Boolean> GetProcedureData()
 	{
 		loading = true;
 		var sParams = new SearchParams()
 			.Where("patient=" + PatientID)
 			.LimitTo(100);
 
-		search = client.Search<Immunization>(sParams);
-		results = new Immunization[search.Entry.Count];
+		search = client.Search<Procedure>(sParams);
+		results = new Procedure[search.Entry.Count];
 
 		for (int i = 0; i < search.Entry.Count; i++)
 		{
-			results[i] = (Immunization)search.Entry[i].Resource;
+			results[i] = (Procedure)search.Entry[i].Resource;
 		}
 
 		loading = false;
@@ -107,7 +122,7 @@ else
 		await System.Threading.Tasks.Task.Delay(1);
 		try
 		{
-			await GetImmunizationData();
+			await GetProcedureData();
 		}
 		catch (Exception ex)
 		{
