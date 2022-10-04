@@ -55,6 +55,7 @@ export default function DeviceUseStatement({ patientId }) {
         if (response.total !== 0) {
           Promise.all(response.entry.map(getDeviceNames))
           .then( deviceNames => {
+            console.log('Device names:', deviceNames)
             const data = convertEntry(response.entry, deviceNames)
             setRowData(data)
           })

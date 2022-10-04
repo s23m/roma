@@ -29,6 +29,10 @@ export const getDevice = async (deviceId) => {
 export const getDeviceNames = (entry) => {
   const deviceReference = entry.resource.device.reference;
   const fullUrl = `${BASE_URL}/${deviceReference}`;
-  return axios.get(fullUrl)
-    .then((response) => Promise.resolve( response.data.deviceName[0].name ))
+  const deviceName = axios.get(fullUrl)
+    // .then((response) => console.log('Device names response:', response.data.deviceName[0].name))
+    .then((response) => response.data.deviceName? response.data.deviceName[0].name : 'N/A')
+    .then((deviceName) => Promise.resolve(deviceName)
+    )
+  return deviceName;
 };
