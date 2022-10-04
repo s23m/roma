@@ -19,37 +19,40 @@
 
 					<RadzenDataGridColumn TItem="Immunization" Property="Vaccine" Title="Vaccine" Filterable="false" Sortable="false">
 						<Template Context="immunization">
-							@if (results == null)
-							{
-								<a>No Results</a>
-							} else
-							{
-								foreach(var result in results){
-									<CodeableConceptHandler Data=result.VaccineCode></CodeableConceptHandler>
-								}
-							}
+							<CodeableConceptHandler Data=immunization.VaccineCode />
 						</Template>
 					</RadzenDataGridColumn>
 
-					<RadzenDataGridColumn TItem="Immunization" Property="Date" Title="Date" Filterable="false" Sortable="false">
+					<RadzenDataGridColumn TItem="Immunization" Property="Site" Title="Site" Filterable="false" Sortable="false">
 						<Template Context="immunization">
-							@if (results == null)
+							<CodeableConceptHandler Data=immunization.Site />
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Dosage" Title="Dosage" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							@if (immunization.DoseQuantity != null)
 							{
-								<a>No Results</a>
-							} else
-							{
-								foreach(var result in results){
-									<a>@result.Occurrence</a>
-								}
+								<a>@immunization.DoseQuantity.Value @immunization.DoseQuantity.Code</a>
 							}
 						</Template>
 					</RadzenDataGridColumn>
 
-					@*<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Code" Filterable="false" Sortable="false">
-						<Template Context="condition">
-						<a>@condition.Code.Coding.First().Code</a>
+					<RadzenDataGridColumn TItem="Immunization" Property="Occur" Title="Date" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							<DateHandler Data=immunization.Occurrence />
 						</Template>
-						</RadzenDataGridColumn>*@
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Expiration" Title="Expiration" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							<a>@immunization.ExpirationDate</a>
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Id" Title="ID">
+						<Template Context="immunization"><a href="@($"{serverURL}/Immunization/{immunization.Id}")">@immunization.Id</a></Template>
+					</RadzenDataGridColumn>
 
 				</Columns>
 

@@ -219,36 +219,44 @@
 						<Allergies PatientID=@PatientID></Allergies>
 					</RadzenTabsItem>
 
-					@*Medications tab*@
-					<RadzenTabsItem Text="Medication Statements">
-						<MedStatements PatientID=@PatientID></MedStatements>
-					</RadzenTabsItem>
+					
 
 					@*Conditions tab*@
 					<RadzenTabsItem Text="Conditions">
 						<Conditions PatientID=@PatientID></Conditions>
 					</RadzenTabsItem>
 
-					@*Diagnostic Report tab*@
-					<RadzenTabsItem Text="Diagnostic Reports">
-						<DiagnosticReports PatientID=@PatientID></DiagnosticReports>
-					</RadzenTabsItem>
+					
 
 					@*Device tab*@
-					<RadzenTabsItem Text="Diagnostic Reports">
+					@*<RadzenTabsItem Text="Diagnostic Reports">
 						<DiagnosticReports PatientID=@PatientID></DiagnosticReports>
-					</RadzenTabsItem>
+					</RadzenTabsItem>*@
 
 					@*Immunizations tab*@
 					<RadzenTabsItem Text="Immunizations">
 						<Immunizations PatientID=@PatientID></Immunizations>
 					</RadzenTabsItem>
 
+					
+
+				</Tabs>
+			</RadzenTabs>
+
+			<RadzenTabs TabPosition="@tabPosition" style=" margin: 20px auto;" RenderMode="TabRenderMode.Server">
+				<Tabs>
+					@*Medications tab*@
+					<RadzenTabsItem Text="Medication Statements">
+						<MedStatements PatientID=@PatientID></MedStatements>
+					</RadzenTabsItem>
+					@*Diagnostic Report tab*@
+					<RadzenTabsItem Text="Diagnostic Reports">
+						<DiagnosticReports PatientID=@PatientID></DiagnosticReports>
+					</RadzenTabsItem>
 					@*Procedure History tab*@
 					<RadzenTabsItem Text="History of Procedures">
 						<Procedures PatientID=@PatientID></Procedures>
 					</RadzenTabsItem>
-
 				</Tabs>
 			</RadzenTabs>
 		</div>

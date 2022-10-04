@@ -19,53 +19,47 @@
 
 					<RadzenDataGridColumn TItem="Procedure" Property="Procedure" Title="Procedure" Filterable="false" Sortable="false">
 						<Template Context="procedure">
-							@if (results == null)
+							<CodeableConceptHandler Data=procedure.Code />
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Procedure" Property="Reason" Title="Reason" Filterable="false" Sortable="false">
+						<Template Context="procedure">
+							@*This is because the reasoncode returns a list*@
+							@foreach (var reason in procedure.ReasonCode)
 							{
-								<a>No Results</a>
-							} else
-							{
-								foreach(var result in results){
-									<a>@result.Code.Text</a>
-								}
+								<a>@reason.Text</a>
+								<a></a>
 							}
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Procedure" Property="BodySite" Title="BodySite" Filterable="false" Sortable="false">
+						<Template Context="procedure">
+							@*This is because the bodysite returns a list*@
+							@foreach (var bodysite in procedure.BodySite)
+							{
+								<CodeableConceptHandler Data=bodysite />
+								<a> </a>
+							}
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Procedure" Property="Category" Title="Category" Filterable="false" Sortable="false">
+						<Template Context="procedure">
+							<CodeableConceptHandler Data=procedure.Category />
 						</Template>
 					</RadzenDataGridColumn>
 
 					<RadzenDataGridColumn TItem="Procedure" Property="Date" Title="Date" Filterable="false" Sortable="false">
 						<Template Context="procedure">
-							@if (results == null)
-							{
-								<a>No Results</a>
-							} else
-							{
-								foreach(var result in results){
-									<a>@result.Performed</a>
-									
-								}
-							}
+							<DateHandler Data=procedure.Performed />
 						</Template>
 					</RadzenDataGridColumn>
 
-					<RadzenDataGridColumn TItem="Procedure" Property="Date" Title="Date" Filterable="false" Sortable="false">
-						<Template Context="procedure">
-							@if (results == null)
-							{
-								<a>No Results</a>
-							} else
-							{
-								foreach(var result in results){
-									<a>@result.Performed</a>
-								}
-							}
-						</Template>
+					<RadzenDataGridColumn TItem="Procedure" Property="Id" Title="ID">
+						<Template Context="procedure"><a href="@($"{serverURL}/Procedure/{procedure.Id}")">@procedure.Id</a></Template>
 					</RadzenDataGridColumn>
-
-					@*<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Code" Filterable="false" Sortable="false">
-						<Template Context="condition">
-						<a>@condition.Code.Coding.First().Code</a>
-						</Template>
-						</RadzenDataGridColumn>*@
-
 				</Columns>
 
 			</RadzenDataGrid>
@@ -79,7 +73,7 @@
 }
 else
 {
-	<Spinner Text="Conditions" />
+	<Spinner Text="Procedures" />
 }
 
 @code {
