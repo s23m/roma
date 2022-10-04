@@ -6,26 +6,6 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 
-// const convertEntry = (response) => {
-//   if (response.entry === undefined) return [];
-
-//   const entries = response.entry.map((entry, i) => ({
-//     dataType: 'Entry ' + i,
-//     value: getValue(entry.resource.code.text),
-//   }));
-
-//   // var entries = [];
-//   // entry.forEach((element, index) => {
-//   //   entries.push({ dataType: 'Entry ' + index, value: getValue(element.resource.code.text) });
-//   // });
-//   return entries;
-// };
-
-// const convertData = (response) => {
-//   return [{ dataType: 'Total entries', value: response.total }].concat(
-//     convertEntry(response.entry)
-//   );
-// };
 
 const convertEntry = (entries) => {
   const getReaction = (reaction) => {
