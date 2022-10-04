@@ -4,7 +4,7 @@ import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 
-// Testing patient ID: 2686624
+// patient ID to test: http://localhost:3000/patients/2686624
 const convertEntry = (entries) => {
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
