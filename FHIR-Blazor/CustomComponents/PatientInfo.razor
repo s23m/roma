@@ -247,15 +247,19 @@
 				<Tabs>
 					@*Medications tab*@
 					<RadzenTabsItem Text="Medication Statements">
-						<MedStatements PatientID=@PatientID></MedStatements>
+						<MedStatements PatientID=@PatientID />
 					</RadzenTabsItem>
 					@*Diagnostic Report tab*@
 					<RadzenTabsItem Text="Diagnostic Reports">
-						<DiagnosticReports PatientID=@PatientID></DiagnosticReports>
+						<DiagnosticReports PatientID=@PatientID />
 					</RadzenTabsItem>
 					@*Procedure History tab*@
 					<RadzenTabsItem Text="History of Procedures">
-						<Procedures PatientID=@PatientID></Procedures>
+						<Procedures PatientID=@PatientID />
+					</RadzenTabsItem>
+					@*Devices tab*@
+					<RadzenTabsItem Text="Medical Devices">
+						<Devices PatientID=@PatientID />
 					</RadzenTabsItem>
 				</Tabs>
 			</RadzenTabs>

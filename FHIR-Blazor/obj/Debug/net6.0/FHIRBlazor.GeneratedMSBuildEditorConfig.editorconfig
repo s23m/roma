@@ -31,6 +31,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcQ29uZGl0aW9ucy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/Devices.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcRGV2aWNlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/DiagnosticReports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcRGlhZ25vc3RpY1JlcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
