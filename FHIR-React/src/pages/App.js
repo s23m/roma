@@ -3,8 +3,8 @@ import PatientInfo from '../pages/PatientInfo';
 import SiteNavBar from '../components/SiteNavBar';
 import { Container } from 'reactstrap';
 import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
-import '../stylesheets/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../stylesheets/App.css';
 
 function App() {
   const AppConstantElements = (

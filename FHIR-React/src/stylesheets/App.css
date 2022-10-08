@@ -50,3 +50,9 @@ h3 {
 .ag-theme-balham-dark {
   padding: 0 0 4rem 0;
 }
+
+
+/* Modal */
+.modal {
+  --bs-modal-bg: green;
+}
