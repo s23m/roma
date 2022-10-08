@@ -11,6 +11,12 @@ import '../stylesheets/App.css';
 
 const NA = 'N/A'
 
+
+/**
+ * Get required data from `searchResults` and convert it to fit AgGridReact input format
+ * @param {*} searchResults 
+ * @returns rowData for AgGridReact table
+ */
 const convertData = (searchResults) => {
   const rowData = searchResults.map((patient) => {
     try {
