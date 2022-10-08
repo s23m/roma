@@ -7,9 +7,15 @@ import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 
 
-
+// Testing patients
 // http://localhost:3000/patients/gtp101
 // http://localhost:3000/patients/example
+
+/**
+ * Get required data and convert data to fit AgGridReact input format
+ * @param {*} entries 
+ * @returns rowData for AgGridReact table
+ */
 const convertEntry = (entries) => {
   // Assistive function
   const getClinicalStatus = (clinicalStatus) => {

@@ -11,7 +11,7 @@ export const getDevice = async (deviceId) => {
 };
 
 /**
- * @param {*} entry An entry from DeviceUseStatement
+ * @param {*} entry An entry from getDeviceUseStatement in api/deviceUseStatement.js
  * @returns Promise Object of the input entry's device name
  */
 export const getDeviceNames = (entry) => {

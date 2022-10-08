@@ -5,6 +5,13 @@ import { AgGridReact } from 'ag-grid-react';
 
 
 // patient ID to test: http://localhost:3000/patients/2686624
+
+
+/**
+ * Get required data and convert data to fit AgGridReact input format
+ * @param {*} entries 
+ * @returns rowData for AgGridReact table
+ */
 const convertEntry = (entries) => {
   const rowData = entries.map((entry) => {
     const resource = entry.resource;

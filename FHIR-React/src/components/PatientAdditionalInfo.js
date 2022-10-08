@@ -4,7 +4,7 @@ import { extractValue } from '../apis/utils';
 
 const NA_ARRAY = ['N/A'];
 
-// Assistive functions
+// Assistive functions to get required data from patient response
 const getPatientTelecomInfo = (patientInfo) => {
   if (!patientInfo.telecom || patientInfo.telecom.length === 0) return NA_ARRAY;
 

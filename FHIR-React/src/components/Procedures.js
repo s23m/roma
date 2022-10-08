@@ -4,7 +4,7 @@ import { Spinner } from 'reactstrap';
 import { getPatientProcedures } from '../apis/procedures';
 
 
-const convertProcedureData = (entries) => {
+const convertEntry = (entries) => {
   // Assistive function
   const getProcedureText = (resource) => {
     if (!resource.code) return 'N/A';
@@ -47,7 +47,7 @@ const Procedures = ({ patientId }) => {
 
     getPatientProcedures(patientId).then((response) => {
       console.log('Procedures response:', response);
-      const data = convertProcedureData(response.entry);
+      const data = convertEntry(response.entry);
       setRowData(data);
       setLoading(false);
     });
