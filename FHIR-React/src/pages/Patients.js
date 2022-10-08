@@ -112,9 +112,9 @@ const Patients = () => {
   const [notification, setNotification] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const onSearchSubmit = async (queryType, queryValue) => {
+  const onSearchSubmit = async (queryTypes, queryValues) => {
     setLoading(true);
-    const searchResults = await searchPatient(queryType, queryValue); // Get data
+    const searchResults = await searchPatient(queryTypes, queryValues); // Get data
     setLoading(false);
     console.log(searchResults); // For debugging
 
