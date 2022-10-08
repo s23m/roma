@@ -9,26 +9,29 @@ import '../stylesheets/PatientInfo.css';
 
 
 // http://localhost:3000/patients/gtp101
-
+// http://localhost:3000/patients/example
 const convertEntry = (entries) => {
-  const getReaction = (reaction) => {
-    const reactionString = [];
-    if (reaction[0].manifestation === undefined) return 'undefined';
-    if (reaction[0].manifestation !== undefined) {
-      reaction[0].manifestation.forEach((element) => {
-        reactionString.push(element.coding[0].display);
-      })
-      return reactionString;
-    }
+  // Assistive function
+  const getClinicalStatus = (clinicalStatus) => {
+    if (clinicalStatus.coding) 
+      return clinicalStatus.coding[0].code || clinicalStatus.coding[0].display
+    else return 'N/A';
+  }
+  
+  // Assistive function
+  const getCode = (code) => {
+    if (code.coding) return code.coding[0].code || code.coding[0].display
+    else if (code.text) return code.text
+    else return 'N/A';
   }
 
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
     return {
       id: resource.id,
-      code: resource.code ? resource.code.coding[0].code : 'N/A',
-      display: resource.code ? resource.code.coding[0].display : 'N/A',
-      clinicalStatus: resource.clinicalStatus? resource.clinicalStatus.coding[0].code || resource.clinicalStatus.coding[0].display : 'N/A',
+      code: resource.code ? getCode(resource.code) : 'N/A',
+      display: resource.code ? resource.code.coding ? resource.code.coding[0].display : 'N/A' : 'N/A',
+      clinicalStatus: resource.clinicalStatus? getClinicalStatus(resource.clinicalStatus) : 'N/A',
       onsetAge: resource.onsetAge ? resource.onsetAge.value : 'N/A',
       onsetDateTime: resource.onsetDateTime || 'N/A',
     }

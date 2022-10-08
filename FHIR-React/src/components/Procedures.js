@@ -3,36 +3,51 @@ import { useState, useEffect } from 'react';
 import { Spinner } from 'reactstrap';
 import { getPatientProcedures } from '../apis/procedures';
 
-const convertProcedureData = (data) =>
-  !data.entry
-    ? []
-    : data.entry.map((procedure) => ({
-        id: procedure.resource.id,
-        name: procedure.resource.code.text,
-      }));
+
+const convertProcedureData = (entries) => {
+  // Assistive function
+  const getProcedureText = (resource) => {
+    if (!resource.code) return 'N/A';
+    return resource.code.text || resource.code.coding[0].display || 'N/A'
+  }
+
+  const rowData = entries.map((entry) => {
+      const resource = entry.resource;
+      return {
+        id: resource.id,
+        name: getProcedureText(resource),
+      }
+    });
+  return rowData;
+}
 
 const Procedures = ({ patientId }) => {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
-  const defaultColDef = {
-    filter: true,
-    resizable: true,
-    wrapText: true,
-    autoHeight: true,
-    autoWidth: true,
-    editable: true,
-  };
-  const columnDefs = [
-    { headerName: 'ID', field: 'id' },
-    { headerName: 'Name', field: 'name' },
-  ];
+    // ag-grid-table variables
+    const gridOptions = {
+      defaultColDef: {
+        filter: true,
+        resizable: true,
+        wrapText: true,
+        autoHeight: true,
+        autoWidth: true,
+        editable: true,
+      },
+      columnDefs: [
+        { headerName: 'ID', field: 'id' },
+        { headerName: 'Name', field: 'name' },
+      ],
+      domLayout: 'autoHeight', 
+      onGridReady: (params) => params.api.sizeColumnsToFit(),
+    }
 
   useEffect(() => {
     setLoading(true);
 
     getPatientProcedures(patientId).then((response) => {
       console.log('Procedures response:', response);
-      const data = convertProcedureData(response);
+      const data = convertProcedureData(response.entry);
       setRowData(data);
       setLoading(false);
     });
@@ -46,13 +61,8 @@ const Procedures = ({ patientId }) => {
       {rowData.length > 0 ? (
         <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
           <AgGridReact
-            columnDefs={columnDefs}
+            gridOptions={gridOptions}
             rowData={rowData}
-            defaultColDef={defaultColDef}
-            onGridReady={(params) => {
-              params.api.sizeColumnsToFit();
-              params.columnApi.autoSizeColumns();
-            }}
           />
         </div>
       ) : (

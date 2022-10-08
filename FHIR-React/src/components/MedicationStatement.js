@@ -4,24 +4,26 @@ import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 
-const getMedication = (medicationCodeableConcept) => {
-  let medication = [];
-  if (medicationCodeableConcept.text) {
-    medication.push(medicationCodeableConcept.text);
-  }
-  else if (medicationCodeableConcept.coding) {
-    medication.push(medicationCodeableConcept.coding[0].display)
-  } 
-  return medication.join(', ')
-}
 
-const getDosage = (dosage) => {
-  if (dosage)  return dosage[0].text || 'N/A';
-  if (!dosage) return 'N/A';
-}
 
 // patient ID to test: http://localhost:3000/patients/6968973
 const convertEntry = (entries) => {
+  // Assistive function
+  const getMedication = (medicationCodeableConcept) => {
+    let medication = [];
+    if (medicationCodeableConcept.text) 
+      medication.push(medicationCodeableConcept.text);
+    else if (medicationCodeableConcept.coding) 
+      medication.push(medicationCodeableConcept.coding[0].display)
+    return medication.join(', ')
+  }
+  
+  // Assistive function
+  const getDosage = (dosage) => {
+    if (dosage)  return dosage[0].text || 'N/A';
+    if (!dosage) return 'N/A';
+  }
+
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
     return {

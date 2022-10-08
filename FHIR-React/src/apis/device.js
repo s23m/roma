@@ -10,23 +10,13 @@ export const getDevice = async (deviceId) => {
   return response.data;
 };
 
-// export const getDeviceName = async (deviceReference) => {=> {
-//     const fullUrl = `${BASE_URL}/${deviceReference}`;
-//     const response = await axios.get(fullUrl);
-//     if (true) {
-//       resolve("SUCCESS")
-//     } else {
-//       reject("FAILURE")
-//     }
-//   // return response.data.deviceName[0].name);
-// }
-
-
 /**
  * @param {*} entry An entry from DeviceUseStatement
  * @returns Promise Object of the input entry's device name
  */
 export const getDeviceNames = (entry) => {
+  if (!entry.resource.device) return 'N/A';
+
   const deviceReference = entry.resource.device.reference;
   const fullUrl = `${BASE_URL}/${deviceReference}`;
   const deviceName = axios.get(fullUrl)

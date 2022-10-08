@@ -53,9 +53,10 @@ export default function DeviceUseStatement({ patientId }) {
 
         // set data for ag-grid
         if (response.total !== 0) {
+          // Using Promise.all function to get full "responded" array of device names
           Promise.all(response.entry.map(getDeviceNames))
           .then( deviceNames => {
-            console.log('Device names:', deviceNames)
+            // console.log('Device names:', deviceNames)
             const data = convertEntry(response.entry, deviceNames)
             setRowData(data)
           })

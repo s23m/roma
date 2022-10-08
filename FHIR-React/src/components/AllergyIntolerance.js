@@ -8,6 +8,7 @@ import '../stylesheets/PatientInfo.css';
 
 
 const convertEntry = (entries) => {
+  // Assistive function
   const getReaction = (reaction) => {
     const reactionString = [];
     if (reaction[0].manifestation === undefined) return 'undefined';

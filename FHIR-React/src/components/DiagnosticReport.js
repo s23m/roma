@@ -5,14 +5,21 @@ import { AgGridReact } from 'ag-grid-react';
 
 
 // Test patient ID: http://localhost:3000/patients/30358
-// id, status, result
 
 const convertEntry = (entries) => {
+  // Assistive function
+  const getCategory = (resource) => {
+    if (!resource.category) return 'N/A';
+    return resource.category[0].coding[0].code
+  }
+
   const rowData = entries.map( (entry) => {
     const resource = entry.resource;
     return {
       id: resource.id,
       status: resource.status,
+      report: resource.code.coding[0].display || resource.code.coding[0].display || 'N/A',
+      category: getCategory(resource),
       result: resource.result? resource.result[0].reference : 'N/A',
     }
   });
@@ -34,9 +41,11 @@ export default function DiagnosticReport({ patientId }) {
       editable: true,
     },
     columnDefs: [
-      { headerName: 'ID', field: 'id' },
-      { headerName: 'Status', field: 'status' },
-      { headerName: 'Result', field: 'result' },
+      { headerName: 'ID', field: 'id', minWidth: 110 },
+      { headerName: 'Report', field: 'report', minWidth: 110 },
+      { headerName: 'Category', field: 'category', minWidth: 110 },
+      { headerName: 'Status', field: 'status', minWidth: 110 },
+      { headerName: 'Result', field: 'result', minWidth: 110 },
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),
