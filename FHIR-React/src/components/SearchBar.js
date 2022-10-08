@@ -62,7 +62,7 @@ export default function SearchBar({ placeholder, onSubmit, options }) {
     [options, placeholder]
   );
 
-  const addParamButton = useMemo(
+  const AddParamButton = useMemo(
     () => (
       <Button
         className="add-param-button"
@@ -93,7 +93,7 @@ export default function SearchBar({ placeholder, onSubmit, options }) {
               selectedOptions={selectedOptions}
               inputValues={inputValues}
             />
-            {addParamButton}
+            {AddParamButton}
           </div>
           {[...Array(noOfAdditionalParams).keys()].map((i) => (
             <div className="search-param-group">
@@ -102,7 +102,7 @@ export default function SearchBar({ placeholder, onSubmit, options }) {
                 selectedOptions={selectedOptions}
                 inputValues={inputValues}
               />
-              {addParamButton}
+              {AddParamButton}
               <div class="remove-param-container">
                 <Button
                   className="remove-param-button"
@@ -113,8 +113,6 @@ export default function SearchBar({ placeholder, onSubmit, options }) {
                     const newParams = removeParam(i + 1, selectedOptions, inputValues);
                     setInputValues(newParams.inputValues);
                     setSelectedOptions(newParams.selectedOptions);
-                    // setInputValues(inputValues.slice(0, inputValues.length - 1));
-                    // setSelectedOptions(selectedOptions.slice(0, inputValues.length - 1));
                   }}
                 >
                   -
