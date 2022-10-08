@@ -3,7 +3,14 @@ import { useState, useEffect } from 'react';
 import { Spinner } from 'reactstrap';
 import { getPatientProcedures } from '../apis/procedures';
 
+// Testing patient link
+// http://localhost:3000/patients/example
 
+/**
+ * Get required data and convert it to fit AgGridReact input format
+ * @param {*} entries 
+ * @returns rowData for AgGridReact table
+ */
 const convertEntry = (entries) => {
   // Assistive function
   const getProcedureText = (resource) => {

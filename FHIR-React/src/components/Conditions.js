@@ -7,12 +7,12 @@ import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 
 
-// Testing patients
+// Testing patient links
 // http://localhost:3000/patients/gtp101
 // http://localhost:3000/patients/example
 
 /**
- * Get required data and convert data to fit AgGridReact input format
+ * Get required data and convert it to fit AgGridReact input format
  * @param {*} entries 
  * @returns rowData for AgGridReact table
  */

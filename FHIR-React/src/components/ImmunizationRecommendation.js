@@ -4,11 +4,12 @@ import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 
-// patient ID to test: http://localhost:3000/patients/2686624
+// Testing patient link
+// http://localhost:3000/patients/2686624
 
 
 /**
- * Get required data and convert data to fit AgGridReact input format
+ * Get required data and convert it to fit AgGridReact input format
  * @param {*} entries 
  * @returns rowData for AgGridReact table
  */

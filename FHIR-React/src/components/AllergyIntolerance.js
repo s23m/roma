@@ -6,12 +6,12 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 
-// Testing patient link
-//
-
+// Testing patient links
+// http://localhost:3000/patients/example
+// http://localhost:3000/patients/6845552
 
 /**
- * Get required data and convert data to fit AgGridReact input format
+ * Get required data and convert it to fit AgGridReact input format
  * @param {*} entries 
  * @returns rowData for AgGridReact table
  */
