@@ -118,24 +118,33 @@
 								<ChildContent>
 									<RadzenCard class="m-3">
 										<h3 class="h5"><b>@patient.Address.First().Use Address</b></h3>
-										<div class="row">
-											<div class="col-md-4">
-												<div>Country</div>
-												<b>@(patient.Address.First().Country)</b>
-												<div class="mt-3">State</div>
-												<b>@(patient.Address.First().State)</b>
+
+										@if (patient.Address.First().Country != null)
+										{
+											<div class="row">
+												<div class="col-md-4">
+													<div>Country</div>
+													<b>@(patient.Address.First().Country)</b>
+													<div class="mt-3">State</div>
+													<b>@(patient.Address.First().State)</b>
+												</div>
+												<div class="col-md-4">
+													<div>City</div>
+													<b>@(patient.Address.First().City)</b>
+													<div class="mt-3">Line</div>
+													<b>@(patient.Address.First().Line.First()) </b>
+												</div>
+												<div class="col-md-4">
+													<div>PostCode</div>
+													<b>@(patient.Address.First().PostalCode)</b>
+												</div>
 											</div>
-											<div class="col-md-4">
-												<div>City</div>
-												<b>@(patient.Address.First().City)</b>
-												<div class="mt-3">Line</div>
-												<b>@(patient.Address.First().Line.First()) </b>
-											</div>
-											<div class="col-md-4">
-												<div>PostCode</div>
-												<b>@(patient.Address.First().PostalCode)</b>
-											</div>
-										</div>
+										}
+										else
+										{
+											<b>@patient.Address.First().Text</b>
+										}
+
 									</RadzenCard>
 								</ChildContent>
 								<ErrorContent>
@@ -176,24 +185,32 @@
 													<div>Relationship</div>
 													@foreach (var relationship in contact.Relationship)
 													{
-														<CodeableConceptHandler Data=relationship />
+														<b><CodeableConceptHandler Data=relationship /></b>
 													}
 													<b>@(contact.Relationship.First().Text)</b>
 													<div class="mt-3">Name</div>
 													<b>@(contact.Name.First().Value)</b>
 												</div>
 												<div class="col-md-4">
-													<div class="mt-3">Gender</div>
-													<b>@(contact.Gender) </b>
+													<div class="">Gender</div>
+													<b>@(contact.Gender)a </b>
 													@if (contact.Telecom != null)
 													{
-														<div>@contact.Telecom.First().Use @contact.Telecom.First().System</div>
+														<div class="mt-3">@contact.Telecom.First().Use @contact.Telecom.First().System</div>
 														<b>@(contact.Telecom.First().Value)</b>
 													}
 												</div>
 												<div class="col-md-4">
 													<div>Address</div>
-													<b>@patient.Address.First().Line.First(), @patient.Address.First().City</b>
+													@if (contact.Address.Country != null)
+													{
+														<b>@contact.Address.Line.First(), @contact.Address.City</b>
+														
+													}
+													else
+													{
+														<b>@contact.Address.Text</b>
+													}
 												</div>
 											</div>
 										</RadzenCard>
@@ -219,26 +236,17 @@
 						<Allergies PatientID=@PatientID></Allergies>
 					</RadzenTabsItem>
 
-					
-
 					@*Conditions tab*@
 					<RadzenTabsItem Text="Conditions">
 						<Conditions PatientID=@PatientID></Conditions>
 					</RadzenTabsItem>
-
-					
-
-					@*Device tab*@
-					@*<RadzenTabsItem Text="Diagnostic Reports">
-						<DiagnosticReports PatientID=@PatientID></DiagnosticReports>
-					</RadzenTabsItem>*@
 
 					@*Immunizations tab*@
 					<RadzenTabsItem Text="Immunizations">
 						<Immunizations PatientID=@PatientID></Immunizations>
 					</RadzenTabsItem>
 
-					
+
 
 				</Tabs>
 			</RadzenTabs>
@@ -254,12 +262,12 @@
 						<DiagnosticReports PatientID=@PatientID />
 					</RadzenTabsItem>
 					@*Procedure History tab*@
-					<RadzenTabsItem Text="History of Procedures">
+					<RadzenTabsItem Text="Procedure History">
 						<Procedures PatientID=@PatientID />
 					</RadzenTabsItem>
 					@*Devices tab*@
-					<RadzenTabsItem Text="Medical Devices">
-						<Devices PatientID=@PatientID />
+					<RadzenTabsItem Text="Device Statements">
+						<DeviceStatements PatientID=@PatientID />
 					</RadzenTabsItem>
 				</Tabs>
 			</RadzenTabs>
@@ -268,7 +276,7 @@
 }
 else
 {
-	<Spinner Text="Patient Info"/>
+	<Spinner Text="Patient Info" />
 }
 
 @code {
