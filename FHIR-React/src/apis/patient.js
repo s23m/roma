@@ -4,8 +4,17 @@ import { joeBlow, joeBlowId } from '../mock-data/patients';
 
 const PATIENT_URL = `${BASE_URL}Patient`;
 
-export const searchPatient = async (queryParam, queryValue) => {
-  const fullUrl = `${PATIENT_URL}?${queryParam}=${queryValue}&_format=json&_count=50`;
+export const searchPatient = async (queryTypes, queryValues) => {
+  if (queryTypes.length !== queryValues.length)
+    throw new Error('Invalid query. Unequal number of query types and query values.');
+
+  const query = queryTypes.reduce(
+    (queryStr, queryType, i) =>
+      !!queryType ? `${queryStr}${queryType}=${queryValues[i]}&` : queryStr,
+    ''
+  );
+
+  const fullUrl = `${PATIENT_URL}?${query}_format=json&_count=50`;
   const response = await axios.get(fullUrl);
   return response.data;
 };
