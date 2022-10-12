@@ -127,16 +127,16 @@ const Patients = () => {
   const [notification, setNotification] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const onSearchSubmit = async (queryType, queryValue) => {
+  const onSearchSubmit = async (queryTypes, queryValues) => {
     setLoading(true);
-    const searchResult = await searchPatient(queryType, queryValue); // Get data
+    const searchResults = await searchPatient(queryTypes, queryValues); // Get data
     setLoading(false);
-    console.log('Patient Search Result:', searchResult); // For debugging
+    console.log(searchResults); // For debugging
 
-    if (searchResult.total !== 0) {
-      const rowData = convertData(searchResult.entry);
+    if (searchResults.total !== 0) {
+      const rowData = convertData(searchResults.entry);
       setRowData(rowData);
-      setNotification(`Total entries found: ${searchResult.total || searchResult.entry.length}`);
+      setNotification(`Total entries found: ${searchResults.total || searchResults.entry.length}`);
     } else {
       setNotification('Total entries found: 0');
     }
