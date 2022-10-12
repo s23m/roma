@@ -20,26 +20,70 @@ const convertEntry = (entries) => {
     return resource.category[0].coding[0].code
   }
 
-  const rowData = entries.map( (entry) => {
+  const rowData = entries.map( (entry, index) => {
     const resource = entry.resource;
     return {
       id: resource.id,
       status: resource.status,
       report: resource.code.coding[0].display || resource.code.coding[0].display || 'N/A',
       category: getCategory(resource),
-      result: resource.result? resource.result[0].reference : 'N/A',
+      result: index,  // Place index here to pass value to buttonResult(). Specifically, used in params.valueFormatted and params.value
     }
   });
   return rowData;
 };
 
-const buttonResult = (params, setModalShow) => {
+/**
+ * Return an object that can be used easily in `ResultModal` to pass to Ag-grid-react component
+ * @param {*} entries 
+ */
+const convertResult = (entries) => {
+  // Assistive function
+  const rowDataResult = entries.map( (entry, index) => {
+    const resource = entry.resource;
+    return {
+      result: resource.result || [], 
+    }
+  });
+  return rowDataResult;
+}
+
+const buttonResult = (params, setModalShow, setClickedRowNumber) => {
+  const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
+  
   return (
-    <Button variant="primary" onClick={() => setModalShow(true)}>View result</Button>
+    <div>
+      <Button variant="primary" onClick={() => {
+        setModalShow(true)
+        setClickedRowNumber(cellValue)
+      }}>
+        View result
+      </Button>
+    </div>
   )
 }
 
-const ResultModal = (props) => {
+const ResultModal = (propss) => {
+  const {clickedRowNumber, data, ...props} = propss
+  // ag-grid-table variables
+  const gridOptions = {
+    rowHeight: '50px',
+    defaultColDef: {
+      filter: true,
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+      autoWidth: true,
+      editable: true,
+    },
+    columnDefs: [
+      { headerName: 'Reference', field: 'reference', maxWidth: 220 },
+      { headerName: 'Question', field: 'display', },
+    ],
+    domLayout: 'autoHeight', 
+    onGridReady: (params) => params.api.sizeColumnsToFit(),
+  }
+
   return (
     <Modal
       {...props}
@@ -53,11 +97,12 @@ const ResultModal = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-            Bla Blo
+            <div  className="ag-theme-balham-dark" style={{width: '30vw'}}>
             <AgGridReact
-              // gridOptions={gridOptions}
-              // rowData={rowData}
+              gridOptions={gridOptions}
+              rowData={data[clickedRowNumber].result}
             />
+            </div>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
@@ -67,10 +112,14 @@ const ResultModal = (props) => {
 }
 
 
+
+
 export default function DiagnosticReport({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
+  const [rowDataResult, setRowDataResult] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [clickedRowNumber, setClickedRowNumber] = useState(2);
 
 
   // ag-grid-table variables
@@ -84,12 +133,12 @@ export default function DiagnosticReport({ patientId }) {
       editable: true,
     },
     columnDefs: [
-      { headerName: 'ID', field: 'id', minWidth: 110 },
-      { headerName: 'Report', field: 'report', minWidth: 110 },
-      { headerName: 'Category', field: 'category', minWidth: 110 },
-      { headerName: 'Status', field: 'status', minWidth: 110 },
-      { headerName: 'Result', field: 'result', minWidth: 110,
-            cellRenderer: (params) =>  buttonResult(params, setModalShow)},
+      { headerName: 'ID', field: 'id', width: 110 },
+      { headerName: 'Report', field: 'report', minWidth: 120 },
+      { headerName: 'Category', field: 'category', width: 100 },
+      { headerName: 'Status', field: 'status', width: 100 },
+      { headerName: 'Result', field: 'result', width: 100,
+                    cellRenderer: (params) =>  buttonResult(params, setModalShow, setClickedRowNumber)},
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),
@@ -105,8 +154,10 @@ export default function DiagnosticReport({ patientId }) {
 
         // set data for ag-grid
         if (response.total !== 0) {
-            const data = convertEntry(response.entry)
-            setRowData(data)
+          const data = convertEntry(response.entry)
+          const dataResult = convertResult(response.entry)
+          setRowData(data)
+          setRowDataResult(dataResult)
         }
         setLoading(false);
       })
@@ -120,13 +171,16 @@ export default function DiagnosticReport({ patientId }) {
       {rowData.length > 0 ? (
         <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
           <AgGridReact
-            gridOptions={gridOptions}
-            rowData={rowData}
+            gridOptions = {gridOptions}
+            rowData = {rowData}
+            rowHeight = {36}
           />
 
           <ResultModal
-            show={modalShow}
-            onHide={() => setModalShow(false)}
+            clickedRowNumber = {clickedRowNumber}
+            data = {rowDataResult}
+            show = {modalShow}
+            onHide = {() => setModalShow(false)}
           />
         </div>
       ) : (<br/>)}

@@ -42,8 +42,8 @@ const Procedures = ({ patientId }) => {
         editable: true,
       },
       columnDefs: [
-        { headerName: 'ID', field: 'id' },
-        { headerName: 'Name', field: 'name' },
+        { headerName: 'ID', field: 'id', width: 200 },
+        { headerName: 'Name', field: 'name', width: 300 },
       ],
       domLayout: 'autoHeight', 
       onGridReady: (params) => params.api.sizeColumnsToFit(),
@@ -54,8 +54,10 @@ const Procedures = ({ patientId }) => {
 
     getPatientProcedures(patientId).then((response) => {
       console.log('Procedures response:', response);
-      const data = convertEntry(response.entry);
-      setRowData(data);
+      if (response.total !== 0) {
+        const data = convertEntry(response.entry);
+        setRowData(data);
+      }
       setLoading(false);
     });
   }, [patientId]);

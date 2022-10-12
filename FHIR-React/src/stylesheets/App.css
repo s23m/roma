@@ -47,12 +47,25 @@ h3 {
   margin-bottom: 1.5rem;
 }
 
+/* Ag-grid-react */
 .ag-theme-balham-dark {
   padding: 0 0 4rem 0;
+}
+.ag-row .ag-cell {
+  display: flex;
+  /* justify-content: center; /* horizontally */
+  align-items: center;  /* vertically */
 }
 
 
 /* Modal */
-.modal {
-  --bs-modal-bg: green;
+div.modal-content {
+  --bs-modal-bg: #343d44;
+  color: #eeeeee
+}
+
+button.btn.btn-primary {
+  padding: 0.1rem 0.3rem ;
+  --bs-btn-bg: #28344c;
+  --bs-btn-border-color: #444850;
 }
