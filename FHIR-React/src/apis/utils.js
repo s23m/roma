@@ -1,6 +1,6 @@
 /**
  * Extract the keys & values of an object and return it in a string in a tree-like structure. 
- * So far, with many branches/layers, it cannot display properly as space in string is altered in HTML element. 
+ * However, it cannot display properly as space in string is altered in HTML element. 
  * @param {Object} object
  * @param {string} indent
  * @returns content

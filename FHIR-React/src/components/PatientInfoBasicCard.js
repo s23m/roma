@@ -29,43 +29,43 @@ const PatientInfoBasicCard = ({ patientInfo }) => {
   return loading ? (
     <Spinner />
   ) : (
-    <div class="card bg-dark basic-info-card">
-      <div class="card-header">Patient's basic information</div>
-      <table class="table table-dark table-borderless">
+    <div className="card bg-dark basic-info-card">
+      <div className="card-header">Patient's basic information</div>
+      <table className="table table-dark table-borderless">
         <tbody>
           <tr>
             <td>
-              <div class="card bg-dark borderless-card text-center">
-                <h6 class="card-subtitle mb-2 text-muted">ID</h6>
-                <h5 class="card-title">{patientBasicInfo.id}</h5>
+              <div className="card bg-dark borderless-card text-center">
+                <h6 className="card-subtitle mb-2 text-muted">ID</h6>
+                <h5 className="card-title">{patientBasicInfo.id}</h5>
               </div>
             </td>
           </tr>
           <tr>
             <td>
-              <div class="card bg-dark borderless-card text-center">
-                <h6 class="card-subtitle mb-2 text-muted">Name</h6>
-                <h5 class="card-title">{patientBasicInfo.name}</h5>
+              <div className="card bg-dark borderless-card text-center">
+                <h6 className="card-subtitle mb-2 text-muted">Name</h6>
+                <h5 className="card-title">{patientBasicInfo.name}</h5>
               </div>
             </td>
             <td>
-              <div class="card bg-dark borderless-card text-center">
-                <h6 class="card-subtitle mb-2 text-muted">Gender</h6>
-                <h5 class="card-title">{patientBasicInfo.gender}</h5>
+              <div className="card bg-dark borderless-card text-center">
+                <h6 className="card-subtitle mb-2 text-muted">Gender</h6>
+                <h5 className="card-title">{patientBasicInfo.gender}</h5>
               </div>
             </td>
           </tr>
           <tr>
             <td>
-              <div class="card bg-dark borderless-card text-center">
-                <h6 class="card-subtitle mb-2 text-muted">Date of birth</h6>
-                <h5 class="card-title">{patientBasicInfo.dob}</h5>
+              <div className="card bg-dark borderless-card text-center">
+                <h6 className="card-subtitle mb-2 text-muted">Date of birth</h6>
+                <h5 className="card-title">{patientBasicInfo.dob}</h5>
               </div>
             </td>
             <td>
-              <div class="card bg-dark borderless-card text-center">
-                <h6 class="card-subtitle mb-2 text-muted">Deceased?</h6>
-                <h5 class="card-title">{patientBasicInfo.deceased}</h5>
+              <div className="card bg-dark borderless-card text-center">
+                <h6 className="card-subtitle mb-2 text-muted">Deceased?</h6>
+                <h5 className="card-title">{patientBasicInfo.deceased}</h5>
               </div>
             </td>
           </tr>

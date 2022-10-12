@@ -4,24 +4,33 @@ import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 
-const getMedication = (medicationCodeableConcept) => {
-  let medication = [];
-  if (medicationCodeableConcept.text) {
-    medication.push(medicationCodeableConcept.text);
-  }
-  else if (medicationCodeableConcept.coding) {
-    medication.push(medicationCodeableConcept.coding[0].display)
-  } 
-  return medication.join(', ')
-}
 
-const getDosage = (dosage) => {
-  if (dosage)  return dosage[0].text || 'N/A';
-  if (!dosage) return 'N/A';
-}
 
-// patient ID to test: http://localhost:3000/patients/6968973
+// Testing patient link: 
+// http://localhost:3000/patients/6968973
+
+/**
+ * Get required data and convert it to fit AgGridReact input format
+ * @param {*} entries 
+ * @returns rowData for AgGridReact table
+ */
 const convertEntry = (entries) => {
+  // Assistive function
+  const getMedication = (medicationCodeableConcept) => {
+    let medication = [];
+    if (medicationCodeableConcept.text) 
+      medication.push(medicationCodeableConcept.text);
+    else if (medicationCodeableConcept.coding) 
+      medication.push(medicationCodeableConcept.coding[0].display)
+    return medication.join(', ')
+  }
+  
+  // Assistive function
+  const getDosage = (dosage) => {
+    if (dosage)  return dosage[0].text || 'N/A';
+    if (!dosage) return 'N/A';
+  }
+
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
     return {
@@ -51,10 +60,10 @@ export default function MedicationStatement({ patientId }) {
       editable: true,
     },
     columnDefs: [
-      { headerName: 'ID', field: 'id', minWidth: 110 },
-      { headerName: 'Medication', field: 'medication' },
-      { headerName: 'Dosage', field: 'dosage' },
-      { headerName: 'Reason', field: 'reasonCode' },
+      { headerName: 'ID', field: 'id', width: 110, flex: 0.8 },
+      { headerName: 'Medication', field: 'medication', width: 200, flex: 1.7 },
+      { headerName: 'Dosage', field: 'dosage', width: 200, flex: 1.7 },
+      { headerName: 'Reason', field: 'reasonCode', width: 100, flex: 1 },
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),

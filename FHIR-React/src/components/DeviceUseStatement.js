@@ -4,7 +4,15 @@ import { getDeviceUseStatement } from '../apis/deviceUseStatement';
 import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
-// Test patient ID: http://localhost:3000/patients/2913418
+// Testing patient link
+// http://localhost:3000/patients/2913418
+
+/**
+ * Get required data and convert it to fit AgGridReact input format
+ * @param {*} entries 
+ * @param {*} deviceNames An array of device names
+ * @returns rowData for AgGridReact table
+ */
 
 const convertEntry = (entries, deviceNames) => {
   const rowData = entries.map( (entry, index) => {
@@ -53,8 +61,10 @@ export default function DeviceUseStatement({ patientId }) {
 
         // set data for ag-grid
         if (response.total !== 0) {
+          // Using Promise.all function to get full "responded" array of device names
           Promise.all(response.entry.map(getDeviceNames))
           .then( deviceNames => {
+            // console.log('Device names:', deviceNames)
             const data = convertEntry(response.entry, deviceNames)
             setRowData(data)
           })

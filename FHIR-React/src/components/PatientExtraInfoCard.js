@@ -9,6 +9,7 @@ import Procedures from './Procedures';
 import DeviceUseStatement from './DeviceUseStatement';
 import MedicationStatement from './MedicationStatement';
 import DiagnosticReport from './DiagnosticReport';
+import Condition from './Conditions';
 
 const PatientExtraInfoCard = ({ patientInfo, id }) => {
   return (
@@ -119,6 +120,20 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
               Diagnostic Report
             </button>
           </li>
+          <li className="nav-item" role="presentation">
+            <button
+              className="nav-link card-nav"
+              id="condition-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#condition"
+              type="button"
+              role="tab"
+              aria-controls="condition"
+              aria-selected="false"
+            >
+              Condition
+            </button>
+          </li>
         </ul>
       </div>
       <div className="tab-content" id="myTabContent">
@@ -147,6 +162,9 @@ const PatientExtraInfoCard = ({ patientInfo, id }) => {
         </div>
         <div className="tab-pane fade" id="diagnostic-report" role="tabpanel" aria-labelledby="diagnostic-report-tab">
           <DiagnosticReport patientId={id} />
+        </div>
+        <div className="tab-pane fade" id="condition" role="tabpanel" aria-labelledby="condition-tab">
+          <Condition patientId={id} />
         </div>
       </div>
     </div>

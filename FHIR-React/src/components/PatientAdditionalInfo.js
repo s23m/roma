@@ -4,6 +4,7 @@ import { extractValue } from '../apis/utils';
 
 const NA_ARRAY = ['N/A'];
 
+// Assistive functions to get required data from patient response
 const getPatientTelecomInfo = (patientInfo) => {
   if (!patientInfo.telecom || patientInfo.telecom.length === 0) return NA_ARRAY;
 
@@ -38,25 +39,18 @@ const getPatientCommunicationInfo = (patientInfo) => {
 
   const validCommunications = patientInfo.communication.filter(
     (comm) =>
-      !!comm.language.coding && comm.language.coding.length > 0 && !!comm.language.coding[0].display
+      comm.language.coding && comm.language.coding.length > 0
   );
 
-  const patientCommunications = validCommunications.map((comm) => comm.language.coding[0].display);
+  const patientCommunications = validCommunications.map((comm) => comm.language.coding[0].display || comm.language.coding[0].code);
 
   return patientCommunications;
 };
 
-// // Address can be in different formats given different locations, so it is difficult to correctly show address
-// // showing json instead
-// const getPatientAddress = (patientInfo) => {
-//   if (!patientInfo.address || typeof patientInfo.address !== 'object') return 'N/A';
-//   return JSON.stringify(patientInfo.address);
-// };
-
 const getMaritalStatus = (patientInfo) => {
   if (!patientInfo.maritalStatus) return NA_ARRAY;
   if (patientInfo.maritalStatus) {
-    return patientInfo.maritalStatus.coding[0].display
+    return patientInfo.maritalStatus.coding[0].display || patientInfo.maritalStatus.coding[0].code
   }
 }
 const createArrayCardBody = (arr) =>
@@ -82,9 +76,8 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
     patientAdditionalInfo.identifier = getPatientIdentifiers(patientInfo);
     patientAdditionalInfo.telecom = getPatientTelecomInfo(patientInfo);
     patientAdditionalInfo.communication = getPatientCommunicationInfo(patientInfo);
-    // patientAdditionalInfo.address = getPatientAddress(patientInfo);
     patientAdditionalInfo.address = extractValue(patientInfo.address);
-    patientAdditionalInfo.active = patientInfo.active ? patientInfo.active : 'N/A';
+    patientAdditionalInfo.active = patientInfo.active ? JSON.stringify(patientInfo.active) : 'N/A';
     patientAdditionalInfo.maritalStatus = getMaritalStatus(patientInfo);
 
     setPatientAdditionalInfo(patientAdditionalInfo);
@@ -130,13 +123,13 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
         </tr>
         <tr>
           <td>
-            <div class="card bg-dark borderless-card text-center">
+            <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Marital status</h6>
               <h5 className="card-title text-left">{patientAdditionalInfo.maritalStatus}</h5>
             </div>
           </td>
           <td>
-            <div class="card bg-dark borderless-card text-center">
+            <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Active?</h6>
               <h5 className="card-title text-left">{patientAdditionalInfo.active}</h5>
             </div>

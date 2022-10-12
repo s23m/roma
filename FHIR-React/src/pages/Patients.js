@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { searchPatient } from '../apis/patient';
 import { Spinner } from 'reactstrap';
@@ -9,15 +9,23 @@ import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';
 import '../stylesheets/App.css';
 
+const NA = 'N/A'
+
+
+/**
+ * Get required data from `searchResults` and convert it to fit AgGridReact input format
+ * @param {*} searchResults 
+ * @returns rowData for AgGridReact table
+ */
 const convertData = (searchResults) => {
   const rowData = searchResults.map((patient) => {
     try {
       return {
-        givenNames: patient.resource.name[0].given.join(' ') || 'n/a',
-        familyName: patient.resource.name[0].family || 'n/a',
-        birthDate: patient.resource.birthDate || 'n/a',
-        gender: patient.resource.gender || 'n/a',
-        id: patient.resource.id || 'n/a',
+        givenNames: patient.resource.name[0].given.join(' ') || NA,
+        familyName: patient.resource.name[0].family || NA,
+        birthDate: patient.resource.birthDate || NA,
+        gender: patient.resource.gender || NA,
+        id: patient.resource.id || NA,
       };
     } catch {
       return {
@@ -81,23 +89,30 @@ const searchTypes = [
 
 const Patients = () => {
   // ag-grid-table variables
-  const gridStyle = useMemo(() => ({ height: '70vh', width: '100%' }), []);
-  const defaultColDef = {
-    filter: true,
-    sortable: true,
-    resizable: true,
-  };
-  const columnDefs = [
-    { headerName: 'Given names', field: 'givenNames' },
-    { headerName: 'Family name', field: 'familyName' },
-    { headerName: 'Birthdate', field: 'birthDate' },
-    { headerName: 'Gender', field: 'gender' },
-    {
-      headerName: 'ID',
-      field: 'id',
-      cellRenderer: (params) => createHyperlinkToPatientPage(params),
+  const gridOptions = {
+    defaultColDef: {
+      filter: true,
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+      autoWidth: true,
+      editable: true,
     },
-  ];
+    columnDefs: [
+      { headerName: 'Given names', field: 'givenNames' },
+      { headerName: 'Family name', field: 'familyName' },
+      { headerName: 'Birthdate', field: 'birthDate' },
+      { headerName: 'Gender', field: 'gender' },
+      {
+        headerName: 'ID',
+        field: 'id',
+        cellRenderer: (params) => createHyperlinkToPatientPage(params),
+      },
+    ],
+    domLayout: 'autoHeight', 
+    onGridReady: (params) => params.api.sizeColumnsToFit(),
+  }
+
   const joeBlowData = convertData([{ resource: joeBlow }]);
   const [rowData, setRowData] = useState([
     {
@@ -140,16 +155,10 @@ const Patients = () => {
 
       <p>{notification}</p>
 
-      <div className="ag-theme-balham-dark" style={gridStyle}>
+      <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
         <AgGridReact
-          columnDefs={columnDefs}
-          rowData={rowData}
-          pagination={true}
-          paginationPageSize={50}
-          defaultColDef={defaultColDef}
-          onGridReady={(params) => {
-            params.api.sizeColumnsToFit();
-          }}
+            gridOptions={gridOptions}
+            rowData={rowData}
         />
       </div>
     </div>

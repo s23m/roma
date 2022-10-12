@@ -4,7 +4,15 @@ import { Spinner } from 'reactstrap';
 import { AgGridReact } from 'ag-grid-react';
 
 
-// Testing patient ID: 2686624
+// Testing patient link
+// http://localhost:3000/patients/2686624
+
+
+/**
+ * Get required data and convert it to fit AgGridReact input format
+ * @param {*} entries 
+ * @returns rowData for AgGridReact table
+ */
 const convertEntry = (entries) => {
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
