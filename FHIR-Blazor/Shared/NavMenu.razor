@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">FHIRBlazor</a>
+        <a class="navbar-brand" href="">FHIR Blazor App</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -18,21 +18,17 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="patientsearch">
-                <span class="oi oi-plus" aria-hidden="true"></span> Patient Search
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
+         <div class="nav-item px-3">
             <NavLink class="nav-link" href="searchbyname">
                 <span class="oi oi-person" aria-hidden="true"></span> Search by Name
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="test">
-                <span class="oi oi-text" aria-hidden="true"></span> Testing
+@*        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="patientsearch">
+                <span class="oi oi-plus" aria-hidden="true"></span> Patient Search
             </NavLink>
-        </div>
+        </div>*@
+       
     </nav>
 </div>
 
@@ -42,7 +38,6 @@
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     public string TestString = "Hello";
-
     
     private void ToggleNavMenu()
     {

@@ -19,24 +19,44 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/Allergies.razor]
-build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xBbGxlcmdpZXMucmF6b3I=
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/Other/Devices.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xPdGhlclxEZXZpY2VzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/Conditions.razor]
-build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xDb25kaXRpb25zLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/DiagnosticReports.razor]
-build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xEaWFnbm9zdGljUmVwb3J0cy5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/MedStatements.razor]
-build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xNZWRTdGF0ZW1lbnRzLnJhem9y
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/Other/ViewReport.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xPdGhlclxWaWV3UmVwb3J0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfo.razor]
 build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/Allergies.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcQWxsZXJnaWVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/Conditions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcQ29uZGl0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/DeviceStatements.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcRGV2aWNlU3RhdGVtZW50cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/DiagnosticReports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcRGlhZ25vc3RpY1JlcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/Immunizations.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcSW1tdW5pemF0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/MedStatements.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcTWVkU3RhdGVtZW50cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientInfoTabs/Procedures.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50SW5mb1RhYnNcUHJvY2VkdXJlcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/PatientNameSearch.razor]
@@ -47,20 +67,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xQYXRpZW50UXVpY2tJbmZvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/Spinner.razor]
+build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xTcGlubmVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/TypeHandlers/CodeableConceptHandler.razor]
 build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xUeXBlSGFuZGxlcnNcQ29kZWFibGVDb25jZXB0SGFuZGxlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/TypeHandlers/DateHandler.razor]
 build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xUeXBlSGFuZGxlcnNcRGF0ZUhhbmRsZXIucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/CustomComponents/ViewReport.razor]
-build_metadata.AdditionalFiles.TargetPath = Q3VzdG9tQ29tcG9uZW50c1xWaWV3UmVwb3J0LnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/Pages/Index.razor]
@@ -71,12 +87,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTmFtZVNlYXJjaC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/Pages/TestPage.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGVzdFBhZ2UucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/Shared/SurveyPrompt.razor]
-build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+[C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/Pages/SimplePatientSearch.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2ltcGxlUGF0aWVudFNlYXJjaC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/macsm/Documents/Git Repos/roma/FHIR-Blazor/Shared/ThemeToggle.razor]

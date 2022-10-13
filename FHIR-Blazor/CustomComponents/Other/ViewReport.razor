@@ -1,0 +1,166 @@
+﻿@*This page/dialogue shows specific information about a report. This is triggered from the DiagnosticReports tab*@
+
+@page "/report/{ReportID}"
+@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Rest;
+@using Hl7.Fhir.Serialization;
+@using FHIRBlazor.CustomComponents.TypeHandlers
+@using FHIRBlazor.Pages
+
+@inject Radzen.DialogService dialogService
+@inject NavigationManager NavManager
+
+@*https://blazor.radzen.com/dialog*@
+
+<div class="row mb-3">
+	<div class="col-lg-6 d-flex ">
+		<RadzenCard Style="width: 100%; overflow: hidden;">
+			@*<h3 class="h5">Report Information</h3>*@
+			<div class="d-flex flex-row">
+				<div>
+					<div>Report</div>
+					<b><CodeableConceptHandler Data=report.Code /></b>
+					<div class="mt-3">Subject</div>
+					@if (report.Subject != null)
+					{
+						<b>@report.Subject.Reference</b>
+					}
+					else
+					{
+						<b>No data</b>
+					}
+				</div>
+			</div>
+		</RadzenCard>
+	</div>
+	<div class="col-lg-6 d-flex">
+		<RadzenCard Style="width: 100%; overflow: hidden;">
+			@*<h3 class="h5">Personal</h3>*@
+			<div class="row">
+				<div class="col">
+					<div>Encounter</div>
+					@if (report.Encounter != null)
+					{
+						<b>@report.Encounter.Reference</b>
+					}
+					else
+					{
+						<b>No data</b>
+					}
+					<div class="mt-3">Date</div>
+					<b>@report.Issued</b>
+				</div>
+			</div>
+		</RadzenCard>
+	</div>
+</div>
+
+
+@*Observation List*@
+<div class="mb-3">
+	<h3 class="h5 m-2">Observations</h3>
+	@if (!loading)
+	{
+		<ErrorBoundary>
+			<ChildContent>
+				<RadzenDataGrid Data="@observations" TItem="Observation" PageSize="6" AllowPaging="true"
+							AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
+							PagerHorizontalAlign="HorizontalAlign.Center">
+					<Columns>
+
+						<RadzenDataGridColumn TItem="Observation" Width=60% Property="Code" Title="Code" Filterable="false" Sortable="false">
+							<Template Context="observation">
+								<CodeableConceptHandler Data=observation.Code />
+							</Template>
+						</RadzenDataGridColumn>
+
+						<RadzenDataGridColumn TItem="Observation" Property="Category" Title="Category" Filterable="false" Sortable="false">
+							<Template Context="observation">
+								@foreach (var category in observation.Category)
+								{
+									<CodeableConceptHandler Data=category />
+									<a> </a>
+								}
+							</Template>
+						</RadzenDataGridColumn>
+
+						<RadzenDataGridColumn TItem="Observation" Property="Issued" Title="IssueDate" Filterable="false" Sortable="false">
+							<Template Context="observation">@observation.Issued</Template>
+						</RadzenDataGridColumn>
+
+						<RadzenDataGridColumn TItem="Observation" Property="Id" Title="ID">
+							<Template Context="observation"><a href="@($"{NameSearch.serverURL}/Observation/{observation.Id}")">@observation.Id</a></Template>
+						</RadzenDataGridColumn>
+
+					</Columns>
+				</RadzenDataGrid>
+			</ChildContent>
+			<ErrorContent>
+				<RadzenCard class="m-3">
+					<h3 class="h5"><b>There was an error</b></h3>
+				</RadzenCard>
+			</ErrorContent>
+		</ErrorBoundary>
+	}
+	else
+	{
+		<Spinner />
+	}
+
+</div>
+
+<div class="row">
+	<div class="col-md-12 text-right">
+		<RadzenButton Click="@((args) => dialogService.Close(true))" ButtonStyle="ButtonStyle.Primary" Text="Close" Style="width: 120px" />
+	</div>
+</div>
+
+@code {
+	[Parameter] public string ReportID { get; set; }
+	private DiagnosticReport report;
+	private Observation[]? observations;
+	private bool loading = true;
+
+	FhirClient client = new FhirClient(NameSearch.serverURL);
+
+	public async ValueTask<Observation[]> GetObservationData(DiagnosticReport report)
+	{
+		Observation[] observs = new Observation[report.Result.Count];
+
+		this.loading = true;
+		Parallel.For(0, report.Result.Count, i =>
+		{
+			observs[i] = client.Read<Observation>(report.Result[i].Reference);
+		});
+
+		this.loading = false;
+		Console.WriteLine("Observations found");
+
+		return observs;
+	}
+
+	protected override async System.Threading.Tasks.Task OnInitializedAsync()
+	{
+		try
+		{
+			report = client.Read<DiagnosticReport>("DiagnosticReport/" + ReportID);
+
+			//https://stackoverflow.com/questions/61551404/in-blazor-how-to-call-a-function-at-page-load-event-name
+			//allows the page to render on its own thread so data retrieval doesn't pause it
+			await System.Threading.Tasks.Task.Delay(1);
+			Console.WriteLine("pre");
+
+			this.observations = await GetObservationData(report);
+			Console.WriteLine("post");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine("Error info:");
+		}
+		return;
+	}
+}
+
+
+
+

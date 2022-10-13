@@ -1,0 +1,136 @@
+﻿@*This page is the Immunizations tab show on the PatientInfo page. It returns all the known Immunizations linked to a patient ID*@
+
+@page "/immunizations/{PatientID}"
+@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Rest;
+@using Hl7.Fhir.Serialization;
+@using FHIRBlazor.Pages;
+@using FHIRBlazor.CustomComponents.TypeHandlers
+
+@inject Radzen.DialogService dialogService
+@inject NotificationService NotificationService
+@inject NavigationManager NavManager
+
+@if (!loading)
+{
+	<ErrorBoundary>
+		<ChildContent>
+			<RadzenDataGrid Data="@results" TItem="Immunization" PageSize="10" AllowPaging="true"
+						AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
+						PagerHorizontalAlign="HorizontalAlign.Center">
+				<Columns>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Vaccine" Title="Vaccine" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							<CodeableConceptHandler Data=immunization.VaccineCode />
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Site" Title="Site" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							<CodeableConceptHandler Data=immunization.Site />
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Dosage" Title="Dosage" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							@if (immunization.DoseQuantity != null)
+							{
+								<a>@immunization.DoseQuantity.Value @immunization.DoseQuantity.Code</a>
+							}
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Occur" Title="Date" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							<DateHandler Data=immunization.Occurrence />
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Expiration" Title="Expiration" Filterable="false" Sortable="false">
+						<Template Context="immunization">
+							<a>@immunization.ExpirationDate</a>
+						</Template>
+					</RadzenDataGridColumn>
+
+					<RadzenDataGridColumn TItem="Immunization" Property="Id" Title="ID">
+						<Template Context="immunization"><a href="@($"{NameSearch.serverURL}/Immunization/{immunization.Id}")">@immunization.Id</a></Template>
+					</RadzenDataGridColumn>
+
+				</Columns>
+			</RadzenDataGrid>
+		</ChildContent>
+		<ErrorContent>
+			<RadzenCard class="m-3">
+				<h3 class="h5"><b>There was an error</b></h3>
+			</RadzenCard>
+		</ErrorContent>
+	</ErrorBoundary>
+}
+else
+{
+	<Spinner Text="Conditions" />
+}
+
+@code {
+	[Parameter] public string PatientID { get; set; }
+	private Bundle search = new Bundle();
+	private Hl7.Fhir.Model.Immunization[]? results;
+	private Boolean loading = true;
+
+	void ShowError(NotificationMessage message)
+	{
+		NotificationService.Notify(message);
+		Console.WriteLine($"{message.Severity} notification");
+	}
+	private string errorMessage = "";
+
+	FhirClient client = new FhirClient(NameSearch.serverURL);
+
+	public async ValueTask<Boolean> GetImmunizationData()
+	{
+		loading = true;
+		var sParams = new SearchParams()
+			.Where("patient=" + PatientID)
+			.LimitTo(100);
+
+		search = client.Search<Immunization>(sParams);
+		results = new Immunization[search.Entry.Count];
+
+		for (int i = 0; i < search.Entry.Count; i++)
+		{
+			results[i] = (Immunization)search.Entry[i].Resource;
+		}
+
+		loading = false;
+		return true;
+	}
+
+	protected override async System.Threading.Tasks.Task OnInitializedAsync()
+	{
+		await System.Threading.Tasks.Task.Delay(1);
+		try
+		{
+			await GetImmunizationData();
+		}
+		catch (Exception ex)
+		{
+			errorMessage = ex.Message;
+			ShowError(new NotificationMessage
+				{
+					Style = "position: relative; top: 1%; left: 60%; transform: translate(-35%, 35%); width: 60%; max-width: 3000px;",
+					Severity = NotificationSeverity.Error,
+					Summary = "There has been an error",
+					Detail = errorMessage,
+					Duration = 40000
+				}
+			);
+			Console.WriteLine("Error info:" + ex.Message);
+		}
+		return;
+	}
+}
+
+
+
+
