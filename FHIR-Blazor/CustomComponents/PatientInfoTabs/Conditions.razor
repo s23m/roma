@@ -1,4 +1,7 @@
-﻿@using Hl7.Fhir.Model;
+﻿@*This page is the Conditions tab shows on the PatientInfo page. It returns all the known conditions linked to a patient ID*@
+
+@page "/conditions/{PatientID}"
+@using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
@@ -8,21 +11,31 @@
 @inject NotificationService NotificationService
 @inject NavigationManager NavManager
 
+@*This if statement checks whether or not the data has been retrieved, and displays the loading spinner if it hasn't*@
 @if (!loading)
 {
+	@*An Error Boundary incase something goes wrong *@
 	<ErrorBoundary>
 		<ChildContent>
+			@*Create a table using radzen to display all of the conditions *@
 			<RadzenDataGrid Data="@results" TItem="Condition" PageSize="10" AllowPaging="true"
 						AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
 						PagerHorizontalAlign="HorizontalAlign.Center">
+						@*All of the paramaters above ensure the table functions as intended. Information about 
+						  these can be found in the radzen documentation*@
+
+				@*Columns of the table are defined here*@
 				<Columns>
 
+					@*As the condition itself is stored within the Code property of the condition. We can use the CodeableConceptHandler to display it*@
 					<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Condition" Filterable="false" Sortable="false">
 						<Template Context="condition">
+							@*See the TypeHandlers/CodeableConceptHandler.razor for specifics on what's being displayed*@
 							<CodeableConceptHandler Data=condition.Code />
 						</Template>
 					</RadzenDataGridColumn>
 
+					@*From the test data used, displaying the specifc code text was also helpful*@
 					<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Text" Filterable="false" Sortable="false">
 						<Template Context="condition">
 							@if (condition.Code != null)
@@ -32,24 +45,29 @@
 						</Template>
 					</RadzenDataGridColumn>
 
+					@*The onset date of the condition is displayed in this column, using the DateHandler*@
 					<RadzenDataGridColumn TItem="Condition" Property="Onset" Title="Onset" Filterable="false" Sortable="false">
 						<Template Context="condition">
+							@*See the TypeHandlers/DateHandler.razor for specifics on how it's being displayed*@
 							<DateHandler Data=condition.Onset />
 						</Template>
 					</RadzenDataGridColumn>
 
+					@*This column displays the severity using the handler*@
 					<RadzenDataGridColumn TItem="Condition" Property="Severity" Title="Severity" Filterable="false" Sortable="false">
 						<Template Context="condition">
 							<CodeableConceptHandler Data=condition.Severity />
 						</Template>
 					</RadzenDataGridColumn>
 
+					@*This column displays the current status of the conditions*@
 					<RadzenDataGridColumn TItem="Condition" Property="ClinicalStatus" Title="ClinicalStatus" Filterable="false" Sortable="false">
 						<Template Context="condition">
 							<CodeableConceptHandler Data=condition.ClinicalStatus />
 						</Template>
 					</RadzenDataGridColumn>
 
+					@*This column displays the category of the condition. There can be more than one category, so in order to display all the information, one must loop through the list*@
 					<RadzenDataGridColumn TItem="Condition" Property="Category" Title="Category" Filterable="false" Sortable="false">
 						<Template Context="condition">
 							@foreach (var category in condition.Category)
@@ -60,14 +78,9 @@
 						</Template>
 					</RadzenDataGridColumn>
 
-					@*<RadzenDataGridColumn TItem="Condition" Property="Code" Title="Code" Filterable="false" Sortable="false">
-						<Template Context="condition">
-						<a>@condition.Code.Coding.First().Code</a>
-						</Template>
-						</RadzenDataGridColumn>*@
-
+					@*This column simply displays the ID of the condition. The user can click on it to see the raw data in a new tab*@
 					<RadzenDataGridColumn TItem="Condition" Property="Id" Title="ID">
-						<Template Context="condition"><a href="@($"{serverURL}/Condition/{condition.Id}")">@condition.Id</a></Template>
+						<Template Context="condition"><a href="@($"{NameSearch.serverURL}/Condition/{condition.Id}")">@condition.Id</a></Template>
 					</RadzenDataGridColumn>
 				</Columns>
 
@@ -86,11 +99,16 @@ else
 }
 
 @code {
+	@*The input patient id*@
 	[Parameter] public string PatientID { get; set; }
+	@*The search returns a bundle *@
 	private Bundle search = new Bundle();
+	@*Once we have the bundle, we can create an array of the specific datatype. In this case, condition*@
 	private Hl7.Fhir.Model.Condition[]? results;
+	@*A boolean to show whether data is currently being retrieved*@
 	private Boolean loading = true;
 
+	@*This is used to show an error on the screen within the app*@
 	void ShowError(NotificationMessage message)
 	{
 		NotificationService.Notify(message);
@@ -98,21 +116,31 @@ else
 	}
 	private string errorMessage = "";
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
-
+	@*Definition of the FhirClient, using the serverURL defined in NameSearch*@
+	FhirClient client = new FhirClient(NameSearch.serverURL);
+	
+	@*Function used to retrieve the Conditions Data related to the patient id *@
 	public async ValueTask<Boolean> GetConditionsData()
 	{
+		@*used to show loading spinner*@
 		loading = true;
+
+		@*Definition of search params. Only looking for the patient/subject id*@
+		@*More information on these search params in the HL7 FHIR documentation: https://www.hl7.org/fhir/search.html*@
 		var sParams = new SearchParams()
 			.Where("subject=" + PatientID)
 			.LimitTo(100);
 
+		@*doing doing search*@
 		search = client.Search<Condition>(sParams);
+
+		@*defining the results array using the amount of results in the search*@
 		results = new Condition[search.Entry.Count];
 
+		@*for every entry (in this case, Condition) in the bundle*@
 		for (int i = 0; i < search.Entry.Count; i++)
 		{
+			@*filling the list with the conditions*@
 			results[i] = (Condition)search.Entry[i].Resource;
 		}
 
@@ -120,8 +148,11 @@ else
 		return true;
 	}
 
+	@*redefining the init to get the data asyncronously*@
 	protected override async System.Threading.Tasks.Task OnInitializedAsync()
 	{
+		@*allows the page to render on a different thread. found here:
+		https://stackoverflow.com/questions/61551404/in-blazor-how-to-call-a-function-at-page-load-event-name*@
 		await System.Threading.Tasks.Task.Delay(1);
 		try
 		{
@@ -129,6 +160,7 @@ else
 		}
 		catch (Exception ex)
 		{
+			@*Error handling*@
 			errorMessage = ex.Message;
 			ShowError(new NotificationMessage
 				{

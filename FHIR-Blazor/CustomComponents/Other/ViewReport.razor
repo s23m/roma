@@ -1,8 +1,11 @@
-﻿@page "/report/{ReportID}"
+﻿@*This page/dialogue shows specific information about a report. This is triggered from the DiagnosticReports tab*@
+
+@page "/report/{ReportID}"
 @using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.CustomComponents.TypeHandlers
+@using FHIRBlazor.Pages
 
 @inject Radzen.DialogService dialogService
 @inject NavigationManager NavManager
@@ -81,20 +84,15 @@
 							</Template>
 						</RadzenDataGridColumn>
 
-						@*Need to handle all versions of value https://www.hl7.org/fhir/observation.html*@
-						@*<RadzenDataGridColumn TItem="Observation" Property="Value" Title="Value">
-							<Template Context="observation"><CodeableConceptHandler Data=observation.Value/></Template>
-							</RadzenDataGridColumn>*@
-
 						<RadzenDataGridColumn TItem="Observation" Property="Issued" Title="IssueDate" Filterable="false" Sortable="false">
 							<Template Context="observation">@observation.Issued</Template>
 						</RadzenDataGridColumn>
 
 						<RadzenDataGridColumn TItem="Observation" Property="Id" Title="ID">
-							<Template Context="observation"><a href="@($"{serverURL}/Observation/{observation.Id}")">@observation.Id</a></Template>
+							<Template Context="observation"><a href="@($"{NameSearch.serverURL}/Observation/{observation.Id}")">@observation.Id</a></Template>
 						</RadzenDataGridColumn>
-					</Columns>
 
+					</Columns>
 				</RadzenDataGrid>
 			</ChildContent>
 			<ErrorContent>
@@ -113,7 +111,6 @@
 
 <div class="row">
 	<div class="col-md-12 text-right">
-		@*<RadzenButton Click="@(()=>NavManager.NavigateTo("/patientinfo/"+ReportID))" ButtonStyle="ButtonStyle.Secondary" Text="More Info" Style="width: 150px" />*@
 		<RadzenButton Click="@((args) => dialogService.Close(true))" ButtonStyle="ButtonStyle.Primary" Text="Close" Style="width: 120px" />
 	</div>
 </div>
@@ -124,15 +121,11 @@
 	private Observation[]? observations;
 	private bool loading = true;
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
-
-
+	FhirClient client = new FhirClient(NameSearch.serverURL);
 
 	public async ValueTask<Observation[]> GetObservationData(DiagnosticReport report)
 	{
 		Observation[] observs = new Observation[report.Result.Count];
-
 
 		this.loading = true;
 		Parallel.For(0, report.Result.Count, i =>
@@ -162,16 +155,6 @@
 		}
 		catch (Exception ex)
 		{
-			//errorMessage = ex.Message;
-			//ShowError(new NotificationMessage
-			//	{
-			//		Style = "position: relative; top: 1%; left: 60%; transform: translate(-35%, 35%); width: 60%; max-width: 3000px;",
-			//		Severity = NotificationSeverity.Error,
-			//		Summary = "There has been an error",
-			//		Detail = errorMessage,
-			//		Duration = 40000
-			//	}
-			//);
 			Console.WriteLine("Error info:");
 		}
 		return;

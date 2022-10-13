@@ -1,8 +1,12 @@
-﻿@using Hl7.Fhir.Model;
+﻿@*This page is the Diagnostic Reports tab show on the PatientInfo page. It returns all the known Diagnostic Reports linked to a patient ID*@
+
+@page "/diagnosticreports/{PatientID}"
+@using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
 @using FHIRBlazor.CustomComponents.TypeHandlers
+@using FHIRBlazor.CustomComponents.Other
 
 @inject DialogService DialogService
 @inject NotificationService NotificationService
@@ -21,7 +25,6 @@
 							<CodeableConceptHandler Data=report.Code />
 						</Template>
 					</RadzenDataGridColumn>
-
 					<RadzenDataGridColumn TItem="DiagnosticReport" Property="Category" Title="Category" Filterable="false" Sortable="false">
 						<Template Context="report">
 							@foreach (var category in report.Category)
@@ -31,11 +34,9 @@
 							}
 						</Template>
 					</RadzenDataGridColumn>
-
 					<RadzenDataGridColumn TItem="DiagnosticReport" Property="Id" Title="ID">
-						<Template Context="report"><a href="@($"{serverURL}/DiagnosticReport/{report.Id}")">@report.Id</a></Template>
+						<Template Context="report"><a href="@($"{NameSearch.serverURL}/DiagnosticReport/{report.Id}")">@report.Id</a></Template>
 					</RadzenDataGridColumn>
-
 					<RadzenDataGridColumn TItem="DiagnosticReport" Width=60px Property="Id" Title="View" Filterable="false" Sortable="false">
 						<Template Context="report">
 							<RadzenButton Icon="open_in_new" ButtonStyle="ButtonStyle.Light" Click=@(() => OpenReport(report.Id)) />
@@ -85,8 +86,7 @@ else
 	}
 	private string errorMessage = "";
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
+	FhirClient client = new FhirClient(NameSearch.serverURL);
 
 	public async ValueTask<Boolean> GetReportsData()
 	{
@@ -107,7 +107,6 @@ else
 		loading = false;
 		return true;
 	}
-
 
 	protected override async System.Threading.Tasks.Task OnInitializedAsync()
 	{

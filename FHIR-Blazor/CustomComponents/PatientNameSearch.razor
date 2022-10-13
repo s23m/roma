@@ -1,17 +1,20 @@
-﻿@using Hl7.Fhir.Model;
+﻿@*This is the patient Name search component. It is used to find a patient from their given name*@
+
+@using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
+@using CustomComponents
 
 @inject NotificationService NotificationService
 @inject DialogService DialogService
 
-
+@*All of this html/css is to format the search bar. This uses tailwind.css aswell as default blazor frameworks*@
 <div class="my-3">
 	<h1 class="text-center font-bold text-4xl">Patient Name Search</h1>
 </div>
 
-<form class="flex items-center my-3" onsubmit=@NameSearch>
+<form class="flex items-center my-3" onsubmit=@NameSearching>
 	<label for="simple-search" class="sr-only">Search</label>
 	<div class="relative w-full">
 		<div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -22,6 +25,7 @@
 					  clip-rule="evenodd"></path>
 			</svg>
 		</div>
+		@*This is where the input is bound to the inputPatientName variable*@
 		<input type="text" @bind-value=inputPatientName id="simple-search"
 			   class=" borderless bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-zinc-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 			   placeholder="Search">
@@ -35,24 +39,21 @@
 
 		<span class="sr-only">Search</span>
 	</button>
-
-
 </form>
 
-<RadzenDataGrid Data="@searchResults" TItem="Patient" PageSize="10" AllowPaging="true"
+<RadzenDataGrid Data="@patients" TItem="Patient" PageSize="10" AllowPaging="true"
 				AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
 				PagerHorizontalAlign="HorizontalAlign.Center">
 	<Columns>
 		<RadzenDataGridColumn TItem="Patient" Property="Name[0].Family" Title="Name">
 			<Template Context="patient">
-				@*<a href="@()">@patient.Name[0].ToString()</a>*@
-				<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; " Class="" Click=@(() => OpenOrder(patient.Id)) Text="@(patient.Name[0].ToString())" />
+				<RadzenButton ButtonStyle="ButtonStyle.Light" Style="font-size: 14px; background-color: transparent; text-align:left; " Class="" Click=@(() => OpenOrder(patient.Id)) Text="@(patient.Name.First().ToString())" />
 			</Template>
 		</RadzenDataGridColumn>
 		<RadzenDataGridColumn TItem="Patient" Property="Gender" Title="Gender" />
 		<RadzenDataGridColumn TItem="Patient" Property="BirthDate" Title="Birth Date" />
 		<RadzenDataGridColumn TItem="Patient" Property="Id" Title="ID">
-			<Template Context="patient"><a href="@($"{serverURL}/Patient/{patient.Id}")">@patient.Id</a></Template>
+			<Template Context="patient"><a href="@($"{NameSearch.serverURL}/Patient/{patient.Id}")">@patient.Id</a></Template>
 		</RadzenDataGridColumn>
 	</Columns>
 </RadzenDataGrid>
@@ -62,7 +63,6 @@
 	<label for="small-input" class="block mb-2 text-sm font-bold text-gray-900 dark:text-gray-300">Max number of results</label>
 	<input type="number" max=50 min=5 @bind-value=maxNumOfEntries id="small-input" class="borderless block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-zinc-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 </div>
-
 
 @code {
 	public async System.Threading.Tasks.Task OpenOrder(string patientID)
@@ -82,7 +82,6 @@
 	}
 
 
-
 	//error notification
 	void ShowError(NotificationMessage message)
 	{
@@ -96,24 +95,17 @@
 	private string errorMessage = "";
 
 	//stores all the results
-	private Hl7.Fhir.Model.Patient[]? searchResults;
+	private Hl7.Fhir.Model.Patient[]? patients;
 	Bundle results = new Bundle();
 
-	private string serverURL = "http://hapi.fhir.org/baseR4";
-
-	//alternate servers:
-	// https://r4.test.pyrohealth.net/fhir
-	// http://hapi.fhir.org/baseR4
-	// https://server.fire.ly
-
-	void NameSearch()
+	void NameSearching()
 	{
 		Console.WriteLine("Searching");
 
 		//connecting to the server
-		var client = new FhirClient(serverURL);
+		var client = new FhirClient(NameSearch.serverURL);
 
-		//Defining search paramaters, not sure where to find documentation on these params.
+		//Defining search paramaters, more information on these can be found here in the HL7 FHIR documentation: https://www.hl7.org/fhir/search.html
 		var q = new SearchParams()
 				.Where("given=" + inputPatientName)
 				//.OrderBy("birthdate", SortOrder.Descending)
@@ -124,13 +116,13 @@
 		try
 		{
 			Bundle results = client.Search<Patient>(q);
-			searchResults = new Patient[results.Entry.Count];
+			patients = new Patient[results.Entry.Count];
 
 			//for every search result
 			for (int i = 0; i < results.Entry.Count; i++)
 			{
 				//add patient to our list
-				searchResults[i] = (Patient)results.Entry[i].Resource;
+				patients[i] = (Patient)results.Entry[i].Resource;
 			}
 			Console.WriteLine("Results Found");
 		}
@@ -146,11 +138,11 @@
 					Duration = 40000
 				}
 			);
-			Console.Write("Error info:" + ex.Message);
+			//Console.Write("Error info:" + ex.Message);
 		}
 		finally
 		{
-			Console.Write("Done");
+			//Console.Write("Done");
 		}
 	}
 }

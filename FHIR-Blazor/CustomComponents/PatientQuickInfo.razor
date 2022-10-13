@@ -1,13 +1,14 @@
-﻿@page "/quickinfo"
+﻿@*This is the patient quick info dialog that appears when clicking on a patient in the saerch table. It allows the user to quickly view the patient and choose to see more info.*@
+
+@page "/quickinfo"
 @page "/quickinfo/{PatientID}"
 @using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
+@using FHIRBlazor.Pages;
 
 @inject Radzen.DialogService dialogService
 @inject NavigationManager NavManager
-
-@*https://blazor.radzen.com/dialog*@
 
 <div class="row mb-4">
 	<div class="col-lg-6 d-flex ">
@@ -17,7 +18,14 @@
 				<RadzenImage Path="https://cdn-icons-png.flaticon.com/512/149/149071.png" Class="rounded-circle float-left mt-1 mr-3" Style="width: 90px; height: 90px;" />
 				<div>
 					<div>Name</div>
-					<b>@patient.Name[0]</b>
+						@if (patient.Name.Count > 0)
+						{
+							<b>@patient.Name.First()</b>
+						}
+						else
+						{
+							<b>No Name</b>
+						}
 					<div class="mt-3">Gender</div>
 					<b>@patient.Gender</b>
 				</div>
@@ -60,10 +68,8 @@
 
 	protected override void OnInitialized()
 	{
-		FhirClient client = new FhirClient("http://hapi.fhir.org/baseR4");
-		//Read the current version of a Patient resource
+		FhirClient client = new FhirClient(NameSearch.serverURL);
 		patient = client.Read<Patient>("Patient/" + PatientID);
-		Console.WriteLine(patient.Name[0]);
 	}
 }
 

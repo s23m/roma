@@ -1,4 +1,7 @@
-﻿@using Hl7.Fhir.Model;
+﻿@*This page is the Procedures tab show on the PatientInfo page. It returns all the known Procedures linked to a patient ID*@
+
+@page "/procedures/{PatientID}"
+@using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
@@ -58,10 +61,10 @@
 					</RadzenDataGridColumn>
 
 					<RadzenDataGridColumn TItem="Procedure" Property="Id" Title="ID">
-						<Template Context="procedure"><a href="@($"{serverURL}/Procedure/{procedure.Id}")">@procedure.Id</a></Template>
+						<Template Context="procedure"><a href="@($"{NameSearch.serverURL}/Procedure/{procedure.Id}")">@procedure.Id</a></Template>
 					</RadzenDataGridColumn>
-				</Columns>
 
+				</Columns>
 			</RadzenDataGrid>
 		</ChildContent>
 		<ErrorContent>
@@ -89,8 +92,7 @@ else
 	}
 	private string errorMessage = "";
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
+	FhirClient client = new FhirClient(NameSearch.serverURL);
 
 	public async ValueTask<Boolean> GetProcedureData()
 	{

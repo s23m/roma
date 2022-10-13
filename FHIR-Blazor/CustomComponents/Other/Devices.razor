@@ -1,5 +1,6 @@
 ﻿@*This is currenty not in use. But displays all devices that are linked to a specific patient *@
 
+@page "/devices/{PatientID}"
 @using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
@@ -36,7 +37,7 @@
 					<RadzenDataGridColumn TItem="Device" Property="ExpirationDate" Title="Exp. Date" />
 
 					<RadzenDataGridColumn TItem="Device" Property="Id" Title="ID">
-						<Template Context="device"><a href="@($"{serverURL}/Device/{device.Id}")">@device.Id</a></Template>
+						<Template Context="device"><a href="@($"{NameSearch.serverURL}/Device/{device.Id}")">@device.Id</a></Template>
 					</RadzenDataGridColumn>
 				</Columns>
 
@@ -67,8 +68,7 @@ else
 	}
 	private string errorMessage = "";
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
+	FhirClient client = new FhirClient(NameSearch.serverURL);
 
 	public async ValueTask<Boolean> GetDevicesData()
 	{

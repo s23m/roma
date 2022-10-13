@@ -1,4 +1,7 @@
-﻿@using Hl7.Fhir.Model;
+﻿@*This page is the Immunizations tab show on the PatientInfo page. It returns all the known Immunizations linked to a patient ID*@
+
+@page "/immunizations/{PatientID}"
+@using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
@@ -51,11 +54,10 @@
 					</RadzenDataGridColumn>
 
 					<RadzenDataGridColumn TItem="Immunization" Property="Id" Title="ID">
-						<Template Context="immunization"><a href="@($"{serverURL}/Immunization/{immunization.Id}")">@immunization.Id</a></Template>
+						<Template Context="immunization"><a href="@($"{NameSearch.serverURL}/Immunization/{immunization.Id}")">@immunization.Id</a></Template>
 					</RadzenDataGridColumn>
 
 				</Columns>
-
 			</RadzenDataGrid>
 		</ChildContent>
 		<ErrorContent>
@@ -83,8 +85,7 @@ else
 	}
 	private string errorMessage = "";
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
+	FhirClient client = new FhirClient(NameSearch.serverURL);
 
 	public async ValueTask<Boolean> GetImmunizationData()
 	{

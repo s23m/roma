@@ -1,4 +1,6 @@
-﻿@page "/allergies/{PatientID}"
+﻿@*This page is the Allergies tab shows on the PatientInfo page. It returns all the known allergies linked to a patient ID*@
+
+@page "/allergies/{PatientID}"
 @using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
@@ -9,100 +11,100 @@
 @inject NotificationService NotificationService
 @inject NavigationManager NavManager
 
-@*<RadzenTabsItem Text="Known Allergies">*@
-
-	@if (!loading)
-	{
-		<ErrorBoundary>
-			<ChildContent>
-				<RadzenDataGrid Data="@results" TItem="AllergyIntolerance" PageSize="10" AllowPaging="true"
-							AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
-							PagerHorizontalAlign="HorizontalAlign.Center">
-					<Columns>
-						<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Substance" Filterable="false" Sortable="false">
-							<Template Context="allergy">
-								@if (allergy.Code != null)
+@if (!loading)
+{
+	<ErrorBoundary>
+		<ChildContent>
+			<RadzenDataGrid Data="@results" TItem="AllergyIntolerance" PageSize="10" AllowPaging="true"
+						AllowFiltering="true" AllowColumnResize="true" AllowSorting="true"
+						PagerHorizontalAlign="HorizontalAlign.Center">
+				<Columns>
+					<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Substance" Filterable="false" Sortable="false">
+						<Template Context="allergy">
+							@if (allergy.Code != null)
+							{
+								<CodeableConceptHandler Data=allergy.Code />
+							}
+							else if (allergy.Reaction.Count > 0)
+							{
+								@if (allergy.Reaction.First().Substance != null)
 								{
-									<CodeableConceptHandler Data=allergy.Code />
+									<CodeableConceptHandler Data=allergy.Reaction.First().Substance />
 								}
-								else if (allergy.Reaction.Count > 0)
+								else
 								{
-									@if (allergy.Reaction.First().Substance != null)
+									<a></a>
+								}
+							}
+							else
+							{
+								<a></a>
+							}
+						</Template>
+					</RadzenDataGridColumn>
+					<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction" Filterable="false" Sortable="false">
+						<Template Context="allergy">
+							@*As there can be many reactions to an allergy, this handles the list*@
+							@if (allergy.Reaction.Count > 0)
+							{
+								var count = allergy.Reaction.First().Manifestation.Count;
+								var temp = 1;
+								@foreach (var reaction in allergy.Reaction.First().Manifestation)
+								{
+									if (temp >= count)
 									{
-										<CodeableConceptHandler Data=allergy.Reaction.First().Substance />
+										<a>@reaction.Coding.First().Display</a>
 									}
 									else
 									{
-										<a></a>
+										<a>@reaction.Coding.First().Display, </a>
 									}
+									temp++;
 								}
-								else
-								{
-									<a></a>
-								}
-							</Template>
-						</RadzenDataGridColumn>
-						<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Reaction" Title="Reaction" Filterable="false" Sortable="false">
-							<Template Context="allergy">
-								@if (allergy.Reaction.Count > 0)
-								{
-									var count = allergy.Reaction.First().Manifestation.Count;
-									var temp = 1;
-									@foreach (var reaction in allergy.Reaction.First().Manifestation)
-									{
-										if (temp >= count)
-										{
-											<a>@reaction.Coding.First().Display</a>
-										}
-										else
-										{
-											<a>@reaction.Coding.First().Display, </a>
-										}
-										temp++;
-									}
-								}
-								else
-								{
-									<a></a>
-								}
-							</Template>
-						</RadzenDataGridColumn>
-						<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Criticality" Title="Criticality" Filterable="false" Sortable="false" />
-						<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Category" Title="Category" Filterable="false" Sortable="false">
-							<Template Context="allergy">
-								@if (allergy.Category.Count() > 0)
-								{
-									<a>@allergy.Category.First()</a>
-								}
-								else
-								{
-									<a></a>
-								}
-							</Template>
-						</RadzenDataGridColumn>
-						<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" Filterable="false" Sortable="false">
-							<Template Context="allergy">
-								<DateHandler Data=allergy.Onset />
-							</Template>
-						</RadzenDataGridColumn>
-						<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Id" Title="ID">
-							<Template Context="allergy"><a href="@($"{serverURL}/AllergyIntolerance/{allergy.Id}")">@allergy.Id</a></Template>
-						</RadzenDataGridColumn>
-					</Columns>
-				</RadzenDataGrid>
-			</ChildContent>
-			<ErrorContent>
-				<RadzenCard class="m-3">
-					<h3 class="h5"><b>There was an error</b></h3>
-				</RadzenCard>
-			</ErrorContent>
-		</ErrorBoundary>
-	}
-	else
-	{
-		<Spinner Text="Allergies" />
-	}
-@*</RadzenTabsItem>*@
+							}
+							else
+							{
+								<a></a>
+							}
+						</Template>
+					</RadzenDataGridColumn>
+					<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Criticality" Title="Criticality" Filterable="false" Sortable="false" />
+					<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Category" Title="Category" Filterable="false" Sortable="false">
+						<Template Context="allergy">
+							@*We are only displaying the first category for ease. This could be looped with a foreach if all were needed *@
+							@if (allergy.Category.Count() > 0)
+							{
+								<a>@allergy.Category.First()</a>
+							}
+							else
+							{
+								<a></a>
+							}
+						</Template>
+					</RadzenDataGridColumn>
+					<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Onset" Title="Onset Date" Filterable="false" Sortable="false">
+						<Template Context="allergy">
+							<DateHandler Data=allergy.Onset />
+						</Template>
+					</RadzenDataGridColumn>
+					<RadzenDataGridColumn TItem="AllergyIntolerance" Property="Id" Title="ID">
+						<Template Context="allergy"><a href="@($"{NameSearch.serverURL}/AllergyIntolerance/{allergy.Id}")">@allergy.Id</a></Template>
+					</RadzenDataGridColumn>
+				</Columns>
+			</RadzenDataGrid>
+		</ChildContent>
+		<ErrorContent>
+			<RadzenCard class="m-3">
+				<h3 class="h5"><b>There was an error</b></h3>
+			</RadzenCard>
+		</ErrorContent>
+	</ErrorBoundary>
+}
+else
+{
+	<Spinner Text="Allergies" />
+}
+
 
 
 @code {
@@ -118,15 +120,12 @@
 	}
 	private string errorMessage = "";
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
-
+	FhirClient client = new FhirClient(NameSearch.serverURL);
 
 	public async ValueTask<Boolean> GetAllergyData()
 	{
 		try
 		{
-			//Thread.Sleep(3000);
 			var q = new SearchParams()
 				.Where("patient=" + PatientID)
 				.LimitTo(100);
@@ -138,9 +137,6 @@
 			{
 				results[i] = (AllergyIntolerance)search.Entry[i].Resource;
 			}
-
-
-			Console.WriteLine("done");
 		}
 		catch (Exception ex)
 		{
@@ -161,11 +157,9 @@
 
 	protected override async System.Threading.Tasks.Task OnInitializedAsync()
 	{
+		@*To enable asynchronous data retrieval*@
 		await System.Threading.Tasks.Task.Delay(1);
-		Console.WriteLine("pre");
 		loading = await GetAllergyData();
-		Console.WriteLine("post");
-
 
 		return;
 	}

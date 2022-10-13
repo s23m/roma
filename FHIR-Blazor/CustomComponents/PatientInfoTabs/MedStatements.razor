@@ -1,4 +1,7 @@
-﻿@using Hl7.Fhir.Model;
+﻿@*This page is the Medication Statements tab show on the PatientInfo page. It returns all the known Medication Statements linked to a patient ID*@
+
+@page "/medstatements/{PatientID}"
+@using Hl7.Fhir.Model;
 @using Hl7.Fhir.Rest;
 @using Hl7.Fhir.Serialization;
 @using FHIRBlazor.Pages;
@@ -24,13 +27,10 @@
 								{
 									var temp = (CodeableConcept)medstatement.Medication;
 									<CodeableConceptHandler Data=temp />
-
 								}
 								else
 								{
-
 									var temp = (ResourceReference)medstatement.Medication;
-
 									@if (temp.Reference != null && temp.Reference.StartsWith("Medication"))
 									{
 										@*Due to med reference, open dialogue to view medication specifically*@
@@ -41,7 +41,6 @@
 									{
 										<a>@temp.Reference</a>
 									}
-
 								}
 						</Template>
 					</RadzenDataGridColumn>
@@ -61,7 +60,6 @@
 					</RadzenDataGridColumn>
 					<RadzenDataGridColumn TItem="MedicationStatement" Property="ReasonCode" Title="Reason" Filterable="false" Sortable="false">
 						<Template Context="medstatement">
-							@*Needs error handling*@
 							@if (medstatement.ReasonCode != null)
 							{
 								@foreach (var reason in medstatement.ReasonCode)
@@ -75,7 +73,7 @@
 						</Template>
 					</RadzenDataGridColumn>
 					<RadzenDataGridColumn TItem="MedicationStatement" Property="Id" Title="ID">
-						<Template Context="medstatement"><a href="@($"{serverURL}/MedicationStatement/{medstatement.Id}")">@medstatement.Id</a></Template>
+						<Template Context="medstatement"><a href="@($"{NameSearch.serverURL}/MedicationStatement/{medstatement.Id}")">@medstatement.Id</a></Template>
 					</RadzenDataGridColumn>
 				</Columns>
 			</RadzenDataGrid>
@@ -105,8 +103,7 @@ else
 	}
 	private string errorMessage = "";
 
-	private static string serverURL = "http://hapi.fhir.org/baseR4";
-	FhirClient client = new FhirClient(serverURL);
+	FhirClient client = new FhirClient(NameSearch.serverURL);
 
 	public async ValueTask<Boolean> GetMedStatementsData()
 	{
@@ -148,7 +145,6 @@ else
 			);
 			Console.WriteLine("Error info:" + ex.Message);
 		}
-
 		return;
 	}
 }
