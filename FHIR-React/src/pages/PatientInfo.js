@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPatient } from '../apis/patient';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
@@ -9,7 +9,7 @@ import PatientInfoBasicCard from '../components/PatientInfoBasicCard';
 import PatientExtraInfoCard from '../components/PatientExtraInfoCard';
 
 const PatientInfo = () => {
-  const { id } = useParams();
+  const { id } = useParams();   // Get patient's ID from URL 
   const [patientData, setPatientData] = useState({});
 
   useEffect(() => {
