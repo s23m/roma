@@ -25,12 +25,12 @@ const convertEntry = (entries) => {
     return medication.join(', ')
   }
   
-  // Assistive function
   const getDosage = (dosage) => {
     if (dosage)  return dosage[0].text || 'N/A';
     if (!dosage) return 'N/A';
   }
 
+  // Convert
   const rowData = entries.map((entry) => {
     const resource = entry.resource;
     return {
@@ -49,7 +49,7 @@ export default function MedicationStatement({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
 
-  // ag-grid-table variables
+  // AgGridReact variables
   const gridOptions = {
     defaultColDef: {
       filter: true,

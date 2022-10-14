@@ -48,7 +48,7 @@ export default function AllergyIntolerance({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
   
-  // ag-grid-table variables
+  // AgGridReact variables
   const gridOptions = {
     columnDefs: [
       { headerName: 'ID', field: 'id', width: 110},

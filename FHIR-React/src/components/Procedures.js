@@ -31,7 +31,7 @@ const convertEntry = (entries) => {
 const Procedures = ({ patientId }) => {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
-    // ag-grid-table variables
+    // AgGridReact variables
     const gridOptions = {
       defaultColDef: {
         filter: true,

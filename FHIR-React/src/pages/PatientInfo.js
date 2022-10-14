@@ -5,7 +5,7 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/PatientInfo.css';
 import '../stylesheets/App.css';
-import PatientInfoBasicCard from '../components/PatientInfoBasicCard';
+import PatientInfoBasicCard from '../components/PatientBasicInfoCard';
 import PatientExtraInfoCard from '../components/PatientExtraInfoCard';
 
 const PatientInfo = () => {

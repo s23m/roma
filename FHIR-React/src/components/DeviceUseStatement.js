@@ -9,8 +9,8 @@ import { AgGridReact } from 'ag-grid-react';
 
 /**
  * Get required data and convert it to fit AgGridReact input format
- * @param {*} entries 
- * @param {*} deviceNames An array of device names
+ * @param {Object} entries 
+ * @param {Array} deviceNames An array of device names
  * @returns rowData for AgGridReact table
  */
 
@@ -31,7 +31,7 @@ export default function DeviceUseStatement({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
 
-  // ag-grid-table variables
+  // AgGridReact variables
   const gridOptions = {
     defaultColDef: {
       filter: true,
@@ -76,7 +76,7 @@ export default function DeviceUseStatement({ patientId }) {
   return loading ? (
     <Spinner />
   ) : (
-    <div>
+    <>
       <p>Total: {rowData.length}</p>
       {rowData.length > 0 ? (
         <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
@@ -86,6 +86,6 @@ export default function DeviceUseStatement({ patientId }) {
           />
         </div>
       ) : (<br/>)}
-    </div>
+    </>
   );
 }

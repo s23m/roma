@@ -35,11 +35,10 @@ const convertEntry = (entries) => {
 
 /**
  * Return an object that can be used easily in `ResultModal` to pass to Ag-grid-react component
- * @param {*} entries 
+ * @param {Object} entries 
  */
 const convertResult = (entries) => {
-  // Assistive function
-  const rowDataResult = entries.map( (entry, index) => {
+  const rowDataResult = entries.map( (entry) => {
     const resource = entry.resource;
     return {
       result: resource.result || [], 
@@ -48,7 +47,7 @@ const convertResult = (entries) => {
   return rowDataResult;
 }
 
-const buttonResult = (params, setModalShow, setClickedRowNumber) => {
+const ResultButton = (params, setModalShow, setClickedRowNumber) => {
   const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
   
   return (
@@ -63,9 +62,14 @@ const buttonResult = (params, setModalShow, setClickedRowNumber) => {
   )
 }
 
-const ResultModal = (propss) => {
-  const {clickedRowNumber, data, ...props} = propss
-  // ag-grid-table variables
+/**
+ * A modal to display result of selected individual Diagnostic Report
+ * @param {Object} propsOriginal properties of the Modal
+ * @returns a Modal component
+ */
+const ResultModal = (propsOriginal) => {
+  const {clickedRowNumber, data, ...props} = propsOriginal
+  // AgGridReact variables
   const gridOptions = {
     rowHeight: '50px',
     defaultColDef: {
@@ -118,11 +122,11 @@ export default function DiagnosticReport({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
   const [rowDataResult, setRowDataResult] = useState([]);
-  const [modalShow, setModalShow] = useState(false);
-  const [clickedRowNumber, setClickedRowNumber] = useState(2);
+  const [modalShow, setModalShow] = useState(false); 
+  const [clickedRowNumber, setClickedRowNumber] = useState(2); // to keep track of clicked button's row index
 
 
-  // ag-grid-table variables
+  // AgGridReact variables
   const gridOptions = {
     defaultColDef: {
       filter: true,
@@ -138,7 +142,7 @@ export default function DiagnosticReport({ patientId }) {
       { headerName: 'Category', field: 'category', width: 100 },
       { headerName: 'Status', field: 'status', width: 100 },
       { headerName: 'Result', field: 'result', width: 100,
-                    cellRenderer: (params) =>  buttonResult(params, setModalShow, setClickedRowNumber)},
+                    cellRenderer: (params) =>  ResultButton(params, setModalShow, setClickedRowNumber)},
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),
@@ -147,7 +151,6 @@ export default function DiagnosticReport({ patientId }) {
   // Get and update patient's ImmunizationRecommendation data
   useEffect(() => {
     setLoading(true);
-    
     getDiagnosticReport(patientId)
       .then((response) => {
         console.log('Diagnostic Report response:', response);
@@ -159,14 +162,14 @@ export default function DiagnosticReport({ patientId }) {
           setRowData(data)
           setRowDataResult(dataResult)
         }
-        setLoading(false);
+        setLoading(false)
       })
   }, [patientId]);
 
   return loading ? (
     <Spinner />
   ) : (
-    <div>
+    <>
       <p>Total: {rowData.length}</p>
       {rowData.length > 0 ? (
         <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
@@ -184,6 +187,6 @@ export default function DiagnosticReport({ patientId }) {
           />
         </div>
       ) : (<br/>)}
-    </div>
+    </>
   );
 }
