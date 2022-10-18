@@ -76,7 +76,7 @@ export default function Condition({ patientId }) {
     setLoading(true);
 
     getCondition(patientId).then((response) => {
-      console.log('Condition Response:', response);
+      console.log('Condition Response:', response); // for debugging
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);

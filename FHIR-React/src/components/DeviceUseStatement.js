@@ -9,8 +9,8 @@ import { AgGridReact } from 'ag-grid-react';
 
 /**
  * Get required data and convert it to fit AgGridReact input format
- * @param {*} entries 
- * @param {*} deviceNames An array of device names
+ * @param {Object} entries 
+ * @param {Array} deviceNames An array of device names
  * @returns rowData for AgGridReact table
  */
 
@@ -31,7 +31,7 @@ export default function DeviceUseStatement({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
 
-  // ag-grid-table variables
+  // AgGridReact variables
   const gridOptions = {
     defaultColDef: {
       filter: true,
@@ -42,10 +42,10 @@ export default function DeviceUseStatement({ patientId }) {
       editable: true,
     },
     columnDefs: [
-      { headerName: 'Device ID', field: 'id', width: 110 },
-      { headerName: 'Device name', field: 'name' },
-      { headerName: 'Derived from', field: 'derivedFrom' },
-      { headerName: 'Source', field: 'source' },
+      { headerName: 'Device ID', field: 'id', width: 120 },
+      { headerName: 'Device name', field: 'name', width: 120, flex: 1 },
+      { headerName: 'Derived from', field: 'derivedFrom', width: 160, flex: 1 },
+      { headerName: 'Source', field: 'source', width: 160 },
     ],
     domLayout: 'autoHeight', 
     onGridReady: (params) => params.api.sizeColumnsToFit(),
@@ -57,7 +57,7 @@ export default function DeviceUseStatement({ patientId }) {
     
     getDeviceUseStatement(patientId)
       .then((response) => {
-        console.log('DeviceUseStatement:', response);
+        console.log('DeviceUseStatement:', response); // for debugging
 
         // set data for ag-grid
         if (response.total !== 0) {
@@ -76,7 +76,7 @@ export default function DeviceUseStatement({ patientId }) {
   return loading ? (
     <Spinner />
   ) : (
-    <div>
+    <>
       <p>Total: {rowData.length}</p>
       {rowData.length > 0 ? (
         <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
@@ -86,6 +86,6 @@ export default function DeviceUseStatement({ patientId }) {
           />
         </div>
       ) : (<br/>)}
-    </div>
+    </>
   );
 }

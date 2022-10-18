@@ -11,14 +11,19 @@ export const getDevice = async (deviceId) => {
 };
 
 /**
- * @param {*} entry An entry from getDeviceUseStatement in api/deviceUseStatement.js
+ * Get the device name given the reference
+ * `reference` could look like: 'Device/123'
+ * @param {Object} entry An entry from getDeviceUseStatement in api/deviceUseStatement.js
  * @returns Promise Object of the input entry's device name
  */
 export const getDeviceNames = (entry) => {
   if (!entry.resource.device) return 'N/A';
 
+  // Construct fullUrl 
   const deviceReference = entry.resource.device.reference;
-  const fullUrl = `${BASE_URL}/${deviceReference}`;
+  const fullUrl = `${BASE_URL}${deviceReference}`;
+  
+  // Request and return response data 
   const deviceName = axios.get(fullUrl)
     // .then((response) => console.log('Device names response:', response.data.deviceName[0].name))
     .then((response) => response.data.deviceName? response.data.deviceName[0].name : 'N/A')

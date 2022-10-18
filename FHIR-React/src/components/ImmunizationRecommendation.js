@@ -29,7 +29,7 @@ export default function ImmunizationRecommendation({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
 
-  // ag-grid-table variables
+  // AgGridReact variables
   const gridOptions = {
     defaultColDef: {
       filter: true,
@@ -53,7 +53,7 @@ export default function ImmunizationRecommendation({ patientId }) {
     setLoading(true);
 
     getImmunizationRecommendation(patientId).then((response) => {
-      console.log('ImmunizationRecommendation:', response);
+      console.log('ImmunizationRecommendation:', response); // for debugging
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);

@@ -48,7 +48,7 @@ export default function AllergyIntolerance({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
   
-  // ag-grid-table variables
+  // AgGridReact variables
   const gridOptions = {
     columnDefs: [
       { headerName: 'ID', field: 'id', width: 110},
@@ -75,7 +75,7 @@ export default function AllergyIntolerance({ patientId }) {
     setLoading(true);
 
     getAllergyIntolerance(patientId).then((response) => {
-      console.log('AllergyIntolerance Response:', response);
+      console.log('AllergyIntolerance Response:', response); // for debugging
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);
