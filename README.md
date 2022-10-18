@@ -43,7 +43,7 @@ Go to the project directory
 Install Dependencies
 
 ```bash
-  npm nstall
+  npm install
 ```
 
 Start the application
