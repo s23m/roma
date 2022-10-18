@@ -53,7 +53,7 @@ export default function ImmunizationRecommendation({ patientId }) {
     setLoading(true);
 
     getImmunizationRecommendation(patientId).then((response) => {
-      console.log('ImmunizationRecommendation:', response);
+      console.log('ImmunizationRecommendation:', response); // for debugging
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);

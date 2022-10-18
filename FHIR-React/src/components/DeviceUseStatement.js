@@ -57,7 +57,7 @@ export default function DeviceUseStatement({ patientId }) {
     
     getDeviceUseStatement(patientId)
       .then((response) => {
-        console.log('DeviceUseStatement:', response);
+        console.log('DeviceUseStatement:', response); // for debugging
 
         // set data for ag-grid
         if (response.total !== 0) {

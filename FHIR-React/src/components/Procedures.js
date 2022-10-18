@@ -53,7 +53,7 @@ const Procedures = ({ patientId }) => {
     setLoading(true);
 
     getPatientProcedures(patientId).then((response) => {
-      console.log('Procedures response:', response);
+      console.log('Procedures response:', response); // for debugging
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);

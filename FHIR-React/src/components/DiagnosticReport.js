@@ -10,7 +10,7 @@ import Modal from "react-bootstrap/Modal";
 
 /**
  * Get required data and convert it to fit AgGridReact input format
- * @param {*} entries 
+ * @param {Object} entries 
  * @returns rowData for AgGridReact table
  */
 const convertEntry = (entries) => {
@@ -34,7 +34,7 @@ const convertEntry = (entries) => {
 };
 
 /**
- * Return an object that can be used easily in `ResultModal` to pass to Ag-grid-react component
+ * Organise and return an object whose data can be passed straight into rowData property of  `ResultModal`'s `AgGridReact` component
  * @param {Object} entries 
  */
 const convertResult = (entries) => {
@@ -47,6 +47,13 @@ const convertResult = (entries) => {
   return rowDataResult;
 }
 
+/**
+ * Return a Button component that shows ResultModal when clicked
+ * @param {*} params used to get values from targeted AgGridReact cell
+ * @param {Function} setModalShow function that updates the state of `modalShow`
+ * @param {Function} setClickedRowNumber function that updates the state of `clickedRowNumber`
+ * @returns 
+ */
 const ResultButton = (params, setModalShow, setClickedRowNumber) => {
   const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
   
@@ -116,8 +123,6 @@ const ResultModal = (propsOriginal) => {
 }
 
 
-
-
 export default function DiagnosticReport({ patientId }) {
   const [loading, setLoading] = useState(true);
   const [rowData, setRowData] = useState([]);
@@ -153,7 +158,7 @@ export default function DiagnosticReport({ patientId }) {
     setLoading(true);
     getDiagnosticReport(patientId)
       .then((response) => {
-        console.log('Diagnostic Report response:', response);
+        console.log('Diagnostic Report response:', response); // for debugging
 
         // set data for ag-grid
         if (response.total !== 0) {

@@ -73,7 +73,7 @@ export default function MedicationStatement({ patientId }) {
   useEffect(() => {
     setLoading(true);
     getMedicationStatement(patientId).then((response) => {
-      console.log('MedicationStatement:', response);
+      console.log('MedicationStatement:', response); // for debugging
       if (response.total !== 0) {
         const data = convertEntry(response.entry);
         setRowData(data);
