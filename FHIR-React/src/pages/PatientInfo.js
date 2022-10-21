@@ -9,7 +9,7 @@ import PatientInfoBasicCard from '../components/PatientBasicInfoCard';
 import PatientExtraInfoCard from '../components/PatientExtraInfoCard';
 
 const PatientInfo = () => {
-  const { id } = useParams();   // Get patient's ID from URL 
+  const { id } = useParams(); // Get patient's ID from URL
   const [patientData, setPatientData] = useState({});
 
   useEffect(() => {
@@ -28,4 +28,3 @@ const PatientInfo = () => {
 };
 
 export default PatientInfo;
-

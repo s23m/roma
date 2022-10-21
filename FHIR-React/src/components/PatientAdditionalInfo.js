@@ -5,13 +5,17 @@ import { extractValue } from '../apis/utils';
 const NA_ARRAY = ['N/A'];
 
 // Assistive functions to get required data from patient response
+// Each function follows the same format
 const getPatientTelecomInfo = (patientInfo) => {
+  // Check if there is any telecom info
   if (!patientInfo.telecom || patientInfo.telecom.length === 0) return NA_ARRAY;
 
+  // Filter through telecom information for valid entries
   const validPatientTelecoms = patientInfo.telecom.filter(
     (telecom) => !!telecom.use && !!telecom.system && !!telecom.value
   );
 
+  // Format filtered telecom info into data useable by front-end component
   const patientTelecoms = validPatientTelecoms.map(
     (telecom) => `${telecom.use} ${telecom.system}: ${telecom.value}`
   );
@@ -38,11 +42,12 @@ const getPatientCommunicationInfo = (patientInfo) => {
   if (!patientInfo.communication || patientInfo.communication.length === 0) return NA_ARRAY;
 
   const validCommunications = patientInfo.communication.filter(
-    (comm) =>
-      comm.language.coding && comm.language.coding.length > 0
+    (comm) => comm.language.coding && comm.language.coding.length > 0
   );
 
-  const patientCommunications = validCommunications.map((comm) => comm.language.coding[0].display || comm.language.coding[0].code);
+  const patientCommunications = validCommunications.map(
+    (comm) => comm.language.coding[0].display || comm.language.coding[0].code
+  );
 
   return patientCommunications;
 };
@@ -50,9 +55,10 @@ const getPatientCommunicationInfo = (patientInfo) => {
 const getMaritalStatus = (patientInfo) => {
   if (!patientInfo.maritalStatus) return NA_ARRAY;
   if (patientInfo.maritalStatus) {
-    return patientInfo.maritalStatus.coding[0].display || patientInfo.maritalStatus.coding[0].code
+    return patientInfo.maritalStatus.coding[0].display || patientInfo.maritalStatus.coding[0].code;
   }
-}
+};
+
 const createArrayCardBody = (arr) =>
   arr.map((element) => {
     return (
@@ -73,6 +79,7 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
 
     const patientAdditionalInfo = {};
 
+    // Store additional info in patientAdditionalInfo object
     patientAdditionalInfo.identifier = getPatientIdentifiers(patientInfo);
     patientAdditionalInfo.telecom = getPatientTelecomInfo(patientInfo);
     patientAdditionalInfo.communication = getPatientCommunicationInfo(patientInfo);
@@ -101,7 +108,9 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
           <td>
             <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Contact</h6>
-              <h5 className="card-title text-left">{createArrayCardBody(patientAdditionalInfo.telecom)}</h5>
+              <h5 className="card-title text-left">
+                {createArrayCardBody(patientAdditionalInfo.telecom)}
+              </h5>
             </div>
           </td>
         </tr>
@@ -117,7 +126,9 @@ const PatientAdditionalInfo = ({ patientInfo }) => {
           <td>
             <div className="card bg-dark borderless-card text-center">
               <h6 className="card-subtitle mb-2 text-muted">Address</h6>
-              <h5 className="card-title text-left" text-left>{patientAdditionalInfo.address}</h5>
+              <h5 className="card-title text-left" text-left>
+                {patientAdditionalInfo.address}
+              </h5>
             </div>
           </td>
         </tr>

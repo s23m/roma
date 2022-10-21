@@ -12,6 +12,7 @@ const PatientInfoBasicCard = ({ patientInfo }) => {
 
     const patientBasicInfo = {};
 
+    // Store basic patient info in patientBasicInfo object
     const patientFullName = patientInfo.name
       ? `${patientInfo.name[0].given.join(' ')} ${patientInfo.name[0].family}`
       : '';

@@ -9,12 +9,11 @@ import 'ag-grid-community/styles/ag-theme-balham.css';
 import '../stylesheets/Patient.css';
 import '../stylesheets/App.css';
 
-const NA = 'N/A'
-
+const NA = 'N/A';
 
 /**
  * Get required data from `searchResults` and convert it to fit AgGridReact input format
- * @param {*} searchResults 
+ * @param {*} searchResults
  * @returns rowData for AgGridReact table
  */
 const convertData = (searchResults) => {
@@ -109,11 +108,12 @@ const Patients = () => {
         cellRenderer: (params) => createHyperlinkToPatientPage(params),
       },
     ],
-    domLayout: 'autoHeight', 
+    domLayout: 'autoHeight',
     onGridReady: (params) => params.api.sizeColumnsToFit(),
-  }
+  };
 
   const joeBlowData = convertData([{ resource: joeBlow }]);
+  // Use sample data initially
   const [rowData, setRowData] = useState([
     {
       givenNames: 'Adam',
@@ -127,6 +127,7 @@ const Patients = () => {
   const [notification, setNotification] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Function to pass to SearchBar to handle submit event
   const onSearchSubmit = async (queryTypes, queryValues) => {
     setLoading(true);
     const searchResults = await searchPatient(queryTypes, queryValues); // Get data
@@ -155,11 +156,8 @@ const Patients = () => {
 
       <p>{notification}</p>
 
-      <div className="ag-theme-balham-dark" style={{width: '60vw'}}>
-        <AgGridReact
-            gridOptions={gridOptions}
-            rowData={rowData}
-        />
+      <div className="ag-theme-balham-dark" style={{ width: '60vw' }}>
+        <AgGridReact gridOptions={gridOptions} rowData={rowData} />
       </div>
     </div>
   );

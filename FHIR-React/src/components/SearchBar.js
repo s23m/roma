@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import '../stylesheets/SearchBar.css';
 import { InputGroup, Input, Button, Form } from 'reactstrap';
 
+// Updates parameter input array with new value. Used when param input is changed
 const updateInputValues = (i, inputValues, value) => {
   if (!inputValues) return [];
 
@@ -11,6 +12,7 @@ const updateInputValues = (i, inputValues, value) => {
   return newInputValues;
 };
 
+// Updates parameter query type array with new value. Used when param type is changed
 const updateSelectedOptions = (i, selectedOptions, value) => {
   if (!selectedOptions) return [];
 
@@ -20,6 +22,7 @@ const updateSelectedOptions = (i, selectedOptions, value) => {
   return newSelectedOptions;
 };
 
+// Removes param and input from search
 const removeParam = (i, selectedOptions, inputValues) => {
   selectedOptions.splice(i, 1);
   inputValues.splice(i, 1);
@@ -32,6 +35,7 @@ export default function SearchBar({ placeholder, onSubmit, options }) {
   const [selectedOptions, setSelectedOptions] = useState(['name']);
   const [noOfAdditionalParams, setNoOfAdditionalParams] = useState(0);
 
+  // Used to generate the JSX component for search input
   const SearchParamElement = useCallback(
     ({ paramNo, selectedOptions, inputValues }) => (
       <>
