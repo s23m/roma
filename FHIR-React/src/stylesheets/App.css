@@ -69,3 +69,8 @@ button.btn.btn-primary {
   --bs-btn-bg: #28344c;
   --bs-btn-border-color: #444850;
 }
+
+.homepage-card-text {
+  text-align: center;
+  padding: 0 0 0 0 !important; 
+}

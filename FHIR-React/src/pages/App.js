@@ -5,6 +5,7 @@ import { Container } from 'reactstrap';
 import { Outlet, BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../stylesheets/App.css';
+import HomePage from './HomePage';
 
 function App() {
   const AppConstantElements = (
@@ -20,6 +21,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={AppConstantElements}>
+          <Route path="" element={<HomePage />} />
           <Route path="patients/:id" element={<PatientInfo />} />
           <Route path="patients" element={<Patients />} />
         </Route>
