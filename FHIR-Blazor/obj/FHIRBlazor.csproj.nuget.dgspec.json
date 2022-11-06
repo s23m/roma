@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj": {}
+    "C:\\Users\\macsm\\Documents\\test1\\roma\\FHIR-Blazor\\FHIRBlazor.csproj": {}
   },
   "projects": {
-    "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj": {
+    "C:\\Users\\macsm\\Documents\\test1\\roma\\FHIR-Blazor\\FHIRBlazor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
+        "projectUniqueName": "C:\\Users\\macsm\\Documents\\test1\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
         "projectName": "FHIRBlazor",
-        "projectPath": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
+        "projectPath": "C:\\Users\\macsm\\Documents\\test1\\roma\\FHIR-Blazor\\FHIRBlazor.csproj",
         "packagesPath": "C:\\Users\\macsm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\macsm\\Documents\\Git Repos\\roma\\FHIR-Blazor\\obj\\",
+        "outputPath": "C:\\Users\\macsm\\Documents\\test1\\roma\\FHIR-Blazor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\macsm\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -67,7 +67,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -79,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
